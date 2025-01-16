@@ -14,6 +14,7 @@ const ThirdPartyButtons = ({ onClick, icon }: ThirdPartyButtonsProps) => {
       size={"icon"}
       className="p-7 h-12 w-12 rounded-lg"
       onClick={onClick}
+      aria-label={`Sign in with ${icon}`}
     >
       <Icon icon={icon} />
     </Button>

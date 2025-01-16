@@ -1,5 +1,6 @@
 import {
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -24,6 +25,7 @@ type FormInputProps<T extends LoginFormValues | RegisterFormValues> = {
   label: string;
   placeholder: string;
   type: string;
+  description: string;
 };
 
 const FormInput = <T extends LoginFormValues | RegisterFormValues>({
@@ -32,6 +34,7 @@ const FormInput = <T extends LoginFormValues | RegisterFormValues>({
   label,
   placeholder,
   type,
+  description,
 }: FormInputProps<T>) => {
   return (
     <FormField
@@ -48,6 +51,7 @@ const FormInput = <T extends LoginFormValues | RegisterFormValues>({
               {...field}
             />
           </FormControl>
+          <FormDescription>{description}</FormDescription>
           <FormMessage />
         </FormItem>
       )}

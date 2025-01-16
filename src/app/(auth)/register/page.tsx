@@ -1,39 +1,16 @@
 "use client";
 
 import { Form } from "@/components/ui/form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import FormInput from "../formInput";
 import ThirdPartyButtons from "../thirdPartyButtons";
-
-const registerSchema = z
-  .object({
-    email: z
-      .string()
-      .min(1, { message: "This field has to be filled." })
-      .email("This is not a valid email."),
-    password: z.string().min(2, {
-      message: "Password must be at least 2 characters.",
-    }),
-    confirmPassword: z.string().min(2, {
-      message: "Password must be at least 2 characters.",
-    }),
-  })
-  .superRefine(({ confirmPassword, password }, ctx) => {
-    if (confirmPassword !== password) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "The passwords do not match",
-        path: ["confirmPassword"],
-      });
-    }
-  });
+import { registerSchema, RegisterFormValues } from "@/schemas/authForm";
 
 const Register = () => {
-  const form = useForm<z.infer<typeof registerSchema>>({
+  const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       email: "",
@@ -43,13 +20,15 @@ const Register = () => {
   });
 
   // TODO: Add third party auth this function is only tied to the form submit right now.
-  const onSubmit = (data: z.infer<typeof registerSchema>) => {
+  const onSubmit = (data: RegisterFormValues) => {
     console.log(data);
   };
 
   return (
     <>
-      <h1 className="text-5xl font-semibold mb-10">Register</h1>
+      <header>
+        <h1 className="text-5xl font-semibold mb-10">Register</h1>
+      </header>
 
       <div className="flex items-center justify-center gap-4 mb-6">
         <ThirdPartyButtons onClick={() => {}} icon="apple" />
@@ -71,22 +50,25 @@ const Register = () => {
             label="Email"
             type="email"
             form={form}
+            description="This is the email you will use to login."
           />
 
           <FormInput
-            placeholder="Must be at least 2 characters"
+            placeholder="********"
             name="password"
             label="Password"
             type="password"
             form={form}
+            description="This is the password you will use to login."
           />
 
           <FormInput
-            placeholder="Must be the same as above"
+            placeholder="********"
             name="confirmPassword"
             label="Confirm Password"
             type="password"
             form={form}
+            description="Must be the same as above."
           />
 
           <div className="flex flex-col  justify-center">

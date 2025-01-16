@@ -1,26 +1,16 @@
 "use client";
 
 import { Form } from "@/components/ui/form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import FormInput from "../formInput";
 import ThirdPartyButtons from "../thirdPartyButtons";
-
-const formSchema = z.object({
-  email: z
-    .string()
-    .min(1, { message: "This field has to be filled." })
-    .email("This is not a valid email."),
-  password: z.string().min(2, {
-    message: "Password must be at least 2 characters.",
-  }),
-});
+import { loginSchema as formSchema, LoginFormValues } from "@/schemas/authForm";
 
 const Login = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<LoginFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
@@ -28,13 +18,15 @@ const Login = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: LoginFormValues) => {
     console.log(values);
   };
 
   return (
     <>
-      <h1 className="text-5xl font-semibold mb-10">Login</h1>
+      <header>
+        <h1 className="text-5xl font-semibold mb-10">Login</h1>
+      </header>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -44,6 +36,7 @@ const Login = () => {
             label="Email"
             type="email"
             form={form}
+            description="This is the email you will use to login."
           />
 
           <FormInput
@@ -52,6 +45,7 @@ const Login = () => {
             label="Password"
             type="password"
             form={form}
+            description="Password must be at least 8 characters."
           />
 
           <div>
