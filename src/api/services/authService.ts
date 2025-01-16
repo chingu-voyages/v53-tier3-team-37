@@ -16,3 +16,5 @@ async function validatePassword(password: string, hash: string) {
 }
 
 // we will need to also handle oAuth credentials here
+
+// GitHub, Apple, Google
