@@ -32,6 +32,8 @@ model User {
 
   favorites Favorite[]
 
+  activeDiet Diet? @map("active_diet")
+
   roles Roles[]
 }
 
@@ -57,9 +59,15 @@ enum HealthIssue {
   OBESITY
 }
 
+enum Diet {
+  KETO
+  PALEO
+}
+
 enum CredentialType {
-  FACEBOOKID
+  APPLEID
   GOOGLEID
+  GITHUBID
   PASSWORDHASH
 }
 
