@@ -1,22 +1,13 @@
 "use client";
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import AppleIcon from "@/components/icons/AppleIcon";
-import GithubIcon from "@/components/icons/GithubIcon";
-import GoogleIcon from "@/components/icons/GoogleIcon";
+import FormInput from "../formInput";
+import ThirdPartyButtons from "../thirdPartyButtons";
 
 const formSchema = z.object({
   email: z
@@ -47,44 +38,30 @@ const Login = () => {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
-            control={form.control}
+          <FormInput
+            placeholder="Example@mail.com"
             name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-lg">Email</FormLabel>
-                <FormControl>
-                  <Input
-                    className="py-6 px-4 text-lg"
-                    placeholder="Example@mail.com"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            label="Email"
+            type="email"
+            form={form}
           />
 
-          <FormField
-            control={form.control}
+          <FormInput
+            placeholder="********"
             name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-lg">Password</FormLabel>
-                <FormControl>
-                  <Input placeholder="********" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            label="Password"
+            type="password"
+            form={form}
           />
+
           <div>
             <p className="text-lg">Don&apos;t have an account?</p>
             <Link href="/register" className="underline">
               Register here
             </Link>
           </div>
-          <Button type="submit" className="w-full">
+
+          <Button type="submit" className="w-full py-6 px-4 text-lg">
             Login
           </Button>
         </form>
@@ -97,27 +74,9 @@ const Login = () => {
       </div>
 
       <div className="flex items-center justify-center gap-4 mt-6">
-        <Button
-          variant={"outline"}
-          size={"icon"}
-          className="p-7 h-12 w-12 rounded-lg"
-        >
-          <AppleIcon className="svg-class" />
-        </Button>
-        <Button
-          variant={"outline"}
-          size={"icon"}
-          className="p-7 h-12 w-12 rounded-lg"
-        >
-          <GithubIcon className="svg-class" />
-        </Button>
-        <Button
-          variant={"outline"}
-          size={"icon"}
-          className="p-7 h-12 w-12 rounded-lg"
-        >
-          <GoogleIcon className="svg-class" />
-        </Button>
+        <ThirdPartyButtons onClick={() => {}} icon="apple" />
+        <ThirdPartyButtons onClick={() => {}} icon="github" />
+        <ThirdPartyButtons onClick={() => {}} icon="google" />
       </div>
     </>
   );
