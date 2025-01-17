@@ -59,31 +59,3 @@ export const login = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(500).json({ error: "Failed to login" });
   }
 };
-
-// OAUTH
-/* 
-
-export const handleOAuth = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-) => {
-  const { email, name, provider } = req.body;
-
-  if (!email || !name || !provider) {
-    return res.status(400).json({ error: "SSO Auth Failure" });
-  }
-
-  try {
-    const user = await authService.findOrCreateUserWithOAuth(
-      email,
-      name,
-      provider
-    );
-    const token = authService.generateToken(user.id);
-    return res.status(200).json({ token });
-  } catch (err) {
-    console.error("Error in 3rd Party Authentication Service", err);
-    return res.status(500).json({ error: "SSO Failure" });
-  }
-};
-*/
