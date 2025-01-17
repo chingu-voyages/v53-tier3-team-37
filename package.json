@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-label": "^2.1.1",
     "@radix-ui/react-slot": "^1.1.1",
@@ -28,7 +27,6 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@svgr/webpack": "^8.1.0",
-
     "@types/node": "^20",
     "@types/react": "^19.0.7",
     "@types/react-dom": "^19.0.3",

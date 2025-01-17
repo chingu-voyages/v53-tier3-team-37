@@ -30,17 +30,13 @@ const Register = () => {
         <h1 className="text-5xl font-semibold mb-10">Register</h1>
       </header>
 
-      <div className="flex items-center justify-center gap-4 mb-6">
+      <div className="flex items-center justify-center gap-4 mb-2">
         <ThirdPartyButtons onClick={() => {}} icon="apple" />
         <ThirdPartyButtons onClick={() => {}} icon="github" />
         <ThirdPartyButtons onClick={() => {}} icon="google" />
       </div>
 
-      <div className="relative mb-8 text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
-        <span className="relative z-10 bg-background px-2 text-muted-foreground">
-          Or Sign up with Email
-        </span>
-      </div>
+      <p className="bg-background px-2 my-4">Or Sign up with Email</p>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">

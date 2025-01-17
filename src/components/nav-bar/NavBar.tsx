@@ -1,12 +1,12 @@
 "use client";
-import React, { useState } from 'react';
-import { FaBars } from 'react-icons/fa';
+import React, { useState } from "react";
+import { FaBars } from "react-icons/fa";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-white shadow-md fixed top-0 left-0 w-full z-10">
+    <nav className="bg-white shadow-md fixed top-0 left-0 w-full z-100000">
       <div className="flex justify-between items-center px-6 py-4">
         <div className="text-xl font-bold text-gray-800">
           <a href="/">ReciPlease</a>
