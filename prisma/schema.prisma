@@ -19,7 +19,7 @@ model User {
   username String @unique @db.String
   name     String @db.String
 
-  credentials Credential[]
+  credentials Credential?
 
   createdAt DateTime @default(now()) @map("created_at")
 

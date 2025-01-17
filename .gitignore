@@ -43,5 +43,5 @@ next-env.d.ts
 .env
 
 /testing
-/src/api/services/seed.ts
-/src/api/services/clear.ts
+/prisma/seed.ts
+/prisma/clear.ts
