@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.env
+
+/testing
+/prisma/seed.ts
+/prisma/clear.ts
