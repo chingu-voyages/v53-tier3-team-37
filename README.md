@@ -38,7 +38,7 @@ coding!
 - Deshon Morgan: [GitHub](https://github.com/skno27) / [LinkedIn](https://www.linkedin.com/in/shoncoding/)
 - Yashwanth Venkatesan: [GitHub](https://github.com/tigeryash) / [LinkedIn](https://www.linkedin.com/in/yashwanth-v-29a88392/)
 
-- Teammate name #2: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
+- Xochitl Farias : [GitHub](https://github.com/xochfa) / [LinkedIn](https://www.linkedin.com/in/xfarias-scrum-master/)
 
   ...
 
