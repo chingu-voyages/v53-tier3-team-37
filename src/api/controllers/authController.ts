@@ -61,6 +61,8 @@ export const login = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 // OAUTH
+/* 
+
 export const handleOAuth = async (
   req: NextApiRequest,
   res: NextApiResponse
@@ -84,3 +86,4 @@ export const handleOAuth = async (
     return res.status(500).json({ error: "SSO Failure" });
   }
 };
+*/

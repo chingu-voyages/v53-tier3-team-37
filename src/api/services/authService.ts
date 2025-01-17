@@ -4,12 +4,6 @@ import { CredentialType } from "@prisma/client";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 
-const providerToCredentialType: Record<string, CredentialType> = {
-  APPLE: "APPLEID",
-  GOOGLE: "GOOGLEID",
-  GITHUB: "GITHUBID",
-};
-
 const secret = process.env.JWT_SECRET;
 
 if (!secret) {
@@ -58,12 +52,8 @@ export const findOrCreateUserWithOAuth = async (
   name: string,
   provider: string
 ) => {
-  const credential = providerToCredentialType[provider.toUpperCase()];
-  if (!credential) {
-    throw new Error(`Unsupported provider: ${provider}`);
-  }
   let user = await prisma.user.findUnique({
-    where: { email },
+    where: { email: email.toLowerCase() },
   });
 
   if (!user) {
@@ -82,7 +72,7 @@ export const findOrCreateUserWithOAuth = async (
         username,
         credentials: {
           create: {
-            type: credential,
+            type: "OAUTH",
             value: "OAUTH",
           },
         },
@@ -100,6 +90,13 @@ export const verifyToken = (token: string): string | JwtPayload => {
   try {
     return jwt.verify(token, secret);
   } catch (err) {
-    throw new Error("Invalid or expired token");
+    if (err instanceof Error) {
+      if (err.name === "TokenExpiredError") {
+        throw new Error("Token has expired");
+      } else if (err.name === "JsonWebTokenError") {
+        throw new Error("Invalid token");
+      }
+    }
+    throw new Error("Token verification failed");
   }
 };

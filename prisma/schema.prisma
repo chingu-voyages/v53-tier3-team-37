@@ -65,9 +65,7 @@ enum Diet {
 }
 
 enum CredentialType {
-  APPLEID
-  GOOGLEID
-  GITHUBID
+  OAUTH
   PASSWORDHASH
 }
 
