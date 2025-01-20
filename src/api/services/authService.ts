@@ -100,3 +100,17 @@ export const verifyToken = (token: string): string | JwtPayload => {
     throw new Error("Token verification failed");
   }
 };
+
+
+
+export const resetPassword = async (email: string) => {
+  const user = await prisma.user.findUnique({
+    where: {email}
+  })
+
+  if (!user) return
+
+  console.log("User found!")
+
+  sendPasswordResetEmail(email)
+}
