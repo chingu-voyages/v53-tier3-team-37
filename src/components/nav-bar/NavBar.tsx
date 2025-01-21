@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import React, { useState } from "react";
 import { FaBars } from "react-icons/fa";
 
@@ -25,24 +26,24 @@ const Navbar = () => {
         <div className="absolute right-6 bg-white shadow-lg rounded-lg mt-4 w-auto">
           <ul className="flex flex-col items-start py-4 px-6 space-y-3">
             <li>
-              <a href="/" className="text-gray-700 hover:text-blue-600">
+              <Link href="/" className="text-gray-700 hover:text-blue-600">
                 Home
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/about" className="text-gray-700 hover:text-blue-600">
+              <Link href="/about" className="text-gray-700 hover:text-blue-600">
                 About
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/recipes" className="text-gray-700 hover:text-blue-600">
+              <Link href="/recipes" className="text-gray-700 hover:text-blue-600">
                 Recipes
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/contact" className="text-gray-700 hover:text-blue-600">
-                Contact
-              </a>
+              <Link href="/register/survey" className="text-gray-700 hover:text-blue-600">
+                Register survey
+              </Link>
             </li>
           </ul>
         </div>
