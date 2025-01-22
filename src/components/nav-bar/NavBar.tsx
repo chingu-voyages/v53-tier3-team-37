@@ -23,7 +23,7 @@ const Navbar = () => {
       </div>
 
       {menuOpen && (
-        <div className="absolute right-6 bg-white shadow-lg rounded-lg mt-4 w-auto">
+        <div className="absolute right-6 bg-white shadow-lg rounded-lg mt-4 w-auto z-90000">
           <ul className="flex flex-col items-start py-4 px-6 space-y-3">
             <li>
               <Link href="/" className="text-gray-700 hover:text-blue-600">

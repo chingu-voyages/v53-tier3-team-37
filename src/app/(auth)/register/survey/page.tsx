@@ -18,7 +18,7 @@ const FirstSurvey = () => {
   };
 
   return (
-    <div className="relative h-screen w-full overflow-hidden bg-gray-50 flex items-center justify-center z-10">
+    <div className="relative h-screen w-full overflow-hidden flex items-center justify-center">
       {questions.map((q, index) => (
         <div
           key={q.id}
