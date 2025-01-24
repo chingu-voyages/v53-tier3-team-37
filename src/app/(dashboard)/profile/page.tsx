@@ -2,9 +2,9 @@ import { Settings } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import UserAvatar from "@/assets/icons/user.png";
-import Summary from "./(sections)/summary";
-import Achievements from "./(sections)/achievements";
-import Goals from "./(sections)/goals";
+import Summary from "./components/summary";
+import Achievements from "./components/achievements";
+import Goals from "./components/goals";
 
 const ProfilePage = () => {
   return (
