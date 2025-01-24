@@ -91,7 +91,7 @@ const SurveyPage = () => {
 
   return (
     <Form {...form}>
-      <form className="relative flex flex-col items-center w-full justify-center h-[calc(100vh-20rem)] bg-gray-50 overflow-hidden">
+      <form className="relative flex flex-col items-center w-full justify-center h-[calc(100vh-20rem)] bg-transparent overflow-hidden">
         <div className="absolute top-4 w-10/12 max-w-md">
           <Progress value={progress} className="rounded-full" />
         </div>

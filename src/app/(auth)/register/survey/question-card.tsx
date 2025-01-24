@@ -30,7 +30,7 @@ interface QuestionCardProps {
 export function QuestionCard({ question, form, position }: QuestionCardProps) {
   return (
     <Card
-      className={`absolute w-11/12 max-w-md p-6 bg-white shadow-lg rounded-lg 
+      className={`absolute w-11/12 max-w-md p-6 bg-transparent shadow-lg rounded-lg 
           transform transition-transform duration-500 ${
             position === "before"
               ? "-translate-x-full opacity-0"
