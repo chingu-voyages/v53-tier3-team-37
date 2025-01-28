@@ -40,10 +40,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-.env
-
-/testing
-/prisma/seed.ts
-/prisma/clear.ts
-
-# temporary
+# not yet incorporated
+/src/app/api/utils/middlewares.ts
