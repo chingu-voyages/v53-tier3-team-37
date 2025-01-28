@@ -12,7 +12,7 @@ export const getRecipes = async (
     6.25 * parseFloat(height) -
     5 * parseInt(age) +
     addBMR;
-    
+
   const activityLevelNum = () => {
     switch (activityLevel) {
       case "sedentary":
@@ -35,14 +35,35 @@ export const getRecipes = async (
   const fat = (calories * 0.3) / 9;
   const carbs = (calories * 0.5) / 4;
 
-  const maxCalories = Math.round(calories * 1.1);
-  const minCalories = Math.round(calories * 0.9);
-  const maxProtein = Math.round(protein * 1.1);
-  const minProtein = Math.round(protein * 0.9);
-  const maxFat = Math.round(fat * 1.1);
-  const minFat = Math.round(fat * 0.9);
-  const maxCarbs = Math.round(carbs * 1.1);
-  const minCarbs = Math.round(carbs * 0.9);
+  // ±20%
+  const maxCalories = Math.round(calories * 1.2);
+  const minCalories = Math.round(calories * 0.8);
+  const maxProtein = Math.round(protein * 1.2);
+  const minProtein = Math.round(protein * 0.8);
+  const maxFat = Math.round(fat * 1.2);
+  const minFat = Math.round(fat * 0.8);
+  const maxCarbs = Math.round(carbs * 1.2);
+  const minCarbs = Math.round(carbs * 0.8);
+
+  // ±15%
+  // const maxCalories = Math.round(calories * 1.15);
+  // const minCalories = Math.round(calories * 0.85);
+  // const maxProtein = Math.round(protein * 1.15);
+  // const minProtein = Math.round(protein * 0.85);
+  // const maxFat = Math.round(fat * 1.15);
+  // const minFat = Math.round(fat * 0.85);
+  // const maxCarbs = Math.round(carbs * 1.15);
+  // const minCarbs = Math.round(carbs * 0.85);
+
+  // ±10%
+  // const maxCalories = Math.round(calories * 1.1);
+  // const minCalories = Math.round(calories * 0.9);
+  // const maxProtein = Math.round(protein * 1.1);
+  // const minProtein = Math.round(protein * 0.9);
+  // const maxFat = Math.round(fat * 1.1);
+  // const minFat = Math.round(fat * 0.9);
+  // const maxCarbs = Math.round(carbs * 1.1);
+  // const minCarbs = Math.round(carbs * 0.9);
 
   try {
     // all parameters -> 0 recipes
@@ -93,7 +114,7 @@ export const getRecipes = async (
     }
 
     const recipes = await res.json();
- 
+
     return recipes;
   } catch (err) {
     console.error("Calculation of nutrients Failed:", err);
