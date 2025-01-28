@@ -1,6 +1,6 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 import prisma from "./prisma";
-import { CredentialType } from "@prisma/client";
+// import { CredentialType } from "@prisma/client";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 
@@ -50,7 +50,7 @@ export const createUser = async (
 export const findOrCreateUserWithOAuth = async (
   email: string,
   name: string,
-  provider: string
+  // provider: string
 ) => {
   let user = await prisma.user.findUnique({
     where: { email: email.toLowerCase() },
@@ -100,3 +100,4 @@ export const verifyToken = (token: string): string | JwtPayload => {
     throw new Error("Token verification failed");
   }
 };
+
