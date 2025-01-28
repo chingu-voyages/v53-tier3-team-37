@@ -1,4 +1,4 @@
-import prisma from "../services/prisma.js";
+// import prisma from "../services/prisma.js";
 import * as authService from "../services/authService";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -59,3 +59,4 @@ export const login = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(500).json({ error: "Failed to login" });
   }
 };
+
