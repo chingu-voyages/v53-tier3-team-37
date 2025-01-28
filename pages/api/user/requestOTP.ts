@@ -1,9 +1,9 @@
-import { login } from "@/api/controllers/authController";
+import { requestOTP } from "@/api/controllers/userController";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  await login(req, res);
+  await requestOTP(req, res);
 }
