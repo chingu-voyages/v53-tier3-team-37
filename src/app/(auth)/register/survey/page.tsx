@@ -23,10 +23,14 @@ const SurveyPage = () => {
       age: "",
       activityLevel: undefined,
       dietaryRestrictions: [],
-      mealType: [],
+      mealPreferences: [],
       healthConditions: [],
       goal: undefined,
-      weeklyGoal: "",
+      weeklyGoal: undefined,
+      mealPrepTime: undefined,
+      preferredCuisine: [],
+      foodAllergies: [],
+      trackingPreferences: [],
     },
   });
 

@@ -136,4 +136,101 @@ export const questions = [
       required: "Weekly goal is required",
     },
   },
+  {
+    id: "gender",
+    question: "What is your gender?",
+    inputType: "select",
+    placeholder: "Select your gender",
+    options: [
+      { value: "male", label: "Male" },
+      { value: "female", label: "Female" },
+      { value: "non-binary", label: "Non-binary" },
+    ],
+    validation: {
+      required: "Gender is required",
+    },
+  },
+  {
+    id: "mealPrepTime",
+    question: "How much time can you spend on meal preparation daily?",
+    inputType: "select",
+    placeholder: "Select preparation time",
+    options: [
+      { value: "under_30", label: "Less than 30 minutes" },
+      { value: "30_60", label: "30-60 minutes" },
+      { value: "60_120", label: "1-2 hours" },
+      { value: "over_120", label: "More than 2 hours" },
+    ],
+    validation: {
+      required: "Meal prep time is required",
+    },
+  },
+  {
+    id: "preferredCuisine",
+    question: "Which type of cuisine do you prefer?",
+    inputType: "multiselect",
+    placeholder: "Select all that apply",
+    options: [
+      { value: "asian", label: "Asian" },
+      { value: "mediterranean", label: "Mediterranean" },
+      { value: "american", label: "American" },
+      { value: "mexican", label: "Mexican" },
+      { value: "indian", label: "Indian" },
+      { value: "no_preference", label: "No preference" },
+    ],
+    validation: {
+      required: "Please select at least one option",
+    },
+  },
+  {
+    id: "foodAllergies",
+    question: "Do you have any food allergies?",
+    inputType: "multiselect",
+    placeholder: "Select all that apply",
+    options: [
+      { value: "none", label: "No allergies" },
+      { value: "nuts", label: "Nuts" },
+      { value: "dairy", label: "Dairy" },
+      { value: "eggs", label: "Eggs" },
+      { value: "soy", label: "Soy" },
+      { value: "shellfish", label: "Shellfish" },
+      { value: "other", label: "Other" },
+    ],
+    validation: {
+      required: "Please select at least one option",
+    },
+  },
+  {
+    id: "trackingPreferences",
+    question: "What would you like to track?",
+    inputType: "multiselect",
+    placeholder: "Select all that apply",
+    options: [
+      { value: "water_intake", label: "Water intake" },
+      { value: "nutrients", label: "Nutrient intake" },
+      { value: "calories", label: "Calories" },
+      { value: "exercise", label: "Exercise" },
+      { value: "sleep", label: "Sleep" },
+      { value: "weight", label: "Weight" },
+    ],
+    validation: {
+      required: "Please select at least one option",
+    },
+  },
+  {
+    id: "mealPreferences",
+    question: "What are your meal preferences?",
+    inputType: "multiselect",
+    placeholder: "Select all that apply",
+    options: [
+      { value: "home_cooked", label: "Prefer home-cooked meals" },
+      { value: "meal_prep", label: "Interested in meal prepping" },
+      { value: "quick_meals", label: "Need quick & easy meals" },
+      { value: "new_recipes", label: "Open to trying new recipes" },
+      { value: "budget_friendly", label: "Budget-friendly options" },
+    ],
+    validation: {
+      required: "Please select at least one option",
+    },
+  },
 ] as const;

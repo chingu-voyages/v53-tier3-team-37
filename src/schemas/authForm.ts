@@ -27,34 +27,68 @@ export const registerSchema = loginSchema
   });
 
 export const surveySchema = z.object({
-  weight: z.coerce
-    .number()
-    .min(50, { message: "Weight must be at least 50 lbs" })
-    .max(500, { message: "Weight must be less than 500 lbs" })
-    .or(z.literal("")),
-  targetWeight: z.coerce
-    .number()
-    .min(50, { message: "Target weight must be at least 50 lbs" })
-    .max(500, { message: "Target weight must be less than 500 lbs" })
-    .or(z.literal("")),
-  height: z.coerce
-    .number()
-    .min(36, { message: "Height must be at least 36 inches" })
-    .max(96, { message: "Height must be less than 96 inches" })
-    .or(z.literal("")),
-  age: z.coerce
-    .number()
-    .min(13, { message: "Must be at least 13 years old" })
-    .max(120, { message: "Age must be less than 120" })
-    .or(z.literal("")),
-  activityLevel: z.enum(["sedentary", "light", "moderate", "very", "extra"], {
-    message: "Please select an activity level",
-  }),
-  dietaryRestrictions: z.array(z.string()),
-  mealType: z.array(z.string()),
-  healthConditions: z.array(z.string()),
+  weight: z.coerce.number().min(50).max(500).or(z.literal("")),
+  targetWeight: z.coerce.number().min(50).max(500).or(z.literal("")),
+  height: z.coerce.number().min(36).max(96).or(z.literal("")),
+  age: z.coerce.number().min(13).max(120).or(z.literal("")),
+  activityLevel: z.enum(["sedentary", "light", "moderate", "very", "extra"]),
+  gender: z.enum(["male", "female", "non-binary"]),
   goal: z.enum(["weight_loss", "muscle_gain", "maintenance", "health"]),
-  weeklyGoal: z.string(),
+  weeklyGoal: z.enum(["0.5", "1.0", "1.5", "2.0", "maintain", "+0.5", "+1.0"]),
+  mealPrepTime: z.enum(["under_30", "30_60", "60_120", "over_120"]),
+  preferredCuisine: z.array(
+    z.enum([
+      "asian",
+      "mediterranean",
+      "american",
+      "mexican",
+      "indian",
+      "no_preference",
+    ])
+  ),
+  foodAllergies: z.array(
+    z.enum(["none", "nuts", "dairy", "eggs", "soy", "shellfish", "other"])
+  ),
+  trackingPreferences: z.array(
+    z.enum([
+      "water_intake",
+      "nutrients",
+      "calories",
+      "exercise",
+      "sleep",
+      "weight",
+    ])
+  ),
+  mealPreferences: z.array(
+    z.enum([
+      "home_cooked",
+      "meal_prep",
+      "quick_meals",
+      "new_recipes",
+      "budget_friendly",
+    ])
+  ),
+  dietaryRestrictions: z.array(
+    z.enum([
+      "none",
+      "vegetarian",
+      "vegan",
+      "gluten_free",
+      "dairy_free",
+      "kosher",
+      "halal",
+    ])
+  ),
+  healthConditions: z.array(
+    z.enum([
+      "none",
+      "diabetes",
+      "hypertension",
+      "heart_disease",
+      "celiac",
+      "other",
+    ])
+  ),
 });
 
 export type LoginFormValues = z.infer<typeof loginSchema>;
