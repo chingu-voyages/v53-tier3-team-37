@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  if (gender === ("man" || "woman")) {
+  if (!(gender === ("man" || "woman"))) {
     return NextResponse.json(
       { message: "gender should be man or woman" },
       { status: 400 }

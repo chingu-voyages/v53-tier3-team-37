@@ -6,7 +6,7 @@ export const getRecipes = async (
   gender: string,
   mealsPerDay: string = "3"
 ) => {
-  const addBMR = gender === "men" ? 5 : -161;
+  const addBMR = gender === "man" ? 5 : -161;
   const BMR =
     10 * parseFloat(weight) +
     6.25 * parseFloat(height) -
