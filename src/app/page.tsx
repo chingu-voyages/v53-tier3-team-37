@@ -1,4 +1,5 @@
 export default function Home() {
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-6">
       <h1 className="text-4xl sm:text-5xl font-bold text-gray-800 text-left">
