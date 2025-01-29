@@ -3,6 +3,7 @@ import prisma from "./prisma";
 // import { CredentialType } from "@prisma/client";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
+import { Provider } from "@prisma/client";
 
 const secret = process.env.JWT_SECRET;
 
@@ -49,8 +50,9 @@ export const createUser = async (
 
 export const findOrCreateUserWithOAuth = async (
   email: string,
-  name: string
-  // provider: string
+  name: string,
+  providerId: string,
+  provider: Provider
 ) => {
   let user = await prisma.user.findUnique({
     where: { email: email.toLowerCase() },
@@ -73,11 +75,22 @@ export const findOrCreateUserWithOAuth = async (
         credentials: {
           create: {
             type: "OAUTH",
-            value: "OAUTH",
+            value: providerId,
+            provider,
           },
         },
       },
     });
+  } else {
+    const userCredential = await prisma.credential.findFirst({
+      where: { userId: user.id, type: "OAUTH" },
+    });
+
+    if (!userCredential || userCredential.value !== providerId) {
+      throw new Error(
+        `OAuth user mismatch or invalid credentials for provider: ${provider}`
+      );
+    }
   }
 
   const token = generateToken(user.id);

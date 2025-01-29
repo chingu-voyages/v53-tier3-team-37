@@ -18,16 +18,18 @@ export async function GET(req: NextRequest) {
 
     if (!googleUser.email || !googleUser.name) {
       return NextResponse.json(
-        { error: "Google User Does Not Have Email or Name" },
+        { error: "Google User Does Not Have Email, Name, or ID" },
         { status: 400 }
       );
     }
 
-    const user = await findOrCreateUserWithOAuth(
+    const { user, token } = await findOrCreateUserWithOAuth(
       googleUser.email,
-      googleUser.name
+      googleUser.name,
+      googleUser.id,
+      "GOOGLE"
     );
-    return NextResponse.json({ user }, { status: 200 });
+    return NextResponse.json({ user, token }, { status: 200 });
   } catch (err) {
     console.error("Google OAuth Error:", err);
     return NextResponse.json(

@@ -25,7 +25,9 @@ export async function GET(req: NextRequest) {
 
     const user = await findOrCreateUserWithOAuth(
       githubUser.email,
-      githubUser.name
+      githubUser.name,
+      githubUser.id,
+      "GITHUB"
     );
     return NextResponse.json({ user }, { status: 200 });
   } catch (err) {

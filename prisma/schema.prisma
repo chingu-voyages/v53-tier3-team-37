@@ -114,13 +114,19 @@ enum CredentialType {
 }
 
 model Credential {
-  id    String         @id @default(auto()) @map("_id") @db.ObjectId
-  type  CredentialType
-  value String         @db.String
+  id       String         @id @default(auto()) @map("_id") @db.ObjectId
+  type     CredentialType
+  value    String         @db.String
+  provider Provider?
 
   userId String @unique @db.ObjectId
 
   user User @relation(fields: userId, references: id, onDelete: Cascade)
+}
+
+enum Provider {
+  GOOGLE
+  GITHUB
 }
 
 model Favorite {
