@@ -1,3 +1,5 @@
+// Mifflin-St Jeor method to calculate BMR
+
 export const getRecipes = async (
   weight: string,
   height: string,
