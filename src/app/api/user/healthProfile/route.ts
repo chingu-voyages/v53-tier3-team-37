@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAuthenticated } from "../../middlewares/loginAuth";
 import parseBody from "../../utils/parseBody";
-import { ProfileUpdate } from "../../middlewares/schemas";
+import { HealthProfile } from "../../middlewares/schemas";
+import { updateHealthProfile } from "../../controllers/userController";
 
 export async function PATCH(req: NextRequest) {
   const authResponse = isAuthenticated(req);
@@ -16,7 +17,38 @@ export async function PATCH(req: NextRequest) {
       );
     }
     const body = await parseBody(req);
-    const validationResult = ProfileUpdate.safeParse(body);
+    const validationResult = HealthProfile.safeParse(body);
+
+    if (!validationResult.success) {
+      return NextResponse.json(
+        { error: "Validation Failed", details: validationResult.error.issues },
+        { status: 400 }
+      );
+    }
+    const {
+      age,
+      sex,
+      weight,
+      height,
+      lifestyle,
+      foodRestrictions,
+      healthIssues,
+      activeDiet,
+    } = body;
+
+    const response = await updateHealthProfile(
+      userId,
+      age,
+      sex,
+      weight,
+      height,
+      lifestyle,
+      foodRestrictions,
+      healthIssues,
+      activeDiet
+    );
+
+    return response;
   } catch (err) {
     console.error("Error in the Update Health Profile Route", err);
     return NextResponse.json(

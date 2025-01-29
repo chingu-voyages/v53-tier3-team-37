@@ -25,11 +25,11 @@ export const User = z.object({
   password: z.string().optional(),
   createdAt: z.date().optional(),
   starting_weight: z.number().optional(),
-  current_weight: z.number().optional(),
+  weight: z.number().optional(),
   height: z.number().int().optional(),
   lifestyle: z.nativeEnum(ActivityLevel).optional(),
   foodRestrictions: z.nativeEnum(Sensitivity).array().optional(),
-  healthIssue: z.nativeEnum(HealthIssue).array().optional(),
+  healthIssues: z.nativeEnum(HealthIssue).array().optional(),
   activeDiet: z.nativeEnum(Diet).optional(),
   favorites: z.array(favoriteLazy).optional(),
   roles: z.nativeEnum(Roles).array().optional(),
@@ -107,8 +107,16 @@ export const UserUpdate = User.partial().omit({ roles: true }).strict();
 
 export const PasswordUpdate = Account.pick({ password: true }).strict();
 
-export const HealthProfileUpdate = User.partial()
-  .omit({ roles: true })
+export const HealthProfile = UserUpdate.partial()
+  .omit({
+    email: true,
+    username: true,
+    name: true,
+    password: true,
+    createdAt: true,
+    favorites: true,
+    oneTimePassword: true,
+  })
   .strict();
 
 export const Login = User.pick({

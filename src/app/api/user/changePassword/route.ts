@@ -4,7 +4,7 @@ import parseBody from "../../utils/parseBody";
 import { PasswordUpdate } from "../../middlewares/schemas";
 import { isAuthenticated } from "../../middlewares/loginAuth";
 
-export async function POST(req: NextRequest) {
+export async function PATCH(req: NextRequest) {
   const authResponse = isAuthenticated(req);
   if (authResponse instanceof NextResponse) return authResponse; // return the response if !authenticated
 
