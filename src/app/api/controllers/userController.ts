@@ -86,11 +86,15 @@ export const updateHealthProfile = async (
   activeDiet?: Diet
 ) => {
   try {
+    const user = await userService.getUserById(id);
+    if (!user) {
+      return NextResponse.json({ error: "User not Found" }, { status: 404 });
+    }
+
     const updateData = Object.fromEntries(
       Object.entries({
         age,
         sex,
-        weight,
         height,
         lifestyle,
         foodRestrictions,
@@ -99,6 +103,13 @@ export const updateHealthProfile = async (
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       }).filter(([_, value]) => value !== undefined)
     );
+
+    if (weight !== undefined) {
+      if (user.starting_weight === null) {
+        updateData["starting_weight"] = weight;
+      }
+      updateData["current_weight"] = weight;
+    }
     const returnedData = await userService.handleHealthData(id, updateData);
     return NextResponse.json(
       {
@@ -112,7 +123,7 @@ export const updateHealthProfile = async (
   } catch (err) {
     console.error("Error Submitting Health Profile Updates", err);
     return NextResponse.json(
-      { error: "Failed to SUbmit Health Information" },
+      { error: "Failed to Submit Health Information" },
       { status: 500 }
     );
   }

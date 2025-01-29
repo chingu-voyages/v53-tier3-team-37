@@ -164,8 +164,16 @@ export const checkOtp = async (
 export const handleHealthData = async (id: string, data: object) => {
   const updated = await prisma.user.update({
     where: { id },
-    data: data,
+    data: { ...data },
   });
 
   return updated;
+};
+
+export const getUserById = async (id: string) => {
+  const user = await prisma.user.findUnique({
+    where: { id },
+  });
+
+  return user;
 };
