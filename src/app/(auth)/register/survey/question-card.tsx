@@ -102,9 +102,9 @@ const InputComponent = ({ field, question }: InputProps) => {
         <div className="space-y-2">
           {question.options?.map(({ value, label }) => {
             const isDisabled =
-              (isNoneSelected && value !== "none") ||
+              (isNoneSelected && value !== "NONE") ||
               (!isNoneSelected &&
-                value === "none" &&
+                value === "NONE" &&
                 checkboxValues.length > 0);
 
             return (
@@ -114,11 +114,11 @@ const InputComponent = ({ field, question }: InputProps) => {
                   checked={checkboxValues.includes(value)}
                   disabled={isDisabled}
                   onCheckedChange={(checked) => {
-                    if (value === "none") {
-                      field.onChange(checked ? ["none"] : []);
+                    if (value === "NONE") {
+                      field.onChange(checked ? ["NONE"] : []);
                     } else {
                       const newValues = checked
-                        ? [...checkboxValues.filter((v) => v !== "none"), value]
+                        ? [...checkboxValues.filter((v) => v !== "NONE"), value]
                         : checkboxValues.filter((v) => v !== value);
                       field.onChange(newValues);
                     }
