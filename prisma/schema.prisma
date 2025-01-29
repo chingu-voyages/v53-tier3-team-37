@@ -51,7 +51,7 @@ enum ActivityLevel {
 }
 
 enum Gender {
-  Meal
+  MALE
   FEMALE
 }
 

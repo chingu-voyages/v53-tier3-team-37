@@ -107,6 +107,10 @@ export const UserUpdate = User.partial().omit({ roles: true }).strict();
 
 export const PasswordUpdate = Account.pick({ password: true }).strict();
 
+export const HealthProfileUpdate = User.partial()
+  .omit({ roles: true })
+  .strict();
+
 export const Login = User.pick({
   password: true,
 })
