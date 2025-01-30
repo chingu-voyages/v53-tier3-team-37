@@ -1,0 +1,182 @@
+[
+  {
+    "id": 716429,
+    "title": "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
+    "image": "https://img.spoonacular.com/recipes/716429-556x370.jpg",
+    "imageType": "jpg",
+    "servings": 2,
+    "readyInMinutes": 45,
+    "cookingMinutes": 25,
+    "preparationMinutes": 20,
+    "license": "CC BY-SA 3.0",
+    "sourceName": "Full Belly Sisters",
+    "sourceUrl": "http://fullbellysisters.blogspot.com/2012/06/pasta-with-garlic-scallions-cauliflower.html",
+    "spoonacularSourceUrl": "https://spoonacular.com/pasta-with-garlic-scallions-cauliflower-breadcrumbs-716429",
+    "healthScore": 19.0,
+    "spoonacularScore": 83.0,
+    "pricePerServing": 163.15,
+    "analyzedInstructions": [],
+    "cheap": false,
+    "creditsText": "Full Belly Sisters",
+    "cuisines": [],
+    "dairyFree": false,
+    "diets": [],
+    "gaps": "no",
+    "glutenFree": false,
+    "instructions": "",
+    "ketogenic": false,
+    "lowFodmap": false,
+    "occasions": [],
+    "sustainable": false,
+    "vegan": false,
+    "vegetarian": false,
+    "veryHealthy": false,
+    "veryPopular": false,
+    "whole30": false,
+    "weightWatcherSmartPoints": 17,
+    "dishTypes": [
+        "lunch",
+        "main course",
+        "main dish",
+        "dinner"
+    ]
+  },
+
+  {
+    "id": 1,
+    "title": "Spaghetti Carbonara",
+    "readyInMinutes": 25,
+    "servings": 2,
+    "image": "https://spoonacular.com/recipeImages/1-556x370.jpg",
+    "summary": "A delicious and creamy Spaghetti Carbonara made with eggs, cheese, pancetta, and pepper.",
+    "healthScore": 45,
+    "vegetarian": false,
+    "vegan": false,
+    "glutenFree": false,
+    "dairyFree": false,
+    "veryHealthy": false,
+    "ingredients": [
+      { "id": 1001, "name": "butter", "amount": 2, "unit": "tbsp" },
+      { "id": 1041009, "name": "parmesan cheese", "amount": 1, "unit": "cup" },
+      { "id": 1123, "name": "eggs", "amount": 2, "unit": "" },
+      { "id": 10123, "name": "pancetta", "amount": 4, "unit": "oz" },
+      { "id": 11420420, "name": "spaghetti", "amount": 8, "unit": "oz" }
+    ],
+    "instructions": [
+      { "step": 1, "instruction": "Cook spaghetti according to package instructions." },
+      { "step": 2, "instruction": "In a pan, cook pancetta until crispy." },
+      { "step": 3, "instruction": "Whisk eggs and cheese together in a bowl." },
+      { "step": 4, "instruction": "Combine spaghetti, pancetta, and egg mixture. Stir until creamy." }
+    ]
+  },
+
+  {
+    "id": 2,
+    "title": "Avocado Toast",
+    "readyInMinutes": 10,
+    "servings": 1,
+    "image": "https://spoonacular.com/recipeImages/2-556x370.jpg",
+    "summary": "A quick and healthy Avocado Toast with lemon juice and red pepper flakes.",
+    "healthScore": 85,
+    "vegetarian": true,
+    "vegan": true,
+    "glutenFree": false,
+    "dairyFree": true,
+    "veryHealthy": true,
+    "ingredients": [
+      { "id": 9037, "name": "avocado", "amount": 1, "unit": "" },
+      { "id": 18064, "name": "whole grain bread", "amount": 1, "unit": "slice" },
+      { "id": 9152, "name": "lemon juice", "amount": 1, "unit": "tsp" },
+      { "id": 2031, "name": "red pepper flakes", "amount": 0.5, "unit": "tsp" },
+      { "id": 2047, "name": "salt", "amount": 0.25, "unit": "tsp" }
+    ],
+    "instructions": [
+      { "step": 1, "instruction": "Toast the bread until golden brown." },
+      { "step": 2, "instruction": "Mash avocado with lemon juice, salt, and red pepper flakes." },
+      { "step": 3, "instruction": "Spread the mashed avocado on toast and serve." }
+    ]
+  },
+
+  {
+    "id": 3,
+    "title": "Grilled Salmon",
+    "readyInMinutes": 20,
+    "servings": 2,
+    "image": "https://spoonacular.com/recipeImages/3-556x370.jpg",
+    "summary": "A healthy and delicious grilled salmon with garlic and lemon.",
+    "healthScore": 75,
+    "vegetarian": false,
+    "vegan": false,
+    "glutenFree": true,
+    "dairyFree": true,
+    "veryHealthy": true,
+    "ingredients": [
+      { "id": 15076, "name": "salmon fillet", "amount": 2, "unit": "pieces" },
+      { "id": 4053, "name": "olive oil", "amount": 2, "unit": "tbsp" },
+      { "id": 11215, "name": "garlic", "amount": 2, "unit": "cloves" },
+      { "id": 9150, "name": "lemon zest", "amount": 1, "unit": "tsp" },
+      { "id": 2044, "name": "fresh basil", "amount": 1, "unit": "tbsp" }
+    ],
+    "instructions": [
+      { "step": 1, "instruction": "Preheat grill to medium-high heat." },
+      { "step": 2, "instruction": "Rub salmon with olive oil, garlic, and lemon zest." },
+      { "step": 3, "instruction": "Grill salmon for 4-5 minutes per side until cooked through." },
+      { "step": 4, "instruction": "Serve with fresh basil and lemon slices." }
+    ]
+  },
+
+  {
+    "id": 4,
+    "title": "Quinoa Salad",
+    "readyInMinutes": 15,
+    "servings": 3,
+    "image": "https://spoonacular.com/recipeImages/4-556x370.jpg",
+    "summary": "A light and refreshing quinoa salad with fresh vegetables and feta cheese.",
+    "healthScore": 80,
+    "vegetarian": true,
+    "vegan": false,
+    "glutenFree": true,
+    "dairyFree": false,
+    "veryHealthy": true,
+    "ingredients": [
+      { "id": 20035, "name": "quinoa", "amount": 1, "unit": "cup" },
+      { "id": 11206, "name": "cucumber", "amount": 1, "unit": "" },
+      { "id": 11529, "name": "tomatoes", "amount": 2, "unit": "" },
+      { "id": 1019, "name": "feta cheese", "amount": 0.5, "unit": "cup" },
+      { "id": 4053, "name": "olive oil", "amount": 2, "unit": "tbsp" }
+    ],
+    "instructions": [
+      { "step": 1, "instruction": "Cook quinoa according to package instructions and let cool." },
+      { "step": 2, "instruction": "Chop cucumber and tomatoes into small pieces." },
+      { "step": 3, "instruction": "Mix quinoa with vegetables, feta cheese, and olive oil." },
+      { "step": 4, "instruction": "Serve chilled or at room temperature." }
+    ]
+  },
+
+  {
+    "id": 5,
+    "title": "Berry Smoothie",
+    "readyInMinutes": 5,
+    "servings": 1,
+    "image": "https://spoonacular.com/recipeImages/5-556x370.jpg",
+    "summary": "A refreshing and nutritious smoothie made with berries, banana, and yogurt.",
+    "healthScore": 90,
+    "vegetarian": true,
+    "vegan": false,
+    "glutenFree": true,
+    "dairyFree": false,
+    "veryHealthy": true,
+    "ingredients": [
+      { "id": 9050, "name": "strawberries", "amount": 5, "unit": "" },
+      { "id": 9054, "name": "blueberries", "amount": 0.5, "unit": "cup" },
+      { "id": 9040, "name": "banana", "amount": 1, "unit": "" },
+      { "id": 1116, "name": "yogurt", "amount": 0.5, "unit": "cup" },
+      { "id": 19296, "name": "honey", "amount": 1, "unit": "tsp" }
+    ],
+    "instructions": [
+      { "step": 1, "instruction": "Add all ingredients to a blender." },
+      { "step": 2, "instruction": "Blend until smooth." },
+      { "step": 3, "instruction": "Serve immediately and enjoy." }
+    ]
+  }
+]
