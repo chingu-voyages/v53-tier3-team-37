@@ -38,7 +38,7 @@ const SettingsDialog = ({
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className="text-2xl font-bold">
             {step === "confirm" ? `Edit ${title}?` : `Update ${title}`}
           </DialogTitle>
           <DialogDescription>
@@ -50,24 +50,31 @@ const SettingsDialog = ({
         {step === "confirm" ? (
           <DialogFooter className="flex flex-row w-full justify-center items-center gap-2">
             <DialogClose asChild>
-              <Button type="button" variant="outline" className="w-24">
+              <Button
+                type="button"
+                variant="outline"
+                className="w-28"
+                onClick={() => setStep("confirm")}
+              >
                 Cancel
               </Button>
             </DialogClose>
             <Button
               type="button"
               onClick={() => setStep("edit")}
-              className="w-24"
+              className="w-28"
             >
               Continue
             </Button>
           </DialogFooter>
         ) : (
           <DialogForm
+            title={title}
             type={type}
             fieldId={fieldId}
             currentValue={currentValue}
             onConfirm={onConfirm}
+            setStep={setStep}
           />
         )}
       </DialogContent>

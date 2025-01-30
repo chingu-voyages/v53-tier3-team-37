@@ -107,6 +107,13 @@ export const surveySchema = z.object({
   ]),
 });
 
+export const userBaseSchema = surveySchema.extend({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+  confirmPassword: z.string().min(8, "Password must be at least 8 characters"),
+});
+
 export type LoginFormValues = z.infer<typeof loginSchema>;
 export type RegisterFormValues = z.infer<typeof registerSchema>;
 export type SurveyData = z.infer<typeof surveySchema>;

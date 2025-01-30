@@ -1,16 +1,9 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -20,21 +13,22 @@ import { DialogClose, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { surveySchema } from "@/schemas/authForm";
+import { userBaseSchema } from "@/schemas/authForm";
 import { z } from "zod";
-import { questions } from "@/app/(auth)/register/survey/config";
+import InputField from "./input-field";
+import { settingsConfig } from "./config";
 
 type DialogFormProps = {
   fieldId: string;
+  title: string;
   currentValue: string | number | undefined;
   onConfirm: (newValue: string | number) => void;
   type: string;
+  setStep: (step: "confirm" | "edit") => void;
 };
 
-type Question = (typeof questions)[number];
-
 const getFieldSchema = (fieldId: string) => {
-  const shape = surveySchema.shape;
+  const shape = userBaseSchema.shape;
   return z.object({
     [fieldId]: shape[fieldId as keyof typeof shape],
   });
@@ -42,62 +36,53 @@ const getFieldSchema = (fieldId: string) => {
 
 const DialogForm = ({
   fieldId,
+  title,
   currentValue,
   onConfirm,
   type,
+  setStep,
 }: DialogFormProps) => {
   const form = useForm({
     resolver: zodResolver(getFieldSchema(fieldId)),
     defaultValues: {
       [fieldId]: currentValue,
     },
+    mode: "onChange",
   });
 
-  const question = questions.find((q) => q.id === fieldId) as Question;
+  const onSubmit = (data: { [x: string]: string | number | undefined }) => {
+    const value = data[fieldId];
+    if (value !== undefined) {
+      onConfirm(value);
+      setStep("confirm");
+    }
+  };
+
+  const formValue = form.watch(fieldId);
+  const isValid = form.formState.isValid;
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          if (currentValue !== undefined) onConfirm(currentValue);
-        }}
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name={fieldId}
           render={({ field }) => (
-            <div className="py-4">
+            <div className="py-4 px-8">
               <FormItem>
-                <FormLabel>{fieldId}</FormLabel>
+                <FormLabel className="text-lg font-semibold capitalize">
+                  {title}
+                </FormLabel>
                 <FormControl>
-                  {type === "number" ? (
-                    <Input
-                      type="number"
-                      {...field}
-                      onChange={(e) =>
-                        field.onChange(
-                          e.target.value ? Number(e.target.value) : ""
-                        )
-                      }
-                    />
-                  ) : type === "select" && question?.inputType === "select" ? (
-                    <Select {...field} value={field.value?.toString()}>
-                      <SelectTrigger>
-                        <SelectValue placeholder={`Select ${fieldId}`} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {question.options?.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  ) : (
-                    <Input type={type} {...field} />
-                  )}
+                  <InputField type={type} field={field} fieldId={fieldId} />
                 </FormControl>
+                <FormDescription>
+                  {
+                    settingsConfig
+                      .flatMap((section) => section.items)
+                      .find((item) => item.id === fieldId)?.placeholder
+                  }
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             </div>
@@ -105,17 +90,24 @@ const DialogForm = ({
         />
         <DialogFooter className="flex flex-row w-full justify-center items-center gap-2">
           <DialogClose asChild>
-            <Button type="button" variant="outline" className="w-24">
+            <Button
+              type="button"
+              variant="outline"
+              className="w-28"
+              onClick={() => setStep("confirm")}
+            >
               Cancel
             </Button>
           </DialogClose>
-          <Button
-            type="submit"
-            className="w-24"
-            disabled={currentValue === undefined}
-          >
-            Save Changes
-          </Button>
+          <DialogClose asChild>
+            <Button
+              type="submit"
+              className="w-28"
+              disabled={!formValue || !isValid}
+            >
+              Save Changes
+            </Button>
+          </DialogClose>
         </DialogFooter>
       </form>
     </Form>
