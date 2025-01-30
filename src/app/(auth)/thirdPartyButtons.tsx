@@ -1,4 +1,4 @@
-import { Icon } from "@/components/Icons";
+import { LoginIcon } from "@/components/LoginIcons";
 import { Button } from "@/components/ui/button";
 import React from "react";
 
@@ -16,7 +16,7 @@ const ThirdPartyButtons = ({ onClick, icon }: ThirdPartyButtonsProps) => {
       onClick={onClick}
       aria-label={`Sign in with ${icon}`}
     >
-      <Icon icon={icon} />
+      <LoginIcon icon={icon} />
     </Button>
   );
 };

@@ -23,10 +23,14 @@ const SurveyPage = () => {
       age: "",
       activityLevel: undefined,
       dietaryRestrictions: [],
-      mealType: [],
+      mealPreferences: [],
       healthConditions: [],
       goal: undefined,
-      weeklyGoal: "",
+      weeklyGoal: undefined,
+      mealPrepTime: undefined,
+      preferredCuisine: [],
+      foodAllergies: [],
+      trackingPreferences: [],
     },
   });
 
@@ -91,12 +95,12 @@ const SurveyPage = () => {
 
   return (
     <Form {...form}>
-      <form className="relative flex flex-col items-center w-full justify-center h-[calc(100vh-20rem)] bg-transparent overflow-hidden">
+      <form className="relative flex flex-col  items-center w-full justify-center h-[calc(100vh-17rem)] bg-transparent overflow-hidden">
         <div className="absolute top-4 w-10/12 max-w-md">
           <Progress value={progress} className="rounded-full" />
         </div>
 
-        <div className="relative w-full h-[calc(100%-6rem)] flex items-center justify-center overflow-hidden">
+        <div className="relative w-full h-[calc(100%-6rem)] flex justify-center overflow-hidden">
           {questions.map((q, index) => (
             <QuestionCard
               key={q.id}

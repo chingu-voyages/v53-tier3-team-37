@@ -8,12 +8,12 @@ export const Icons = {
   google: GoogleSVG,
 } as const;
 
-interface IconProps {
+interface LoginIconProps {
   className?: string;
   icon: "apple" | "github" | "google";
 }
 
-export const Icon = ({ className, icon }: IconProps) => {
+export const LoginIcon = ({ className, icon }: LoginIconProps) => {
   const IconComponent = Icons[icon];
   return <IconComponent className={className} />;
 };
