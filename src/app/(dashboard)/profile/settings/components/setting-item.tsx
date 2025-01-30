@@ -1,3 +1,5 @@
+"use client";
+
 import SettingsDialog from "./settings-dialog";
 
 type SettingItemProps = {
