@@ -40,5 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# not yet incorporated
-/src/app/api/utils/middlewares.ts
+# deprecation
+/src/app/api/services/deprecated
+
