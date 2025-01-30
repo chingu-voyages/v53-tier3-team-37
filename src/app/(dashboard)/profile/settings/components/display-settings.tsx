@@ -1,3 +1,7 @@
+"use client";
+
+import SettingsDialog from "./settings-dialog";
+
 const accountSettings = [
   {
     id: "account",
@@ -57,14 +61,14 @@ const DisplaySettings = () => {
     <section className=" bg-white rounded-b-xl overflow-y-auto flex-1 space-y-6 pt-5">
       {accountSettings.map((settings, idx) => {
         return (
-          <div key={idx}>
+          <div key={idx} className="w-full">
             <h2 className="text-2xl font-bold mb-4 pl-2">{settings.title}</h2>
             <div className="flex flex-col  ">
               {settings.items.map((item, idx) => {
                 return (
-                  <button
+                  <div
                     key={idx}
-                    className={`flex py-2 px-4 justify-between ${
+                    className={`flex py-2 px-4 justify-between w-full ${
                       idx === settings.items.length - 1
                         ? "border-y"
                         : "border-t"
@@ -73,8 +77,16 @@ const DisplaySettings = () => {
                 `}
                   >
                     <div>{item.label} </div>
-                    <p>{}</p>
-                  </button>
+                    <SettingsDialog
+                      key={idx}
+                      title={item.label}
+                      type={item.type}
+                      fieldId={item.id}
+                      onConfirm={() => {}}
+                    >
+                      <p>{item.label}</p>
+                    </SettingsDialog>
+                  </div>
                 );
               })}
             </div>

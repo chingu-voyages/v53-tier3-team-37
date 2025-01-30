@@ -3,8 +3,6 @@ import Link from "next/link";
 import DisplaySettings from "./components/display-settings";
 
 const SettingsPage = () => {
-  const getUserData = async () => {};
-
   return (
     <main className="flex flex-col h-[calc(100dvh-4.5rem)] bg-white">
       <section className="p-4 shadow-lg border-b-2 ">
