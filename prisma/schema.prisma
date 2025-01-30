@@ -19,23 +19,40 @@ model User {
   username String @unique @db.String
   name     String @db.String
 
+  age Int?
+  sex Gender?
+
   credentials Credential?
 
   createdAt DateTime @default(now()) @map("created_at")
 
   starting_weight Float? @map("starting_weight")
   current_weight  Float? @map("current_weight")
+  height          Int?
 
-  foodRestrictions MealType[] @map("food_restrictions")
+  lifestyle ActivityLevel?
 
-  healthIssues HealthIssue[] @map("health_issues")
+  foodRestrictions Sensitivity[] @map("food_restrictions")
+  healthIssues     HealthIssue[] @map("health_issues")
+  activeDiet       Diet?         @map("active_diet")
 
   favorites Favorite[]
 
-  activeDiet Diet? @map("active_diet")
-
   roles           Roles[]
   OneTimePassword OneTimePassword?
+}
+
+enum ActivityLevel {
+  SEDENTARY
+  LIGHT
+  MODERATE
+  VERY
+  SUPER
+}
+
+enum Gender {
+  Meal
+  FEMALE
 }
 
 enum Roles {
@@ -43,26 +60,44 @@ enum Roles {
   DATA
 }
 
-enum MealType {
-  HALAL
-  KOSHER
-  VEGAN
-  VEGETARIAN
-  PESCATARIAN
-  GLUTEN_FREE
-  NONE
+enum Sensitivity {
+  PEANUTS
+  TREENUTS
+  FISH
+  SHELLFISH
+  SOY
+  EGG
+  WHEAT
+  DAIRY
+  SESAME
+  MUSTARD
+  GLUTEN
+
+  ALCOHOL
+  BEEF
+  PORK
+
+  // histamines will be later, they are more complex
 }
 
 enum HealthIssue {
+  IBS
   DIABETES
   HBP
   CANCER
   OBESITY
+  KIDNEY_DISEASE
+  HEART_DISEASE
 }
 
 enum Diet {
-  PALEO
+  MEDITERRANEAN
   KETO
+  PALEO
+  VEGAN
+  CARNIVORE
+
+  ATKINS
 }
 
 model Recipe {

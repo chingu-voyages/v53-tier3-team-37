@@ -49,7 +49,7 @@ export const createUser = async (
 
 export const findOrCreateUserWithOAuth = async (
   email: string,
-  name: string,
+  name: string
   // provider: string
 ) => {
   let user = await prisma.user.findUnique({
@@ -79,7 +79,9 @@ export const findOrCreateUserWithOAuth = async (
       },
     });
   }
-  return user;
+
+  const token = generateToken(user.id);
+  return { user, token };
 };
 
 export const generateToken = (userId: string) => {
@@ -100,4 +102,3 @@ export const verifyToken = (token: string): string | JwtPayload => {
     throw new Error("Token verification failed");
   }
 };
-

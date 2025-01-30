@@ -57,10 +57,9 @@ export const requestOTPService = async (email: string) => {
       userId: user.id,
     },
   });
-  console.log("Status:", otpCreated);
+  console.log("Expires:", otpCreated.expiresAt);
 
   try {
-    console.log("Email sending to:", email);
     await sendOTPEmail(email, otp);
   } catch (error) {
     console.error("Failed to send password reset email:", error);
@@ -134,10 +133,8 @@ export const checkOtp = async (
       email,
     },
   });
-  console.log("otp Obj:", otpObject);
   const currentTime = new Date(Date.now());
   const expired = currentTime > otpObject!.expiresAt;
-  console.log("Expired?", expired);
 
   if (!otpObject || expired) {
     throw Error("OTP Expired or Non-Existant");
@@ -147,10 +144,7 @@ export const checkOtp = async (
   if (!success) {
     throw Error("OTP Mismatch");
   }
-  console.log("Success?", success);
-
   const hashedPassword = await encryptPassword(newPassword);
-  console.log(hashedPassword);
 
   if (!otpObject.userId) {
     throw new Error("User ID is missing in OTP record");
