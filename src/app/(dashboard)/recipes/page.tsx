@@ -1,5 +1,5 @@
-import { Input } from "@/components/ui/input";
-import React from "react";
+import { SearchBar } from "./components/search-bar";
+import NutrientFilters from "./components/nutrient-filters";
 
 const RecipePage = () => {
   return (
@@ -8,11 +8,9 @@ const RecipePage = () => {
         <h1 className="text-4xl font-bold">Recipes</h1>
       </header>
 
-      <Input placeholder="Search for a recipe" />
+      <SearchBar />
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-2xl font-bold">Filters</h2>
-      </section>
+      <NutrientFilters />
     </main>
   );
 };
