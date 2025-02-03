@@ -4,6 +4,6 @@ import dotenv from "dotenv";
 // Ensure .env is loaded, think we can remove this check at production
 dotenv.config();
 
-let prisma = new PrismaClient();
+const prisma = new PrismaClient();
 
 export default prisma;
