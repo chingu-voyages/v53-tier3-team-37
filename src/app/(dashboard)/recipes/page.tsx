@@ -32,10 +32,10 @@ export default function RecipePage() {
         <img
           src={recipe.image}
           alt={recipe.title}
-          className="w-full h-40 object-cover rounded-md mt-2"
+          className="w-full h-40 object-contain rounded-md mt-2"
         />
 
-<div className="grid grid-cols-2 gap-4 mt-4">
+        <div className="grid grid-cols-2 gap-4 mt-4">
           <div className="flex flex-col items-center bg-gray-100 p-4 rounded-md shadow-md">
             <p className="text-sm font-semibold">Calories</p>
             <p className="text-2xl font-bold">
