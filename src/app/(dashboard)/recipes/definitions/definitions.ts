@@ -21,3 +21,13 @@ export interface Recipe {
   ingredients: Ingredient[];
   instructions: string[];
 }
+
+export interface searchResult {
+  id: number;
+  title: string;
+  image: string;
+  calories: number;
+  carbs: string;
+  fat: string;
+  protein: string;
+}
