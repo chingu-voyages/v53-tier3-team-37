@@ -27,41 +27,41 @@ export default function RecipePage() {
         </button>
       )}
 
-      <div className="bg-yellow-200 p-5 rounded-lg shadow-lg w-80 flex-1 overflow-auto m-2">
-        <h2 className="text-lg font-bold text-center">{recipe.title}</h2>
+      <div className="bg-white/60 backdrop-blur-lg p-5 rounded-2xl shadow-lg shadow-gray-400/30 w-80 flex-1 overflow-auto m-2">
+        <h2 className="text-2xl font-bold text-center text-gray-900">{recipe.title}</h2>
         <img
           src={recipe.image}
           alt={recipe.title}
-          className="w-full h-40 object-contain rounded-md mt-2"
+          className="w-full h-40 object-cover rounded-2xl mt-2 shadow-md mx-auto"
         />
 
         <div className="grid grid-cols-2 gap-4 mt-4">
-          <div className="flex flex-col items-center bg-gray-100 p-4 rounded-md shadow-md">
-            <p className="text-sm font-semibold">Calories</p>
-            <p className="text-2xl font-bold">
+          <div className="flex flex-col items-center bg-white/50 backdrop-blur-md p-4 rounded-md shadow-md">
+            <p className="text-sm font-medium text-gray-600">Calories</p>
+            <p className="text-2xl font-bold text-gray-900">
               {sampleSearchResults[recipeIndex].calories}
-              <span className="text-xs ml-1">kcal</span>
+              <span className="text-xs text-gray-600">kcal</span>
             </p>
           </div>
-          <div className="flex flex-col items-center bg-gray-100 p-4 rounded-md shadow-md">
-            <p className="text-sm font-semibold">Carbs</p>
-            <p className="text-2xl font-bold">
+          <div className="flex flex-col items-center bg-white/50 backdrop-blur-md p-4 rounded-md shadow-md">
+            <p className="text-sm font-medium text-gray-600">Carbs</p>
+            <p className="text-2xl font-bold text-gray-900">
               {sampleSearchResults[recipeIndex].carbs}
-              <span className="text-xs ml-1">g</span>
+              <span className="text-xs text-gray-600">g</span>
             </p>
           </div>
-          <div className="flex flex-col items-center bg-gray-100 p-4 rounded-md shadow-md">
-            <p className="text-sm font-semibold">Fat</p>
-            <p className="text-2xl font-bold">
+          <div className="flex flex-col items-center bg-white/50 backdrop-blur-md p-4 rounded-md shadow-md">
+            <p className="text-sm font-medium text-gray-600">Fat</p>
+            <p className="text-2xl font-bold text-gray-900">
               {sampleSearchResults[recipeIndex].fat}
-              <span className="text-xs ml-1">g</span>
+              <span className="text-xs text-gray-600">g</span>
             </p>
           </div>
-          <div className="flex flex-col items-center bg-gray-100 p-4 rounded-md shadow-md">
-            <p className="text-sm font-semibold">Protein</p>
-            <p className="text-2xl font-bold">
+          <div className="flex flex-col items-center bg-white/50 backdrop-blur-md p-4 rounded-md shadow-md">
+            <p className="text-sm font-medium text-gray-600">Protein</p>
+            <p className="text-2xl font-bold text-gray-900">
               {sampleSearchResults[recipeIndex].protein}
-              <span className="text-xs ml-1">g</span>
+              <span className="text-xs text-gray-600">g</span>
             </p>
           </div>
         </div>
@@ -70,7 +70,7 @@ export default function RecipePage() {
           Difficulty: <span className="text-green-600 font-bold">{recipe.difficulty}</span>
         </p> */}
 
-        <button className="bg-green-400 text-white font-bold py-2 px-4 rounded-lg mt-4 w-full">
+        <button className="mt-6 px-5 py-3 w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-xl shadow-md transition-all hover:scale-105 hover:shadow-lg">
           Let’s Cook!
         </button>
       </div>
