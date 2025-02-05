@@ -6,6 +6,7 @@ import { Recipe, Ingredient } from './definitions/definitions';
 
 export default function RecipePage() {
   const [recipeIndex, setRecipeIndex] = useState(0);
+  const [showDetails, setShowDetails] = useState(false);
   const recipe = sampleSearchResults[recipeIndex];
 
   const nextRecipe = () => {
@@ -16,6 +17,9 @@ export default function RecipePage() {
     setRecipeIndex((prev) => (prev - 1 + sampleRecipes.length) % sampleRecipes.length);
   };
 
+  const handleOpenDetails = () => setShowDetails(true);
+  const handleCloseDetails = () => setShowDetails(false);
+  
   return (
     <div className="flex flex-col items-center bg-gray-100 h-full">
       {recipeIndex > 0 && (
@@ -70,7 +74,10 @@ export default function RecipePage() {
           Difficulty: <span className="text-green-600 font-bold">{recipe.difficulty}</span>
         </p> */}
 
-        <button className="mt-6 px-5 py-3 w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-xl shadow-md transition-all hover:scale-105 hover:shadow-lg">
+        <button 
+        onClick={handleOpenDetails}
+        className="mt-6 px-5 py-3 w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-xl shadow-md transition-all hover:scale-105 hover:shadow-lg"
+        >
           Let’s Cook!
         </button>
       </div>
