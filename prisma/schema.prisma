@@ -104,6 +104,7 @@ model Recipe {
   recipeId    Int    @unique
   ingredients Json[]
   imageURL    String
+  nutrition   Json[]
 
   favorites Favorite[]
 }

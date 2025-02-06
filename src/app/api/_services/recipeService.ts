@@ -121,12 +121,13 @@ export const getRecipes = async (
 
     const newDataArray = [];
 
-    for (const recipe of recipes) {
+    for (const recipe of recipes.results) {
       const recipeObj = {
-        name: recipe["title"],
-        recipeId: recipe["id"],
-        ingredients: recipe["ingredients"],
-        imageURL: recipe["image"],
+        name: recipe?.title ?? "Unknown Recipe",
+        recipeId: recipe.id,
+        ingredients: recipe?.nutrition.ingredients ?? [],
+        imageURL: recipe?.image ?? "No image available", // later if we get a logo, we could make that the default image if none is returned
+        nutrition: recipe.nutrition.nutrients,
       };
       newDataArray.push(recipeObj);
     }
