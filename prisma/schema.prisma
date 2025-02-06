@@ -14,10 +14,9 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  email    String @unique @db.String
-  username String @unique @db.String
-  name     String @db.String
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  email String @unique @db.String
+  name  String @db.String
 
   age Int?
   sex Gender?
@@ -96,14 +95,15 @@ enum Diet {
   PALEO
   VEGAN
   CARNIVORE
-
   ATKINS
 }
 
 model Recipe {
-  id           String @id @default(auto()) @map("_id") @db.ObjectId
-  ingredients  String @db.String
-  instructions String @db.String
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  recipeId    Int    @unique
+  ingredients Json[]
+  imageURL    String
 
   favorites Favorite[]
 }

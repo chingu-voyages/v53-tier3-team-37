@@ -20,8 +20,22 @@ const Register = () => {
   });
 
   // TODO: Add third party auth this function is only tied to the form submit right now.
-  const onSubmit = (data: RegisterFormValues) => {
+  const onSubmit = async (data: RegisterFormValues) => {
     console.log(data);
+    const response = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    }) 
+
+    if (!response.ok) {
+      const errorData = await response.json(); // Parse error response, if available
+      throw new Error(errorData.error || 'Failed to register user');
+    }
+    
+
+
+    
   };
 
   return (

@@ -6,8 +6,7 @@ import * as authService from "../services/authService";
 export const registerUser = async (
   name: string,
   email: string,
-  password: string,
-  username: string
+  password: string
 ) => {
   try {
     const existingUser = await authService.findUserByEmail(email);
@@ -18,7 +17,7 @@ export const registerUser = async (
       );
     }
 
-    const user = await authService.createUser(email, username, name, password);
+    const user = await authService.createUser(email, name, password);
     return NextResponse.json(
       { message: "User Registered Successfully", user },
       { status: 201 }
