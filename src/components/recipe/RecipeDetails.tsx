@@ -3,12 +3,12 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import sampleRecipes from '../../../../data/sampleRecipes.json';
-import { Recipe, Ingredient } from '../definitions/definitions';
+import { RecipeResult, Ingredient } from '../../app/(dashboard)/recipes/definitions/definitions';
 import { cn } from '@/lib/utils';
 
 interface RecipeDetailsProps {
-  recipe: Recipe;
+  recipe: RecipeResult;
+  onClose: Function;
 }
 
 const RecipeDetails:React.FC<RecipeDetailsProps> = ({ recipe, onClose }) => {
@@ -50,9 +50,9 @@ const RecipeDetails:React.FC<RecipeDetailsProps> = ({ recipe, onClose }) => {
         <div className="mt-6">
           <h3 className="text-lg font-medium text-gray-700">Ingredients</h3>
           <ul className="mt-2 space-y-2">
-            {recipe.ingredients.map(({ name, amount }) => (
+            {recipe.nutrition.ingredients.map(({ name, amount }) => (
               <li key={name} className="flex justify-between items-center bg-gray-100 p-2 rounded-md">
-                <span>{name} ({amount})</span>
+                <span>{name} ({amount*(recipe.servings)})</span>
                 <input
                   type="checkbox"
                   checked={checkedIngredients.has(name)}
@@ -67,8 +67,8 @@ const RecipeDetails:React.FC<RecipeDetailsProps> = ({ recipe, onClose }) => {
         <div className="mt-6">
           <h3 className="text-lg font-medium text-gray-700">Steps</h3>
           <ol className="mt-2 space-y-3 list-decimal list-inside bg-gray-100 p-4 rounded-md">
-            {recipe.steps.map((step, index) => (
-              <li key={index} className="text-gray-700">{step}</li>
+            {recipe.analyzedInstructions[0].steps.map((step) => (
+              <li key={step.number} className="text-gray-700">{step.step}</li>
             ))}
           </ol>
         </div>

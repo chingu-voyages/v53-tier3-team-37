@@ -1,13 +1,14 @@
 'use client';
-import sampleRecipes from '../../../data/sampleRecipes.json';
-import sampleSearchResults from '../../../data/sampleSearchResults.json';
+import sampleRecipes from '../../../../data/sampleRecipes.json';
+import sampleFullReturn from '../../../../data/sampleFullReturn.json';
 import { useState } from "react";
-import { Recipe, Ingredient } from './definitions/definitions';
+import { RecipeResult, Ingredient } from '../definitions/definitions';
+import RecipeDetails from '@/components/recipe/recipeDetails';
 
 export default function RecipePage() {
   const [recipeIndex, setRecipeIndex] = useState(0);
   const [showDetails, setShowDetails] = useState(false);
-  const recipe = sampleSearchResults[recipeIndex];
+  const recipe = sampleFullReturn.results[recipeIndex];
 
   const nextRecipe = () => {
     setRecipeIndex((prev) => (prev + 1) % sampleRecipes.length);
@@ -43,28 +44,28 @@ export default function RecipePage() {
           <div className="flex flex-col items-center bg-white/50 backdrop-blur-md p-4 rounded-md shadow-md">
             <p className="text-sm font-medium text-gray-600">Calories</p>
             <p className="text-2xl font-bold text-gray-900">
-              {sampleSearchResults[recipeIndex].calories}
+              {sampleFullReturn.results[recipeIndex].nutrition.nutrients[0].amount}
               <span className="text-xs text-gray-600">kcal</span>
             </p>
           </div>
           <div className="flex flex-col items-center bg-white/50 backdrop-blur-md p-4 rounded-md shadow-md">
             <p className="text-sm font-medium text-gray-600">Carbs</p>
             <p className="text-2xl font-bold text-gray-900">
-              {sampleSearchResults[recipeIndex].carbs}
+              {sampleFullReturn.results[recipeIndex].nutrition.nutrients[3].amount}
               <span className="text-xs text-gray-600">g</span>
             </p>
           </div>
           <div className="flex flex-col items-center bg-white/50 backdrop-blur-md p-4 rounded-md shadow-md">
             <p className="text-sm font-medium text-gray-600">Fat</p>
             <p className="text-2xl font-bold text-gray-900">
-              {sampleSearchResults[recipeIndex].fat}
+              {sampleFullReturn.results[recipeIndex].nutrition.nutrients[1].amount}
               <span className="text-xs text-gray-600">g</span>
             </p>
           </div>
           <div className="flex flex-col items-center bg-white/50 backdrop-blur-md p-4 rounded-md shadow-md">
             <p className="text-sm font-medium text-gray-600">Protein</p>
             <p className="text-2xl font-bold text-gray-900">
-              {sampleSearchResults[recipeIndex].protein}
+              {sampleFullReturn.results[recipeIndex].nutrition.nutrients[10].amount}
               <span className="text-xs text-gray-600">g</span>
             </p>
           </div>
@@ -80,9 +81,10 @@ export default function RecipePage() {
         >
           Let’s Cook!
         </button>
+        {showDetails && <RecipeDetails recipe={recipe} onClose={handleCloseDetails} />}
       </div>
 
-      {recipeIndex < sampleSearchResults.length - 1 && (
+      {recipeIndex < sampleFullReturn.results.length - 1 && (
         <button
           onClick={nextRecipe}
           className="absolute right-0 top-0 h-[calc(100%-90px)] mt-2 w-16 flex items-center justify-center bg-black bg-opacity-20 hover:bg-opacity-40 transition-opacity rounded-l-lg"

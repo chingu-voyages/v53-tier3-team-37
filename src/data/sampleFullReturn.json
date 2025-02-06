@@ -1,0 +1,408 @@
+{
+  "results": [
+      {
+          "vegetarian": false,
+          "vegan": false,
+          "glutenFree": true,
+          "dairyFree": true,
+          "veryHealthy": true,
+          "cheap": false,
+          "veryPopular": true,
+          "sustainable": false,
+          "lowFodmap": false,
+          "weightWatcherSmartPoints": 11,
+          "gaps": "no",
+          "preparationMinutes": 10,
+          "cookingMinutes": 45,
+          "aggregateLikes": 1866,
+          "healthScore": 100,
+          "creditsText": "pinkwhen.com",
+          "sourceName": "pinkwhen.com",
+          "pricePerServing": 300.45,
+          "id": 715415,
+          "title": "Red Lentil Soup with Chicken and Turnips",
+          "readyInMinutes": 55,
+          "servings": 8,
+          "sourceUrl": "https://www.pinkwhen.com/red-lentil-soup-with-chicken-and-turnips/",
+          "image": "https://img.spoonacular.com/recipes/715415-312x231.jpg",
+          "imageType": "jpg",
+          "nutrition": {
+              "nutrients": [
+                  {
+                      "name": "Calories",
+                      "amount": 477.24,
+                      "unit": "kcal",
+                      "percentOfDailyNeeds": 23.86
+                  },
+                  {
+                      "name": "Fat",
+                      "amount": 20.34,
+                      "unit": "g",
+                      "percentOfDailyNeeds": 31.29
+                  },
+                  {
+                      "name": "Saturated Fat",
+                      "amount": 3.1,
+                      "unit": "g",
+                      "percentOfDailyNeeds": 19.37
+                  },
+                  {
+                      "name": "Carbohydrates",
+                      "amount": 51.78,
+                      "unit": "g",
+                      "percentOfDailyNeeds": 17.26
+                  },
+                  {
+                      "name": "Net Carbohydrates",
+                      "amount": 27.99,
+                      "unit": "g",
+                      "percentOfDailyNeeds": 10.18
+                  },
+                  {
+                      "name": "Sugar",
+                      "amount": 10.55,
+                      "unit": "g",
+                      "percentOfDailyNeeds": 11.72
+                  },
+                  {
+                      "name": "Cholesterol",
+                      "amount": 29.75,
+                      "unit": "mg",
+                      "percentOfDailyNeeds": 9.92
+                  },
+                  {
+                      "name": "Sodium",
+                      "amount": 1335.78,
+                      "unit": "mg",
+                      "percentOfDailyNeeds": 58.08
+                  },
+                  {
+                      "name": "Alcohol",
+                      "amount": 0,
+                      "unit": "g",
+                      "percentOfDailyNeeds": 100
+                  },
+                  {
+                      "name": "Alcohol %",
+                      "amount": 0,
+                      "unit": "%",
+                      "percentOfDailyNeeds": 100
+                  },
+                  {
+                      "name": "Protein",
+                      "amount": 26.93,
+                      "unit": "g",
+                      "percentOfDailyNeeds": 53.86
+                  },
+                  {
+                      "name": "Vitamin A",
+                      "amount": 5029.39,
+                      "unit": "IU",
+                      "percentOfDailyNeeds": 100.59
+                  },
+                  {
+                      "name": "Fiber",
+                      "amount": 23.79,
+                      "unit": "g",
+                      "percentOfDailyNeeds": 95.16
+                  },
+                  {
+                      "name": "Vitamin K",
+                      "amount": 95.8,
+                      "unit": "µg",
+                      "percentOfDailyNeeds": 91.23
+                  },
+                  {
+                      "name": "Folate",
+                      "amount": 327.55,
+                      "unit": "µg",
+                      "percentOfDailyNeeds": 81.89
+                  },
+                  {
+                      "name": "Manganese",
+                      "amount": 1.05,
+                      "unit": "mg",
+                      "percentOfDailyNeeds": 52.74
+                  },
+                  {
+                      "name": "Vitamin B6",
+                      "amount": 0.96,
+                      "unit": "mg",
+                      "percentOfDailyNeeds": 47.99
+                  },
+                  {
+                      "name": "Vitamin B3",
+                      "amount": 9.33,
+                      "unit": "mg",
+                      "percentOfDailyNeeds": 46.63
+                  },
+                  {
+                      "name": "Potassium",
+                      "amount": 1465.81,
+                      "unit": "mg",
+                      "percentOfDailyNeeds": 41.88
+                  },
+                  {
+                      "name": "Vitamin C",
+                      "amount": 34.02,
+                      "unit": "mg",
+                      "percentOfDailyNeeds": 41.23
+                  },
+                  {
+                      "name": "Vitamin B1",
+                      "amount": 0.6,
+                      "unit": "mg",
+                      "percentOfDailyNeeds": 39.83
+                  },
+                  {
+                      "name": "Phosphorus",
+                      "amount": 390.65,
+                      "unit": "mg",
+                      "percentOfDailyNeeds": 39.06
+                  },
+                  {
+                      "name": "Iron",
+                      "amount": 6.06,
+                      "unit": "mg",
+                      "percentOfDailyNeeds": 33.66
+                  },
+                  {
+                      "name": "Copper",
+                      "amount": 0.67,
+                      "unit": "mg",
+                      "percentOfDailyNeeds": 33.52
+                  },
+                  {
+                      "name": "Vitamin B5",
+                      "amount": 3.12,
+                      "unit": "mg",
+                      "percentOfDailyNeeds": 31.23
+                  },
+                  {
+                      "name": "Magnesium",
+                      "amount": 123.14,
+                      "unit": "mg",
+                      "percentOfDailyNeeds": 30.78
+                  },
+                  {
+                      "name": "Vitamin E",
+                      "amount": 4.32,
+                      "unit": "mg",
+                      "percentOfDailyNeeds": 28.83
+                  },
+                  {
+                      "name": "Zinc",
+                      "amount": 3.62,
+                      "unit": "mg",
+                      "percentOfDailyNeeds": 24.12
+                  },
+                  {
+                      "name": "Selenium",
+                      "amount": 14.97,
+                      "unit": "µg",
+                      "percentOfDailyNeeds": 21.39
+                  },
+                  {
+                      "name": "Vitamin B2",
+                      "amount": 0.35,
+                      "unit": "mg",
+                      "percentOfDailyNeeds": 20.43
+                  },
+                  {
+                      "name": "Calcium",
+                      "amount": 103.76,
+                      "unit": "mg",
+                      "percentOfDailyNeeds": 10.38
+                  },
+                  {
+                      "name": "Vitamin B12",
+                      "amount": 0.12,
+                      "unit": "µg",
+                      "percentOfDailyNeeds": 1.98
+                  }
+              ],
+              "properties": [
+                  {
+                      "name": "Glycemic Index",
+                      "amount": 48.55,
+                      "unit": ""
+                  },
+                  {
+                      "name": "Glycemic Load",
+                      "amount": 9.43,
+                      "unit": ""
+                  },
+                  {
+                      "name": "Inflammation Score",
+                      "amount": -10,
+                      "unit": ""
+                  },
+                  {
+                      "name": "Nutrition Score",
+                      "amount": 39.747391990345456,
+                      "unit": "%"
+                  }
+              ],
+              
+              "ingredients": [
+                  {
+                      "id": 9037,
+                      "name": "additional toppings: avocado",
+                      "amount": 1,
+                      "unit": "servings",
+                      "nutrients": []
+                     
+                  },
+                  {
+                      "id": 11124,
+                      "name": "carrots",
+                      "amount": 0.38,
+                      "unit": "medium",
+                      "nutrients": []
+                  },
+                  {
+                      "id": 10111143,
+                      "name": "celery stalks",
+                      "amount": 0.38,
+                      "unit": "",
+                      "nutrients": []
+                  },
+                  {
+                      "id": 5064,
+                      "name": "chicken breast",
+                      "amount": 0.25,
+                      "unit": "cups",
+                      "nutrients": []
+                  },
+                  {
+                      "id": 10311297,
+                      "name": "flat leaf parsley",
+                      "amount": 0.06,
+                      "unit": "cup",
+                      "nutrients": []
+                  },
+                  {
+                      "id": 11215,
+                      "name": "garlic",
+                      "amount": 0.75,
+                      "unit": "cloves",
+                      "nutrients": []
+                  },
+                  {
+                      "id": 4053,
+                      "name": "olive oil",
+                      "amount": 0.25,
+                      "unit": "tablespoons",
+                      "nutrients": []
+                  },
+                  {
+                      "id": 10011693,
+                      "name": "canned tomatoes",
+                      "amount": 3.5,
+                      "unit": "ounce",
+                      "nutrients": []
+                  },
+                  {
+                      "id": 10016069,
+                      "name": "lentils",
+                      "amount": 0.25,
+                      "unit": "cups",
+                     "nutrients": []
+                  },
+                  {
+                      "id": 1102047,
+                      "name": "salt and pepper",
+                      "amount": 1,
+                      "unit": "servings",
+                      "nutrients": []
+                  },
+                  {
+                      "id": 11564,
+                      "name": "turnip",
+                      "amount": 0.13,
+                      "unit": "large",
+                     "nutrients": []
+                  },
+                  {
+                      "id": 6615,
+                      "name": "vegetable stock",
+                      "amount": 1,
+                      "unit": "cups",
+                      "nutrients": []
+                  },
+                  {
+                      "id": 10511282,
+                      "name": "onion",
+                      "amount": 0.13,
+                      "unit": "medium",
+                      "nutrients": []
+                  }
+              ],
+              "caloricBreakdown": {
+                  "percentProtein": 21.63,
+                  "percentFat": 36.77,
+                  "percentCarbs": 41.6
+              },
+              "weightPerServing": {
+                  "amount": 585,
+                  "unit": "g"
+              }
+          },
+          "summary": "Red Lentil Soup with Chicken and Turnips might be a good recipe to expand your main course repertoire. This recipe serves 8 and costs $3.0 per serving. One serving contains <b>477 calories</b>, <b>27g of protein</b>, and <b>20g of fat</b>. It is brought to you by Pink When. 1866 people have tried and liked this recipe. It can be enjoyed any time, but it is especially good for <b>Autumn</b>. From preparation to the plate, this recipe takes approximately <b>55 minutes</b>. It is a good option if you're following a <b>gluten free and dairy free</b> diet. Head to the store and pick up salt and pepper, canned tomatoes, flat leaf parsley, and a few other things to make it today. Overall, this recipe earns a <b>spectacular spoonacular score of 99%</b>. If you like this recipe, you might also like recipes such as <a href=\"https://spoonacular.com/recipes/red-lentil-and-chicken-soup-682185\">Red Lentil and Chicken Soup</a>, <a href=\"https://spoonacular.com/recipes/red-lentil-and-chicken-soup-1058971\">Red Lentil and Chicken Soup</a>, and <a href=\"https://spoonacular.com/recipes/red-lentil-soup-34121\">Red-Lentil Soup</a>.",
+          "cuisines": [],
+          "dishTypes": [
+              "lunch",
+              "soup",
+              "main course",
+              "main dish",
+              "dinner"
+          ],
+          "diets": [
+              "gluten free",
+              "dairy free"
+          ],
+          "occasions": [
+              "fall",
+              "winter"
+          ],
+          "analyzedInstructions": [
+              {
+                  "name": "",
+                  "steps": [
+                      {
+                          "number": 1,
+                          "step": "To a large dutch oven or soup pot, heat the olive oil over medium heat."
+                          
+                          
+                      },
+                      {
+                          "number": 2,
+                          "step": "Add the onion, carrots and celery and cook for 8-10 minutes or until tender, stirring occasionally."
+                          
+                      },
+                      {
+                          "number": 3,
+                          "step": "Add the garlic and cook for an additional 2 minutes, or until fragrant. Season conservatively with a pinch of salt and black pepper.To the pot, add the tomatoes, turnip and red lentils. Stir to combine. Stir in the vegetable stock and increase the heat on the stove to high. Bring the soup to a boil and then reduce to a simmer. Simmer for 20 minutes or until the turnips are tender and the lentils are cooked through."
+                          
+                      },
+                      {
+                          "number": 4,
+                          "step": "Add the chicken breast and parsley. Cook for an additional 5 minutes. Adjust seasoning to taste."
+                          
+                      },
+                      {
+                          "number": 5,
+                          "step": "Serve the soup immediately garnished with fresh parsley and any additional toppings. Enjoy!"
+                          
+                      }
+                  ]
+              }
+          ],
+          "spoonacularScore": 99.42680358886719,
+          "spoonacularSourceUrl": "https://spoonacular.com/red-lentil-soup-with-chicken-and-turnips-715415"
+      }
+  ],
+  "offset": 0,
+  "number": 1,
+  "totalResults": 594
+}
