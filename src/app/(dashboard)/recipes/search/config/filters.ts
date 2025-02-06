@@ -1,7 +1,7 @@
 export const filters = [
   {
     name: "Calories",
-    min: 200,
+    min: 0,
     max: 800,
     step: 50,
     minStepsBetweenThumbs: 2,
@@ -9,7 +9,7 @@ export const filters = [
   },
   {
     name: "Protein",
-    min: 10,
+    min: 0,
     max: 50,
     step: 5,
     minStepsBetweenThumbs: 1,
@@ -18,7 +18,7 @@ export const filters = [
 
   {
     name: "Fat",
-    min: 5,
+    min: 0,
     max: 30,
     step: 5,
     minStepsBetweenThumbs: 1,
@@ -27,7 +27,7 @@ export const filters = [
 
   {
     name: "Carbohydrates",
-    min: 20,
+    min: 0,
     max: 100,
     step: 10,
     minStepsBetweenThumbs: 1,
