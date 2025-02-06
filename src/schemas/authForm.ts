@@ -12,10 +12,14 @@ export const loginSchema = z.object({
 
 export const registerSchema = loginSchema
   .extend({
+    name: z.string().min(2, {
+      message: "Name must be at least 2 characters.",
+    }),
     confirmPassword: z.string().min(8, {
       message: "Password must be at least 8 characters.",
     }),
   })
+
   .superRefine(({ confirmPassword, password }, ctx) => {
     if (confirmPassword !== password) {
       ctx.addIssue({

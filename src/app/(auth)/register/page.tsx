@@ -13,6 +13,7 @@ const Register = () => {
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -54,6 +55,15 @@ const Register = () => {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <FormInput
+            placeholder="Jane Doe"
+            name="name"
+            label="Name"
+            type="name"
+            form={form}
+            description="This is the email you will use to login."
+          />
+
           <FormInput
             placeholder="Example@mail.com"
             name="email"
