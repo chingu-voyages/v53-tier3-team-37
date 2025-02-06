@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { recipeSearchSchema, RecipeSearchValues } from "@/schemas/recipeSearch";
 import { useState } from "react";
 import SearchSubmit from "./components/search-submit";
+import { Button } from "@/components/ui/button";
 
 const SearchPage = () => {
   const [showDialog, setShowDialog] = useState(false);
@@ -27,10 +28,18 @@ const SearchPage = () => {
     },
   });
 
-  const handleSearch = (values: RecipeSearchValues) => {
+  const onSubmit = (values: RecipeSearchValues) => {
     if (values.search === "") {
+      setShowDialog(true);
+      return;
     }
+    handleSearch(values);
+  };
+
+  const handleSearch = (values: RecipeSearchValues) => {
     console.log(values);
+    // Your search logic here
+    setShowDialog(false);
   };
 
   return (
@@ -40,13 +49,20 @@ const SearchPage = () => {
       </header>
 
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(handleSearch)}
-          className="space-y-4 px-4"
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-4">
           <SearchBar form={form} />
 
           <NutrientFilters form={form} />
+
+          <div className="flex justify-center items-center fixed bottom-20 w-full inset-x-0 px-4">
+            <Button
+              className="w-full text-lg py-3 h-auto"
+              size="lg"
+              type="submit"
+            >
+              Search For Recipes
+            </Button>
+          </div>
         </form>
       </Form>
 
