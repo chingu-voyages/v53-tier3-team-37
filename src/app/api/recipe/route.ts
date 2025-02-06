@@ -44,12 +44,25 @@ export async function GET(req: NextRequest) {
       age,
       activityLevel,
       gender,
-      mealsPerDay
+      mealsPerDay,
+      false,
+      false,
+      false
     );
 
-    if (!recipes || recipes === null) {
+    console.log("🐉", recipes);
+    
+
+    if (recipes === null) {
       return NextResponse.json(
         { message: "Failed to fetch recipes" },
+        { status: 400 }
+      );
+    }
+
+    if (!recipes) {
+      return NextResponse.json(
+        { message: "No recipe returned" },
         { status: 400 }
       );
     }
