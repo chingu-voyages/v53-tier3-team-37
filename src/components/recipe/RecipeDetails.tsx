@@ -1,20 +1,17 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { RecipeResult, Ingredient } from '../../app/(dashboard)/recipes/definitions/definitions';
-import { cn } from '@/lib/utils';
+import { X } from "lucide-react";
 
 interface RecipeDetailsProps {
   recipe: RecipeResult;
-  onClose: Function;
+  onClose: () => void;
 }
 
 const RecipeDetails:React.FC<RecipeDetailsProps> = ({ recipe, onClose }) => {
-  const router = useRouter();
   const [checkedIngredients, setCheckedIngredients] = useState<Set<string>>(new Set());
-  const [yOffset, setYOffset] = useState(0);
 
   const toggleIngredient = (ingredient: string) => {
     setCheckedIngredients((prev) => {
