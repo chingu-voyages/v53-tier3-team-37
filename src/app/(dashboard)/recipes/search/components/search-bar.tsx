@@ -21,6 +21,13 @@ export const SearchBar = ({ form }: SearchBarProps) => {
                 placeholder="Search for a recipe"
                 className="w-full h-full ring-0 outline-none bg-transparent"
                 {...field}
+                onChange={(e) => {
+                  field.onChange(e);
+                  form.setValue("search", e.target.value, {
+                    shouldDirty: true,
+                    shouldTouch: true,
+                  });
+                }}
               />
             </FormControl>
           </div>

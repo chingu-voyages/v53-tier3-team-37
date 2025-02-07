@@ -38,7 +38,7 @@ const SearchSubmit = ({
           <Button variant="outline" onClick={() => setShowDialog(false)}>
             Cancel
           </Button>
-          <Button onClick={form.handleSubmit(handleSearch)}>
+          <Button onClick={() => handleSearch(form.getValues())}>
             Search with Filters
           </Button>
         </DialogFooter>

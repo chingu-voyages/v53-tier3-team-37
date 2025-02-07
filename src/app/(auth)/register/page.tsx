@@ -21,7 +21,7 @@ const Register = () => {
   });
 
   // TODO: Add third party auth this function is only tied to the form submit right now.
-  const onSubmit = (data: RegisterFormValues) => {
+  const onSubmit = async (data: RegisterFormValues) => {
     console.log(data);
   };
 
