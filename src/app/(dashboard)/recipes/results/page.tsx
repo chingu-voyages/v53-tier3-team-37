@@ -2,13 +2,13 @@
 import sampleRecipes from '../../../../data/sampleRecipes.json';
 import sampleFullReturn from '../../../../data/sampleFullReturn.json';
 import { useState } from "react";
-import { RecipeResult, Ingredient } from '../definitions/definitions';
+import { RecipeResult, Results, Ingredient } from '../definitions/definitions';
 import RecipeDetails from '@/components/recipe/recipeDetails';
 
 export default function RecipePage() {
   const [recipeIndex, setRecipeIndex] = useState(0);
   const [showDetails, setShowDetails] = useState(false);
-  const recipe = sampleFullReturn.results[recipeIndex];
+  const recipe:RecipeResult = sampleFullReturn.results[recipeIndex];
 
   const nextRecipe = () => {
     setRecipeIndex((prev) => (prev + 1) % sampleRecipes.length);

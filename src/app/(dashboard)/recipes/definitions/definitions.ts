@@ -3,7 +3,7 @@ export interface Ingredient {
   name: string;
   amount: number;
   unit: string;
-  nutrition: Nutrient[];
+  nutrients: Nutrient[];
 }
 
 export interface Nutrient {
@@ -16,7 +16,7 @@ export interface Nutrient {
 export interface Property {
     name: string;
     amount: number;
-    unit: number | null;
+    unit: string;
 
 }
 
@@ -68,7 +68,7 @@ export interface RecipeResult {
   creditsText: string;
   sourceName: string;
   pricePerServing: number;
-  id: string;
+  id: number;
   title: string;
   readyInMinutes: number;
   servings: number;
