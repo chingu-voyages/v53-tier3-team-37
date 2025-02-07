@@ -1,7 +1,7 @@
-import SearchPage from "./search/page";
+import SearchForm from "./search/page";
 
 const RecipePage = () => {
-  return <SearchPage />;
+  return <SearchForm />;
 };
 
 export default RecipePage;
