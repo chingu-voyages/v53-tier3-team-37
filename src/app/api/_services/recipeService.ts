@@ -7,9 +7,9 @@ export const getRecipes = async (
   activityLevel: string,
   gender: string,
   mealsPerDay: string = "3",
-  diet: string | boolean = false,
-  includeIngredients: string | boolean = false,
-  excludeIngredients: string | boolean = false
+  diet: string = "",
+  includeIngredients: string ="",
+  excludeIngredients: string =""
 ) => {
   const addBMR = gender === "man" ? 5 : -161;
   const BMR =
@@ -37,23 +37,16 @@ export const getRecipes = async (
 
   const calories = (BMR * activityLevelNum()) / parseInt(mealsPerDay);
 
-  const dietParam = diet ? `&diet=${diet}` : "";
-  const includeIngredientsParam = includeIngredients ? `&includeIngredients=${includeIngredients}` : "";
-  const excludeIngredientsParam = excludeIngredients ? `&excludeIngredients=${excludeIngredients}` : "";
-
   // ±10%
   const maxCalories = Math.round(calories * 1.1);
   const minCalories = Math.round(calories * 0.9);
-  console.log(`https://api.spoonacular.com/recipes/complexSearch?maxCalories=${maxCalories}&minCalories=${minCalories}${dietParam+includeIngredientsParam+excludeIngredientsParam}&addRecipeNutrition=true&instructionsRequired=true&apiKey=${process.env.SPOONACULAR_API_KEY}`);
   
 
   try {
     // only calories
     const res = await fetch(
-      `https://api.spoonacular.com/recipes/complexSearch?maxCalories=${maxCalories}&minCalories=${minCalories}${dietParam+excludeIngredients+includeIngredients}&addRecipeNutrition=true&instructionsRequired=true&apiKey=${process.env.SPOONACULAR_API_KEY}`
+      `https://api.spoonacular.com/recipes/complexSearch?maxCalories=${maxCalories}&minCalories=${minCalories}&addRecipeNutrition=true&instructionsRequired=true&diet=${diet}&includeIngredients=${includeIngredients}&excludeIngredients=${excludeIngredients}&apiKey=${process.env.SPOONACULAR_API_KEY}`
     );
-
-    console.log(res);
     
 
     if (!res.ok) {
@@ -61,8 +54,6 @@ export const getRecipes = async (
     }
 
     const recipes = await res.json();
-    console.log("🐉", recipes);
-    
 
     return recipes;
   } catch (err) {
