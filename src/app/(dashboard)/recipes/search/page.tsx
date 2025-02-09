@@ -9,9 +9,11 @@ import { recipeSearchSchema, RecipeSearchValues } from "@/schemas/recipeSearch";
 import { useState } from "react";
 import SearchSubmit from "./components/search-submit";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
-const SearchPage = () => {
+const SearchForm = () => {
   const [showDialog, setShowDialog] = useState(false);
+  const router = useRouter();
 
   const form = useForm<RecipeSearchValues>({
     resolver: zodResolver(recipeSearchSchema),
@@ -37,8 +39,19 @@ const SearchPage = () => {
   };
 
   const handleSearch = (values: RecipeSearchValues) => {
-    console.log(values);
-    // Your search logic here
+    const params = new URLSearchParams();
+
+    if (values.search) {
+      params.set("q", values.search);
+    }
+
+    Object.entries(values).forEach(([key, value]) => {
+      if (value !== undefined && value !== "" && value !== 0) {
+        params.set(key, value.toString());
+      }
+    });
+
+    router.push(`/recipes/results?${params.toString()}`);
     setShowDialog(false);
   };
 
@@ -76,4 +89,4 @@ const SearchPage = () => {
   );
 };
 
-export default SearchPage;
+export default SearchForm;

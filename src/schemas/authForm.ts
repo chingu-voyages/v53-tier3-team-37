@@ -19,7 +19,6 @@ export const registerSchema = loginSchema
       message: "Password must be at least 8 characters.",
     }),
   })
-
   .superRefine(({ confirmPassword, password }, ctx) => {
     if (confirmPassword !== password) {
       ctx.addIssue({
