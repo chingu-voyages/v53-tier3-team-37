@@ -9,9 +9,11 @@ import { questions } from "./config";
 import { QuestionCard } from "./question-card";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
 const SurveyPage = () => {
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
+  const router = useRouter();
 
   const form = useForm<SurveyData>({
     resolver: zodResolver(surveySchema),
@@ -51,7 +53,19 @@ const SurveyPage = () => {
   const onSubmit = async (data: SurveyData) => {
     try {
       // API call here
-      console.log(data);
+      const response = await fetch("/api/user/healthProfile", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        console.error("Failed to submit survey.");
+      } else {
+        router.push("/dashboard");
+      }
     } catch (error) {
       console.error(error);
     }
@@ -73,7 +87,7 @@ const SurveyPage = () => {
 
   // const submitSurvey = async () => {
   //   try {
-  //     const response = await fetch("/api/survey", {
+  //     const response = await fetch("/api/user/healthProfile", {
   //       method: "POST",
   //       headers: {
   //         "Content-Type": "application/json",
@@ -97,7 +111,10 @@ const SurveyPage = () => {
     <Form {...form}>
       <form className="relative flex flex-col  items-center w-full justify-center h-[calc(100vh-17rem)] bg-transparent overflow-hidden">
         <div className="absolute top-4 w-10/12 max-w-md">
-          <Progress value={progress} className="rounded-full" />
+          <Progress
+            value={progress}
+            className="rounded-full"
+          />
         </div>
 
         <div className="relative w-full h-[calc(100%-6rem)] flex justify-center overflow-hidden">
@@ -123,8 +140,7 @@ const SurveyPage = () => {
             type="button"
             variant="outline"
             onClick={prevQuestion}
-            className={`${currentQuestion > 0 ? "visible" : "invisible"}`}
-          >
+            className={`${currentQuestion > 0 ? "visible" : "invisible"}`}>
             Previous
           </Button>
 
@@ -132,8 +148,7 @@ const SurveyPage = () => {
             type="button"
             onClick={nextQuestion}
             className={currentQuestion > 0 ? "ml-auto" : ""}
-            disabled={!isCurrentFieldValid || !hasValue()}
-          >
+            disabled={!isCurrentFieldValid || !hasValue()}>
             {currentQuestion === questions.length - 1 ? "Submit" : "Next"}
           </Button>
         </div>
