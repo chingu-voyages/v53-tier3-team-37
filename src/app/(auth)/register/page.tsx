@@ -32,15 +32,26 @@ const Register = () => {
       </header>
 
       <div className="flex items-center justify-center gap-4 mb-2">
-        <ThirdPartyButtons onClick={() => {}} icon="apple" />
-        <ThirdPartyButtons onClick={() => {}} icon="github" />
-        <ThirdPartyButtons onClick={() => {}} icon="google" />
+        <ThirdPartyButtons
+          onClick={() => {}}
+          icon="apple"
+        />
+        <ThirdPartyButtons
+          onClick={() => {}}
+          icon="github"
+        />
+        <ThirdPartyButtons
+          onClick={() => {}}
+          icon="google"
+        />
       </div>
 
       <p className="bg-background px-2 my-4">Or Sign up with Email</p>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-6">
           <FormInput
             placeholder="Jane Doe"
             name="name"
@@ -79,12 +90,16 @@ const Register = () => {
 
           <div className="flex flex-col  justify-center">
             <p>Already have an account?</p>
-            <Link href="/login" className="underline">
+            <Link
+              href="/login"
+              className="underline">
               Login here
             </Link>
           </div>
 
-          <Button type="submit" className="w-full py-6 px-4 text-lg">
+          <Button
+            type="submit"
+            className="w-full py-6 px-4 text-lg">
             Register
           </Button>
         </form>
