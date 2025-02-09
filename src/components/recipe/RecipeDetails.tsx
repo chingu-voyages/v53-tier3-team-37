@@ -26,13 +26,7 @@ const RecipeDetails:React.FC<RecipeDetailsProps> = ({ recipe, onClose }) => {
   };
 
   return (
-    <motion.div
-      initial={{ y: "100%" }}
-      animate={{ y: 0 }}
-      exit={{ y: "100%" }}
-      transition={{ type: "spring", damping: 15 }}
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-    >
+
       <div className="relative bg-white rounded-lg shadow-lg w-11/12 max-w-lg p-6 overflow-hidden">
         <button
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
@@ -42,11 +36,11 @@ const RecipeDetails:React.FC<RecipeDetailsProps> = ({ recipe, onClose }) => {
         </button>
         
         <h2 className="text-2xl font-semibold text-gray-800 text-center">{recipe.title}</h2>
-        <img src={recipe.image} alt={recipe.title} className="w-full h-48 object-cover mt-4 rounded-md" />
+
         
-        <div className="mt-6">
-          <h3 className="text-lg font-medium text-gray-700">Ingredients</h3>
-          <ul className="mt-2 space-y-2">
+        <div className="flex-1 overflow-y-auto px-2">
+          <h3 className="text-xl font-semibold mb-4">Ingredients</h3>
+          <ul className="max-h-48 overflow-y-auto pr-2">
             {recipe.nutrition.ingredients.map(({ name, amount }) => (
               <li key={name} className="flex justify-between items-center bg-gray-100 p-2 rounded-md">
                 <span>{name} ({amount*(recipe.servings)})</span>
@@ -62,15 +56,14 @@ const RecipeDetails:React.FC<RecipeDetailsProps> = ({ recipe, onClose }) => {
         </div>
 
         <div className="mt-6">
-          <h3 className="text-lg font-medium text-gray-700">Steps</h3>
-          <ol className="mt-2 space-y-3 list-decimal list-inside bg-gray-100 p-4 rounded-md">
+          <h3 className="text-xl font-semibold mt-6 mb-4">Steps</h3>
+          <ol className="mt-2 space-y-3 list-decimal list-inside bg-gray-100 pr-2 rounded-md max-h-64 overflow-y-auto">
             {recipe.analyzedInstructions[0].steps.map((step) => (
               <li key={step.number} className="text-gray-700">{step.step}</li>
             ))}
           </ol>
         </div>
       </div>
-    </motion.div>
   );
 };
 
