@@ -27,7 +27,7 @@ const RecipeDetails:React.FC<RecipeDetailsProps> = ({ recipe, onClose }) => {
 
   return (
 
-      <div className="relative bg-white rounded-lg shadow-lg w-11/12 max-w-lg p-6 overflow-hidden">
+      <div>
         <button
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
           onClick={onClose}
@@ -35,15 +35,15 @@ const RecipeDetails:React.FC<RecipeDetailsProps> = ({ recipe, onClose }) => {
           <X size={24} />
         </button>
         
-        <h2 className="text-2xl font-semibold text-gray-800 text-center">{recipe.title}</h2>
+        <h2 className="text-2xl font-semibold text-gray-800 text-center mt-4">{recipe.title}</h2>
 
         
         <div className="flex-1 overflow-y-auto px-2">
           <h3 className="text-xl font-semibold mb-4">Ingredients</h3>
           <ul className="max-h-48 overflow-y-auto pr-2">
-            {recipe.nutrition.ingredients.map(({ name, amount }) => (
+            {recipe.nutrition.ingredients.map(({ name, amount, unit }) => (
               <li key={name} className="flex justify-between items-center bg-gray-100 p-2 rounded-md">
-                <span>{name} ({amount*(recipe.servings)})</span>
+                <span>{name} ({amount*(recipe.servings)} {unit})</span>
                 <input
                   type="checkbox"
                   checked={checkedIngredients.has(name)}

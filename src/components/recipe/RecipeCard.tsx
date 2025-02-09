@@ -13,7 +13,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (
-    <div className="flex justify-center items-center min-h-screen w-full px-4 sm:px-6">
+    <div className="flex justify-center items-center min-h-screen w-full px-4 sm:px-6" style={{ perspective: "1000px" }}>
       <motion.div
         className="relative w-full max-w-md h-[90vh]" // Ensures the card is 90% of viewport height
         initial={false}
@@ -25,7 +25,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
             <motion.div
               key="front"
               className="absolute w-full h-full bg-white flex flex-col items-center p-4 rounded-2xl shadow-lg overflow-hidden"
-              initial={{ opacity: 0 }}
+              initial={{ opacity: 1 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
