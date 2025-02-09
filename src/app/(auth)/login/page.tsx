@@ -18,8 +18,20 @@ const Login = () => {
     },
   });
 
-  const onSubmit = (values: LoginFormValues) => {
-    console.log(values);
+  const onSubmit = async (values: LoginFormValues) => {
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(values)
+    }) 
+
+    console.log(response)
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      alert(`Error in Registration: ${errorData.error}: ${errorData.details}`)
+      throw new Error(errorData.error || "Failed to Login")
+    }
   };
 
   return (
@@ -68,7 +80,6 @@ const Login = () => {
       </div>
 
       <div className="flex items-center justify-center gap-4 mt-6">
-        <ThirdPartyButtons onClick={() => {}} icon="apple" />
         <ThirdPartyButtons onClick={() => {}} icon="github" />
         <ThirdPartyButtons onClick={() => {}} icon="google" />
       </div>

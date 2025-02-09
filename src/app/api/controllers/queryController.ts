@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import * as queryService from "../services/queryService";
+import { SearchQueryType } from "../queryRecipes/route";
 
-export const queryRecipes = async () => {
+export const queryRecipes = async (filters: SearchQueryType) => {
   try {
-    const recipes = await queryService.getRecipesFromDB();
+    const recipes = await queryService.getRecipesFromDB(filters);
     if (!recipes) {
-      return NextResponse.json({ error: "Recipes Not Found" }, { status: 404 });
+      return NextResponse.json({ error: "No recipes found" }, { status: 404 });
     }
     return NextResponse.json(recipes, {
       headers: {

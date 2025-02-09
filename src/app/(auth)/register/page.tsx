@@ -8,8 +8,10 @@ import Link from "next/link";
 import FormInput from "../formInput";
 import ThirdPartyButtons from "../thirdPartyButtons";
 import { registerSchema, RegisterFormValues } from "@/schemas/authForm";
+import { useRouter } from "next/navigation";
 
 const Register = () => {
+  const router = useRouter();
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -22,21 +24,29 @@ const Register = () => {
 
   // TODO: Add third party auth this function is only tied to the form submit right now.
   const onSubmit = async (data: RegisterFormValues) => {
-    console.log(data);
-    const response = await fetch('/api/auth/register', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(data)
-    }) 
+    const registrationBody = {
+      name: data.name,
+      email: data.email,
+      password: data.password,
+    };
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(registrationBody),
+      });
 
-    if (!response.ok) {
-      const errorData = await response.json(); // Parse error response, if available
-      throw new Error(errorData.error || 'Failed to register user');
+      if (!response.ok) {
+        const errorData = await response.json(); // Parse error response, if available
+        alert(
+          `Error in Registration: ${errorData.error}: ${errorData.details}`
+        );
+        throw new Error(errorData.error || "Failed to register user");
+      }
+      router.push("/register/survey");
+    } catch (err) {
+      console.error("Registration failed:", err);
     }
-    
-
-
-    
   };
 
   return (
@@ -46,15 +56,23 @@ const Register = () => {
       </header>
 
       <div className="flex items-center justify-center gap-4 mb-2">
-        <ThirdPartyButtons onClick={() => {}} icon="apple" />
-        <ThirdPartyButtons onClick={() => {}} icon="github" />
-        <ThirdPartyButtons onClick={() => {}} icon="google" />
+        {/* <ThirdPartyButtons onClick={() => {}} icon="apple" /> */}
+        <ThirdPartyButtons
+          onClick={() => {}}
+          icon="github"
+        />
+        <ThirdPartyButtons
+          onClick={() => {}}
+          icon="google"
+        />
       </div>
 
       <p className="bg-background px-2 my-4">Or Sign up with Email</p>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-6">
           <FormInput
             placeholder="Jane Doe"
             name="name"
@@ -93,12 +111,16 @@ const Register = () => {
 
           <div className="flex flex-col  justify-center">
             <p>Already have an account?</p>
-            <Link href="/login" className="underline">
+            <Link
+              href="/login"
+              className="underline">
               Login here
             </Link>
           </div>
 
-          <Button type="submit" className="w-full py-6 px-4 text-lg">
+          <Button
+            type="submit"
+            className="w-full py-6 px-4 text-lg">
             Register
           </Button>
         </form>

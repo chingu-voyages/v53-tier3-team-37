@@ -99,14 +99,27 @@ enum Diet {
 }
 
 model Recipe {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
   name        String
-  recipeId    Int    @unique
+  recipeId    Int         @unique
   ingredients Json[]
   imageURL    String
-  nutrition   Json[]
+  nutrition   Nutrition[]
 
   favorites Favorite[]
+
+  @@map("recipes")
+}
+
+model Nutrition {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  recipeId String @db.ObjectId
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  name     String
+  amount   Float
+  unit     String
+
+  @@map("nutrition")
 }
 
 enum CredentialType {
