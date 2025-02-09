@@ -5,7 +5,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
     <>
       <main className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)]   ">
         <Navbar />
-        <div className="flex flex-col items-center justify-center border rounded-xl py-10 px-10 mt-[4.5rem] md:mt-[5rem] w-[90%] ">
+        <div className="flex flex-col items-center justify-center border rounded-xl py-10 px-10 mt-[7rem] md:mt-[8rem] w-[90%] ">
           {children}
         </div>
       </main>

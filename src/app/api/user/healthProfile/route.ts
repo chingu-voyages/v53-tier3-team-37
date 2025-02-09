@@ -1,12 +1,12 @@
-import { changePassword } from "@/app/api/controllers/userController";
 import { NextRequest, NextResponse } from "next/server";
-import parseBody from "../../utils/parseBody";
-import { PasswordUpdate } from "../../middlewares/schemas";
 import { isAuthenticated } from "../../middlewares/loginAuth";
+import parseBody from "../../utils/parseBody";
+import { HealthProfile } from "../../middlewares/schemas";
+import { updateHealthProfile } from "../../controllers/userController";
 
 export async function PATCH(req: NextRequest) {
   const authResponse = isAuthenticated(req);
-  if (authResponse instanceof NextResponse) return authResponse; // return the response if !authenticated
+  if (authResponse instanceof NextResponse) return authResponse;
 
   try {
     const userId = (authResponse as { user: { id: string } }).user.id;
@@ -17,7 +17,7 @@ export async function PATCH(req: NextRequest) {
       );
     }
     const body = await parseBody(req);
-    const validationResult = PasswordUpdate.safeParse(body);
+    const validationResult = HealthProfile.safeParse(body);
 
     if (!validationResult.success) {
       return NextResponse.json(
@@ -25,18 +25,32 @@ export async function PATCH(req: NextRequest) {
         { status: 400 }
       );
     }
-    const { password } = validationResult.data;
-    if (!password) {
-      return NextResponse.json(
-        { error: "Password is missing" },
-        { status: 401 }
-      );
-    }
-    const response = await changePassword(userId, password);
+    const {
+      age,
+      sex,
+      weight,
+      height,
+      lifestyle,
+      foodRestrictions,
+      healthIssues,
+      activeDiet,
+    } = body;
+
+    const response = await updateHealthProfile(
+      userId,
+      age,
+      sex,
+      weight,
+      height,
+      lifestyle,
+      foodRestrictions,
+      healthIssues,
+      activeDiet
+    );
 
     return response;
   } catch (err) {
-    console.error("Error in the Change Password Route", err);
+    console.error("Error in the Update Health Profile Route", err);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

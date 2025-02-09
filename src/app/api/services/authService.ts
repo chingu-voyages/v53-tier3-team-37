@@ -2,7 +2,6 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import prisma from "./prisma";
 // import { CredentialType } from "@prisma/client";
 import bcrypt from "bcrypt";
-import crypto from "crypto";
 
 const secret = process.env.JWT_SECRET;
 
@@ -45,43 +44,6 @@ export const createUser = async (
       },
     },
   });
-};
-
-export const findOrCreateUserWithOAuth = async (
-  email: string,
-  name: string
-  // provider: string
-) => {
-  let user = await prisma.user.findUnique({
-    where: { email: email.toLowerCase() },
-  });
-
-  if (!user) {
-    let username = email.split("@")[0];
-
-    // check if this username is already taken
-    const existingUser = await prisma.user.findUnique({ where: { username } });
-
-    if (existingUser) {
-      username = `${username}_${crypto.randomBytes(3).toString("hex")}`;
-    }
-    user = await prisma.user.create({
-      data: {
-        email: email.toLowerCase(),
-        name,
-        username,
-        credentials: {
-          create: {
-            type: "OAUTH",
-            value: "OAUTH",
-          },
-        },
-      },
-    });
-  }
-
-  const token = generateToken(user.id);
-  return { user, token };
 };
 
 export const generateToken = (userId: string) => {
