@@ -41,13 +41,14 @@ const RecipeDetails:React.FC<RecipeDetailsProps> = ({ recipe, onClose }) => {
         <div className="flex-1 overflow-y-auto px-2">
           <h3 className="text-xl font-semibold mb-4">Ingredients</h3>
           <ul className="max-h-48 overflow-y-auto pr-2">
-            {recipe.nutrition.ingredients.map(({ name, amount, unit }) => (
-              <li key={name} className="flex justify-between items-center bg-gray-100 p-2 rounded-md">
-                <span>{name} ({amount*(recipe.servings)} {unit})</span>
+            {recipe.nutrition.ingredients.map((ingredient, index) => (
+              <li key={ingredient.name} className="flex justify-between items-center bg-gray-100 p-2 rounded-md">
+                <span
+                  className={`text-gray-800 transition-all ${checkedIngredients.has(ingredient.name) ? "line-through opacity-50" : ""}`}>{ingredient.name} ({ingredient.amount*(recipe.servings)} {ingredient.unit})</span>
                 <input
                   type="checkbox"
-                  checked={checkedIngredients.has(name)}
-                  onChange={() => toggleIngredient(name)}
+                  checked={checkedIngredients.has(ingredient.name)}
+                  onChange={() => toggleIngredient(ingredient.name)}
                   className="w-5 h-5"
                 />
               </li>
