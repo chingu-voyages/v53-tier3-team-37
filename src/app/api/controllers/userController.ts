@@ -1,5 +1,4 @@
 // import { isAuthenticated } from "../middleware/loginAuth";
-import { NextResponse } from "next/server";
 import { encryptPassword } from "../services/authService";
 import * as userService from "../services/userService";
 import {
@@ -12,42 +11,34 @@ import {
 
 export const changePassword = async (userId: string, password: string) => {
   try {
-    // const userId = req.user?.id;
-    // if (!userId) {
-    //   return res.status(401).json({ error: "Unauthorized" });
-    // }
-    //   make sure user isnt assigning itself new roles
-
     const newPassword = await encryptPassword(password);
 
-    await userService.updatePassword(userId, newPassword);
-    return NextResponse.json(
-      { message: "Password Updated Successfully" },
-      { status: 200 }
-    );
+    const success = await userService.updatePassword(userId, newPassword);
+
+    if (!success) {
+      throw new Error("Attempt to update Password Failed");
+    }
+    return { message: "Password Updated Successfully" };
   } catch (err) {
-    console.error("Error updating password:", err);
-    return NextResponse.json(
-      { error: "Failed to Update Password" },
-      { status: 500 }
-    );
+    console.error("Password Update Failed:", err);
+    throw err;
   }
 };
 
 export const requestOTP = async (email: string) => {
   try {
-    await userService.requestOTPService(email);
+    const requested = await userService.requestOTPService(email);
 
-    return NextResponse.json(
-      { message: "OTP Sent to User Email" },
-      { status: 200 }
-    );
+    if (requested) {
+      return { message: `OTP Sent to User Email: ${email}` };
+    } else {
+      throw new Error(
+        "There was an issue requesting a one time pin for this account"
+      );
+    }
   } catch (err) {
     console.error("Error Requesting OTP:", err);
-    return NextResponse.json(
-      { error: "Failed to Request an OTP" },
-      { status: 500 }
-    );
+    throw err;
   }
 };
 
@@ -59,18 +50,14 @@ export const otpResponse = async (
   newPassword: string
 ) => {
   try {
-    await userService.checkOtp(email, otp, newPassword);
+    const updated = await userService.checkOtp(email, otp, newPassword);
 
-    return NextResponse.json(
-      { message: "OTP Successfully Verified" },
-      { status: 200 }
-    );
+    if (updated === true) {
+      return { message: "OTP Successfully Verified -- Password Updated" };
+    }
   } catch (err) {
     console.error("Error verifying otp", err);
-    return NextResponse.json(
-      { error: "Failed to Verify OTP" },
-      { status: 500 }
-    );
+    throw err;
   }
 };
 
@@ -88,7 +75,7 @@ export const updateHealthProfile = async (
   try {
     const user = await userService.getUserById(id);
     if (!user) {
-      return NextResponse.json({ error: "User not Found" }, { status: 404 });
+      throw new Error("User not found!");
     }
 
     const updateData = Object.fromEntries(
@@ -110,21 +97,14 @@ export const updateHealthProfile = async (
       }
       updateData["current_weight"] = weight;
     }
-    const returnedData = await userService.handleHealthData(id, updateData);
-    return NextResponse.json(
-      {
-        message: "New Health Data Submitted Successfully",
-        details: returnedData,
-      },
-      {
-        status: 200,
-      }
-    );
+    const returned = await userService.handleHealthData(id, updateData);
+    if (returned === true) {
+      return { message: "Health Profile Data Submitted Successfully" };
+    } else {
+      throw new Error("Health Profile Update Failed!");
+    }
   } catch (err) {
     console.error("Error Submitting Health Profile Updates", err);
-    return NextResponse.json(
-      { error: "Failed to Submit Health Information" },
-      { status: 500 }
-    );
+    throw err;
   }
 };

@@ -97,7 +97,10 @@ const SurveyPage = () => {
     <Form {...form}>
       <form className="relative flex flex-col  items-center w-full justify-center h-[calc(100vh-17rem)] bg-transparent overflow-hidden">
         <div className="absolute top-4 w-10/12 max-w-md">
-          <Progress value={progress} className="rounded-full" />
+          <Progress
+            value={progress}
+            className="rounded-full"
+          />
         </div>
 
         <div className="relative w-full h-[calc(100%-6rem)] flex justify-center overflow-hidden">
@@ -123,8 +126,7 @@ const SurveyPage = () => {
             type="button"
             variant="outline"
             onClick={prevQuestion}
-            className={`${currentQuestion > 0 ? "visible" : "invisible"}`}
-          >
+            className={`${currentQuestion > 0 ? "visible" : "invisible"}`}>
             Previous
           </Button>
 
@@ -132,8 +134,7 @@ const SurveyPage = () => {
             type="button"
             onClick={nextQuestion}
             className={currentQuestion > 0 ? "ml-auto" : ""}
-            disabled={!isCurrentFieldValid || !hasValue()}
-          >
+            disabled={!isCurrentFieldValid || !hasValue()}>
             {currentQuestion === questions.length - 1 ? "Submit" : "Next"}
           </Button>
         </div>

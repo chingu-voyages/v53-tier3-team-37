@@ -88,7 +88,6 @@ function passwordHasRequirements(value: string): boolean {
 // on account creation
 export const Account = User.pick({
   name: true,
-  username: true,
   email: true,
 })
   .extend({
@@ -128,3 +127,17 @@ export const Login = User.pick({
   .strict();
 
 // finished?
+
+// query schemas
+
+export const SearchQuery = z.object({
+  search: z.string().optional(),
+  caloriesMin: z.number().default(0).optional(),
+  caloriesMax: z.number().default(0).optional(),
+  proteinMin: z.number().default(0).optional(),
+  proteinMax: z.number().default(0).optional(),
+  fatMin: z.number().default(0).optional(),
+  fatMax: z.number().default(0).optional(),
+  carbohydratesMin: z.number().default(0).optional(),
+  carbohydratesMax: z.number().default(0).optional(),
+});

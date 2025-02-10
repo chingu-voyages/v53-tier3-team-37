@@ -32,9 +32,11 @@ export async function PATCH(req: NextRequest) {
         { status: 401 }
       );
     }
-    const response = await changePassword(userId, password);
 
-    return response;
+    const message = await changePassword(userId, password);
+
+    const res = NextResponse.json({ message }, { status: 200 });
+    return res;
   } catch (err) {
     console.error("Error in the Change Password Route", err);
     return NextResponse.json(

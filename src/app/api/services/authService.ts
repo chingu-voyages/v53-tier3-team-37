@@ -26,7 +26,6 @@ export const findUserByEmail = async (email: string) => {
 
 export const createUser = async (
   email: string,
-  username: string,
   name: string,
   password: string
 ) => {
@@ -34,7 +33,6 @@ export const createUser = async (
   return await prisma.user.create({
     data: {
       email: email.toLowerCase(),
-      username,
       name,
       credentials: {
         create: {

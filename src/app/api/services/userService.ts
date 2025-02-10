@@ -12,12 +12,17 @@ export const updatePassword = async (userId: string, newPassword: string) => {
     console.error("This user doesn't exist");
   }
   const updatedHash = await encryptPassword(newPassword);
-  await prisma.credential.update({
+  const updated = await prisma.credential.update({
     where: { userId: userId },
     data: {
       value: updatedHash,
     },
   });
+
+  if (updated) {
+    return true;
+  }
+  return false;
 };
 
 const generateOTP = async () => {
@@ -64,6 +69,7 @@ export const requestOTPService = async (email: string) => {
   } catch (error) {
     console.error("Failed to send password reset email:", error);
   }
+  return true;
 };
 
 const transporter = nodemailer.createTransport({
@@ -158,7 +164,10 @@ export const checkOtp = async (
       value: hashedPassword,
     },
   });
-  return updated;
+  if (updated) {
+    return true;
+  }
+  return false;
 };
 
 export const handleHealthData = async (id: string, data: object) => {
@@ -167,7 +176,11 @@ export const handleHealthData = async (id: string, data: object) => {
     data: { ...data },
   });
 
-  return updated;
+  if (updated) {
+    return true;
+  }
+
+  return false;
 };
 
 export const getUserById = async (id: string) => {

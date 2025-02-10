@@ -14,10 +14,9 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  email    String @unique @db.String
-  username String @unique @db.String
-  name     String @db.String
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  email String @unique @db.String
+  name  String @db.String
 
   age Int?
   sex Gender?
@@ -35,6 +34,8 @@ model User {
   foodRestrictions Sensitivity[] @map("food_restrictions")
   healthIssues     HealthIssue[] @map("health_issues")
   activeDiet       Diet?         @map("active_diet")
+
+  surveyed Boolean @default(false)
 
   favorites Favorite[]
 
@@ -96,16 +97,31 @@ enum Diet {
   PALEO
   VEGAN
   CARNIVORE
-
   ATKINS
 }
 
 model Recipe {
-  id           String @id @default(auto()) @map("_id") @db.ObjectId
-  ingredients  String @db.String
-  instructions String @db.String
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  recipeId    Int         @unique
+  ingredients Json[]
+  imageURL    String
+  nutrition   Nutrition[]
 
   favorites Favorite[]
+
+  @@map("recipes")
+}
+
+model Nutrition {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  recipeId String @db.ObjectId
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  name     String
+  amount   Float
+  unit     String
+
+  @@map("nutrition")
 }
 
 enum CredentialType {

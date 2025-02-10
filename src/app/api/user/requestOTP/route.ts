@@ -11,10 +11,18 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
-  await requestOTP(email);
+  try {
+    const { message } = await requestOTP(email);
 
-  return NextResponse.json(
-    { message: "OTP Created and Sent Successfully" },
-    { status: 200 }
-  );
+    return NextResponse.json(
+      { response: "OTP Created and Sent Successfully:", message },
+      { status: 200 }
+    );
+  } catch (err) {
+    console.error("Error in the request otp route", err);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
 }

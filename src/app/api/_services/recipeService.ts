@@ -1,3 +1,6 @@
+import { Nutrition } from "@prisma/client";
+import prisma from "../services/prisma";
+
 // Mifflin-St Jeor method to calculate BMR
 
 export const getRecipes = async (
@@ -116,6 +119,33 @@ export const getRecipes = async (
     }
 
     const recipes = await res.json();
+
+    const newDataArray = [];
+
+    for (const recipe of recipes.results) {
+      const recipeObj = {
+        name: recipe?.title ?? "Unknown Recipe",
+        recipeId: recipe.id,
+        ingredients: recipe?.nutrition.ingredients ?? [],
+        imageURL: recipe?.image ?? "No image available",
+      };
+      const nutritionData = recipe.nutrition.nutrients.map(
+        (nutrient: Nutrition) => ({
+          recipeId: recipe.id,
+          name: nutrient.name,
+          amount: nutrient.amount,
+          unit: nutrient.unit,
+        })
+      );
+      newDataArray.push({ recipe: recipeObj, nutrition: nutritionData });
+    }
+
+    await prisma.recipe.createMany({
+      data: newDataArray.map(({ recipe }) => recipe),
+    });
+    for (const { nutrition } of newDataArray) {
+      await prisma.nutrition.createMany({ data: nutrition });
+    }
 
     return recipes;
   } catch (err) {

@@ -8,6 +8,7 @@ import Link from "next/link";
 import FormInput from "../formInput";
 import ThirdPartyButtons from "../thirdPartyButtons";
 import { loginSchema as formSchema, LoginFormValues } from "@/schemas/authForm";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
   const form = useForm<LoginFormValues>({
@@ -18,8 +19,28 @@ const Login = () => {
     },
   });
 
-  const onSubmit = (values: LoginFormValues) => {
-    console.log(values);
+  const router = useRouter();
+
+  const onSubmit = async (values: LoginFormValues) => {
+    const response = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      alert(`Error in Registration: ${errorData.error}: ${errorData.details}`);
+      throw new Error(errorData.error || "Failed to Login");
+    }
+
+    const body = await response.json();
+
+    if (body.userSurveyed === false) {
+      router.push("/register/survey");
+    } else {
+      router.push("/dashboard/profile");
+    }
   };
 
   return (
@@ -29,7 +50,9 @@ const Login = () => {
       </header>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-4">
           <FormInput
             placeholder="Example@mail.com"
             name="email"
@@ -50,12 +73,16 @@ const Login = () => {
 
           <div>
             <p className="text-lg">Don&apos;t have an account?</p>
-            <Link href="/register" className="underline">
+            <Link
+              href="/register"
+              className="underline">
               Register here
             </Link>
           </div>
 
-          <Button type="submit" className="w-full py-6 px-4 text-lg">
+          <Button
+            type="submit"
+            className="w-full py-6 px-4 text-lg">
             Login
           </Button>
         </form>
@@ -68,9 +95,14 @@ const Login = () => {
       </div>
 
       <div className="flex items-center justify-center gap-4 mt-6">
-        <ThirdPartyButtons onClick={() => {}} icon="apple" />
-        <ThirdPartyButtons onClick={() => {}} icon="github" />
-        <ThirdPartyButtons onClick={() => {}} icon="google" />
+        <ThirdPartyButtons
+          onClick={() => {}}
+          icon="github"
+        />
+        <ThirdPartyButtons
+          onClick={() => {}}
+          icon="google"
+        />
       </div>
     </>
   );
