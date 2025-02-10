@@ -1,5 +1,3 @@
-// import prisma from "../services/prisma.js";
-import { NextResponse } from "next/server";
 import * as authService from "../services/authService";
 
 // register
@@ -28,26 +26,20 @@ export const loginUser = async (email: string, password: string) => {
   try {
     const user = await authService.findUserByEmail(email);
     if (!user || !user.credentials) {
-      return NextResponse.json(
-        { error: "Can't find a user with that email and password" },
-        { status: 401 }
-      );
+      throw new Error("Can't find a user with that email and password");
     }
 
     if (
       user.credentials.type !== "PASSWORDHASH" ||
       !authService.validatePassword(password, user.credentials.value)
     ) {
-      return NextResponse.json(
-        { error: "Invalid Credentials" },
-        { status: 401 }
-      );
+      throw new Error("Invalid Credentials");
     }
 
     const token = authService.generateToken(user.id);
-    return { token, message: "User Found and Authenticated" };
+    return { token, user, message: "User Found and Authenticated" };
   } catch (err) {
-    console.error("Error in login:", err);
-    return NextResponse.json({ error: "Failed to login" }, { status: 500 });
+    console.error("Login Failed:", err);
+    throw err;
   }
 };

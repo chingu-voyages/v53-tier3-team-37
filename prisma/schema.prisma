@@ -35,6 +35,8 @@ model User {
   healthIssues     HealthIssue[] @map("health_issues")
   activeDiet       Diet?         @map("active_diet")
 
+  surveyed Boolean @default(false)
+
   favorites Favorite[]
 
   roles           Roles[]

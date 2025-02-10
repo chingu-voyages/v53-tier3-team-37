@@ -9,11 +9,9 @@ import { questions } from "./config";
 import { QuestionCard } from "./question-card";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 
 const SurveyPage = () => {
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
-  const router = useRouter();
 
   const form = useForm<SurveyData>({
     resolver: zodResolver(surveySchema),
@@ -53,19 +51,7 @@ const SurveyPage = () => {
   const onSubmit = async (data: SurveyData) => {
     try {
       // API call here
-      const response = await fetch("/api/user/healthProfile", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        console.error("Failed to submit survey.");
-      } else {
-        router.push("/dashboard");
-      }
+      console.log(data);
     } catch (error) {
       console.error(error);
     }
@@ -87,7 +73,7 @@ const SurveyPage = () => {
 
   // const submitSurvey = async () => {
   //   try {
-  //     const response = await fetch("/api/user/healthProfile", {
+  //     const response = await fetch("/api/survey", {
   //       method: "POST",
   //       headers: {
   //         "Content-Type": "application/json",

@@ -16,9 +16,19 @@ export async function POST(req: NextRequest) {
     }
 
     const { email, password } = validationResult.data;
-    const response = await loginUser(email, password!);
+    const { token, user, message } = await loginUser(email, password!);
 
-    return response;
+    const res = NextResponse.json(
+      { message, userSurveyed: user.surveyed },
+      { status: 200 }
+    );
+    res.cookies.set("jwt", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      sameSite: "strict",
+    });
+    return res;
   } catch (err) {
     console.error("Error in the Login Route", err);
     return NextResponse.json(
