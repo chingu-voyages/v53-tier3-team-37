@@ -1,7 +1,9 @@
+"use client";
 import Navbar from "@/components/navigation/NavBar";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-
+  const router = useRouter();
   return (
     <>
       <Navbar />
@@ -14,12 +16,11 @@ export default function Home() {
           Your personal recipe assistant, tailored for you.
         </p>
         <div className="mt-6">
-          <a
-            href="#"
+          <button
             className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 transition duration-300"
-          >
+            onClick={() => router.push("/register")}>
             Get Started
-          </a>
+          </button>
         </div>
       </div>
     </>

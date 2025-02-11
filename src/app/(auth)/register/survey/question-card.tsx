@@ -37,8 +37,7 @@ export function QuestionCard({ question, form, position }: QuestionCardProps) {
               : position === "after"
               ? "translate-x-full opacity-0"
               : "translate-x-0 opacity-100"
-          }`}
-    >
+          }`}>
       <CardHeader>
         <h2 className="text-xl font-bold text-center">{question.question}</h2>
       </CardHeader>
@@ -49,7 +48,10 @@ export function QuestionCard({ question, form, position }: QuestionCardProps) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <InputComponent field={field} question={question} />
+                <InputComponent
+                  field={field}
+                  question={question}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -81,13 +83,17 @@ const InputComponent = ({ field, question }: InputProps) => {
 
     case "select":
       return (
-        <Select onValueChange={field.onChange} value={field.value?.toString()}>
+        <Select
+          onValueChange={field.onChange}
+          value={field.value?.toString()}>
           <SelectTrigger>
             <SelectValue placeholder={question.placeholder} />
           </SelectTrigger>
           <SelectContent>
             {question.options?.map(({ value, label }) => (
-              <SelectItem key={value} value={value.toString()}>
+              <SelectItem
+                key={value}
+                value={value.toString()}>
                 {label}
               </SelectItem>
             ))}
@@ -108,7 +114,9 @@ const InputComponent = ({ field, question }: InputProps) => {
                 checkboxValues.length > 0);
 
             return (
-              <div key={value} className="flex items-center space-x-2">
+              <div
+                key={value}
+                className="flex items-center space-x-2">
                 <Checkbox
                   id={`${question.id}-${value}`}
                   checked={checkboxValues.includes(value)}
@@ -126,8 +134,7 @@ const InputComponent = ({ field, question }: InputProps) => {
                 />
                 <label
                   htmlFor={`${question.id}-${value}`}
-                  className={isDisabled ? "text-gray-400" : ""}
-                >
+                  className={isDisabled ? "text-gray-400" : ""}>
                   {label}
                 </label>
               </div>

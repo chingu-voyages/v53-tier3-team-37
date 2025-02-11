@@ -48,7 +48,7 @@ export async function PATCH(req: NextRequest) {
       activeDiet
     );
 
-    return response;
+    return NextResponse.json({ message: response }, { status: 200 });
   } catch (err) {
     console.error("Error in the Update Health Profile Route", err);
     return NextResponse.json(
