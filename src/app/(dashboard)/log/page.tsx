@@ -51,13 +51,13 @@ const dummyMealData: Record<string, FoodItem[]> = {
 
 const FoodLogPage = () => {
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="h-[calc(100vh-4.5rem)] flex flex-col bg-gray-100">
       <header className="p-4 bg-white shadow">
         <h1 className="text-2xl font-bold">Food Log</h1>
       </header>
-      <main className="space-y-4">
+      <section className="space-y-4 overflow-y-auto flex-1">
         {/* Summary section containing overall nutrition data */}
-        {/* <FoodSummary mealData={dummyMealData} /> */}
+        <FoodSummary mealData={dummyMealData} />
 
         {/* Meal sections for the day */}
         <div className="space-y-4">
@@ -68,7 +68,7 @@ const FoodLogPage = () => {
           <MealSection mealType="Lunch" items={dummyMealData.lunch || []} />
           <MealSection mealType="Dinner" items={dummyMealData.dinner || []} />
         </div>
-      </main>
+      </section>
     </div>
   );
 };

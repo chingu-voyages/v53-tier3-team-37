@@ -15,6 +15,7 @@ import {
   Tooltip,
   CartesianGrid,
 } from "recharts";
+import { CurrCalories } from "./curr-calories";
 
 const mockMacroData = [
   { name: "Protein", value: 90 },
@@ -38,58 +39,7 @@ const FoodSummary = ({
 
   return (
     <div className="space-y-4 p-4">
-      <Card>
-        <CardHeader>
-          <CardTitle>Total Calories Consumed</CardTitle>
-          <CardDescription>{totalCalories} kcal</CardDescription>
-        </CardHeader>
-      </Card>
-
-      <div className="grid grid-cols-2 gap-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Water Intake</CardTitle>
-            <CardDescription>{totalWater / 1000} L</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <LineChart
-              data={[
-                { time: "Morning", value: 500 },
-                { time: "Afternoon", value: 700 },
-                { time: "Evening", value: 800 },
-              ]}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="time" />
-              <YAxis />
-              <Tooltip />
-              <Line
-                type="monotone"
-                dataKey="value"
-                stroke="#00aaff"
-                strokeWidth={2}
-              />
-            </LineChart>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Macros Breakdown</CardTitle>
-            <CardDescription>Today&#39;s macronutrients</CardDescription>
-          </CardHeader>
-          <CardContent>
-            \{" "}
-            <LineChart data={mockMacroData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Line dataKey="value" stroke="#ff5555" strokeWidth={2} />
-            </LineChart>
-          </CardContent>
-        </Card>
-      </div>
+      <CurrCalories totalCalories={totalCalories} />
     </div>
   );
 };

@@ -18,17 +18,24 @@ const MealSection = ({
           {items.map((item) => (
             <li
               key={item.id}
-              className="flex justify-between p-2 bg-gray-50 rounded"
+              className="flex  gap-2 bg-slate-700/60 backdrop-blur-sm rounded"
             >
               <Image
                 src={item.image}
                 alt={item.name}
-                width={150}
-                height={150}
-                className="rounded-md object-cover "
+                width={100}
+                height={100}
+                className="rounded-md object-cover w-[120px] h-[120px] aspect-square"
               />
-              <span>{item.name}</span>
-              <span>{item.calories} kcal</span>
+              <div className="flex flex-col p-2 gap-2 text-white">
+                <h1 className="text-xl font-semibold">{item.name}</h1>
+                <div className="flex text-center  gap-2">
+                  <span>{item.calories} kcal</span>
+                  <span>{item.protein}g protein</span>
+                  <span>{item.carbs}g carbs</span>
+                  <span>{item.fat}g fat</span>
+                </div>
+              </div>
             </li>
           ))}
         </ul>
