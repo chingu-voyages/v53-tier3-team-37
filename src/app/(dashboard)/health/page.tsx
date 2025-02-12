@@ -35,12 +35,12 @@ export default function HealthTracker() {
 
   const handleAddCalories = () => {
     setCalories((prev) => prev + Number(inputCalories));
-    setInputCalories("");
+    setInputCalories(0);
   };
 
   const handleAddProtein = () => {
     setProtein((prev) => prev + Number(inputProtein));
-    setInputProtein("");
+    setInputProtein(0);
   };
 
   return (
