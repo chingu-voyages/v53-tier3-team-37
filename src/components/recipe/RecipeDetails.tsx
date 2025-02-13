@@ -48,51 +48,65 @@ const RecipeDetails:React.FC<RecipeDetailsProps> = ({ recipe, onClose }) => {
   };
 
   return (
+<div className="flex-1 px-2 flex flex-col min-h-0">
+  {/* Close Button */}
+  <button
+    className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+    onClick={onClose}
+  >
+    <X size={24} />
+  </button>
 
-      <div>
-        <button
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-          onClick={onClose}
-        >
-          <X size={24} />
-        </button>
-        
-        <h2 className="text-2xl font-semibold text-gray-800 text-center mt-4">{recipe.title}</h2>
+  {/* Title */}
+  <h2 className="text-2xl font-semibold text-gray-800 text-center mt-4">
+    {recipe.title}
+  </h2>
 
-        
-        <div className="flex-1 overflow-y-auto px-2">
-          <h3 className="text-xl font-semibold mb-4">Ingredients</h3>
-          <ul className="max-h-48 overflow-y-auto pr-2">
-            {recipe.nutrition.ingredients.map((ingredient, index) => (
-              <li key={ingredient.name} className="flex justify-between items-center bg-gray-100 p-2 rounded-md">
-                <span
-                  className={`text-gray-800 transition-all ${checkedIngredients.has(ingredient.name) ? "line-through opacity-50" : ""}`}>{ingredient.name} ({ingredient.amount*(recipe.servings)} {ingredient.unit})</span>
-                <input
-                  type="checkbox"
-                  checked={checkedIngredients.has(ingredient.name)}
-                  onChange={() => toggleIngredient(ingredient.name)}
-                  className="w-5 h-5"
-                />
-              </li>
-            ))}
-          </ul>
-        </div>
+  {/* Ingredients Section */}
+  <div className="flex-1 min-h-0 flex flex-col">
+    <h3 className="text-xl font-semibold mb-4">Ingredients</h3>
+    <ul className="flex-1 min-h-0 overflow-y-auto pr-2 bg-gray-100 rounded-md">
+      {recipe.nutrition.ingredients.map((ingredient) => (
+        <li key={ingredient.name} className="flex justify-between items-center p-2">
+          <span
+            className={`text-gray-800 transition-all ${
+              checkedIngredients.has(ingredient.name) ? "line-through opacity-50" : ""
+            }`}
+          >
+            {ingredient.name} ({ingredient.amount * recipe.servings} {ingredient.unit})
+          </span>
+          <input
+            type="checkbox"
+            checked={checkedIngredients.has(ingredient.name)}
+            onChange={() => toggleIngredient(ingredient.name)}
+            className="w-5 h-5"
+          />
+        </li>
+      ))}
+    </ul>
+  </div>
 
-        <div className="mt-6">
-          <h3 className="text-xl font-semibold mt-6 mb-4">Steps</h3>
-          <ol className="mt-2 space-y-3 list-decimal list-inside bg-gray-100 pr-2 rounded-md max-h-64 overflow-y-auto">
-            {recipe.analyzedInstructions[0].steps.map((step) => (
-              <li key={step.number} className="text-gray-700">{step.step}</li>
-            ))}
-          </ol>
-        </div>
-        <button
-          className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
-          onClick={() => addToDailyTracker(recipe.nutrition.nutrients[0].amount, recipe.nutrition.nutrients[10].amount)}
-        >
-          Add to Daily Tracker
-        </button>
-      </div>
+  {/* Steps Section */}
+  <div className="flex-1 min-h-0 flex flex-col mt-6">
+    <h3 className="text-xl font-semibold mb-4">Steps</h3>
+    <ol className="flex-1 min-h-0 overflow-y-auto bg-gray-100 pr-2 rounded-md pl-5 rounded-md list-decimal list-inside space-y-3">
+      {recipe.analyzedInstructions[0].steps.map((step) => (
+        <li key={step.number} className="text-gray-700">{step.step}</li>
+      ))}
+    </ol>
+  </div>
+
+  {/* Add to Daily Tracker Button */}
+  <button
+    className="w-full bg-primary text-white px-6 py-3 rounded-lg shadow-lg mt-4"
+    onClick={() => addToDailyTracker(
+      recipe.nutrition.nutrients[0].amount, 
+      recipe.nutrition.nutrients[10].amount
+    )}
+  >
+    Add to Daily Tracker
+  </button>
+</div>
   );
 };
 
