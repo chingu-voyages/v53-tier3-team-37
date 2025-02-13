@@ -25,6 +25,20 @@ const RecipeDetails:React.FC<RecipeDetailsProps> = ({ recipe, onClose }) => {
     });
   };
 
+  const addToDailyTracker = (calories: number, protein: number) => {
+    // Get the current stored values
+    const storedCalories = Number(localStorage.getItem("dailyCalories")) || 0;
+    const storedProtein = Number(localStorage.getItem("dailyProtein")) || 0;
+  
+    // Update values
+    const newCalories = storedCalories + calories;
+    const newProtein = storedProtein + protein;
+  
+    // Save back to localStorage
+    localStorage.setItem("dailyCalories", newCalories.toString());
+    localStorage.setItem("dailyProtein", newProtein.toString());
+  };
+
   return (
 
       <div>
@@ -64,6 +78,12 @@ const RecipeDetails:React.FC<RecipeDetailsProps> = ({ recipe, onClose }) => {
             ))}
           </ol>
         </div>
+        <button
+          className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+          onClick={() => addToDailyTracker(recipe.nutrition.nutrients[0].amount, recipe.nutrition.nutrients[10].amount)}
+        >
+          Add to Daily Tracker
+        </button>
       </div>
   );
 };

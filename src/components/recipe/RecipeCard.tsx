@@ -12,6 +12,7 @@ interface RecipeCardProps {
 const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
+
   return (
     <div className="flex justify-center items-center min-h-screen w-full px-4 sm:px-6" style={{ perspective: "1000px" }}>
       <motion.div

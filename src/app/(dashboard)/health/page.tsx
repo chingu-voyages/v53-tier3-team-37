@@ -43,6 +43,11 @@ export default function HealthTracker() {
     setInputProtein(0);
   };
 
+  const addFromRecipe = (calories: number, protein: number) => {
+    setCalories((prev) => prev + calories);
+    setProtein((prev) => prev + protein);
+  };
+
   return (
     <div className="p-4 bg-white shadow-md rounded-lg h-full">
       <h2 className="text-xl font-semibold">Daily Health Tracker</h2>
