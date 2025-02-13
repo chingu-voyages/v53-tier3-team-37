@@ -20,7 +20,7 @@ const FoodSummary = ({
   const totalFat = 30;
 
   return (
-    <div className="space-y-4 p-4">
+    <div className="space-y-4 ">
       <CurrCalories totalCalories={totalCalories} />
 
       <h2 className="text-4xl font-bold">Today&apos;s Total Macros</h2>

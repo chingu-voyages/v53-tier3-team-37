@@ -1,7 +1,7 @@
 "use client";
 
 import { SearchBar } from "./components/search-bar";
-import NutrientFilters from "./components/nutrient-filters";
+// import NutrientFilters from "./components/nutrient-filters";
 import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -65,7 +65,7 @@ const SearchForm = () => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-4">
           <SearchBar form={form} />
 
-          <NutrientFilters form={form} />
+          {/* <NutrientFilters form={form} /> */}
 
           <div className="flex justify-center items-center fixed bottom-20 w-full inset-x-0 px-4">
             <Button

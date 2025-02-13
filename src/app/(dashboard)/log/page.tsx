@@ -60,7 +60,7 @@ const FoodLogPage = () => {
         <FoodSummary mealData={dummyMealData} />
 
         <h2 className="text-4xl font-bold pl-4">Meals</h2>
-        <div className="space-y-4">
+        <div className="space-y-4 ">
           <MealSection
             mealType="Breakfast"
             items={dummyMealData.breakfast || []}
