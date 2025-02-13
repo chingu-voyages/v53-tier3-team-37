@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { RecipeResult, Ingredient } from '../../app/(dashboard)/recipes/definitions/definitions';
 import { X } from "lucide-react";
+import { toast } from '@/hooks/use-toast';
 
 interface RecipeDetailsProps {
   recipe: RecipeResult;
@@ -37,6 +38,11 @@ const RecipeDetails:React.FC<RecipeDetailsProps> = ({ recipe, onClose }) => {
     // Save back to localStorage
     localStorage.setItem("dailyCalories", newCalories.toString());
     localStorage.setItem("dailyProtein", newProtein.toString());
+
+    toast({
+      title: "Nutrition Added!",
+      description: `+${calories} kcal | +${protein}g protein`,
+    });
   };
 
   return (
