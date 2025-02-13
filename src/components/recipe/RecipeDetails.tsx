@@ -14,6 +14,8 @@ interface RecipeDetailsProps {
 const RecipeDetails:React.FC<RecipeDetailsProps> = ({ recipe, onClose }) => {
   const [checkedIngredients, setCheckedIngredients] = useState<Set<string>>(new Set());
 
+
+  console.log("dailyCalories: ", localStorage.getItem('dailyCalories'), " dailyProtein: ", localStorage.getItem('dailyProtein'))
   const toggleIngredient = (ingredient: string) => {
     setCheckedIngredients((prev) => {
       const newSet = new Set(prev);
@@ -28,8 +30,8 @@ const RecipeDetails:React.FC<RecipeDetailsProps> = ({ recipe, onClose }) => {
 
   const addToDailyTracker = (calories: number, protein: number) => {
     // Get the current stored values
-    const storedCalories = Number(localStorage.getItem("dailyCalories")) || 0;
-    const storedProtein = Number(localStorage.getItem("dailyProtein")) || 0;
+    const storedCalories = Number(localStorage.getItem("dailyCalories")) ?? 0;
+    const storedProtein = Number(localStorage.getItem("dailyProtein")) ?? 0;
   
     // Update values
     const newCalories = storedCalories + calories;

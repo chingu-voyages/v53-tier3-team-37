@@ -10,14 +10,15 @@ export default function HealthTracker() {
   const { data: session } = useSession();
   const userId = session?.user?.id;
 
-  const [calories, setCalories] = useState(0);
-  const [protein, setProtein] = useState(0);
+  const [calories, setCalories] = useState(Number(localStorage.getItem('dailyCalories')) ?? 0);
+  const [protein, setProtein] = useState(Number(localStorage.getItem('dailyProtein')) ?? 0);
   const [inputCalories, setInputCalories] = useState(0);
   const [inputProtein, setInputProtein] = useState(0);
 
   const calorieGoal = 3000;
   const proteinGoal = 150;
 
+  console.log("dailyCalories: ", localStorage.getItem('dailyCalories'), " dailyProtein: ", localStorage.getItem('dailyProtein'))
   // Load existing data from localStorage (for persistence)
   useEffect(() => {
     const storedCalories = localStorage.getItem("dailyCalories");
