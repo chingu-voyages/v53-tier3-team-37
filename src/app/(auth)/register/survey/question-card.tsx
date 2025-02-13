@@ -19,46 +19,67 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { questions } from "./config";
 import { SurveyData } from "@/schemas/authForm";
+import { motion, Variants } from "framer-motion";
 
 interface QuestionCardProps {
   question: (typeof questions)[number];
   isActive: boolean;
   form: UseFormReturn<SurveyData>;
-  position: "before" | "current" | "after";
+  direction: number;
 }
 
-export function QuestionCard({ question, form, position }: QuestionCardProps) {
+const slideVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? "100%" : "-100%",
+    opacity: 0,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+  },
+  exit: (direction: number) => ({
+    x: direction < 0 ? "100%" : "-100%",
+    opacity: 0,
+  }),
+} as const;
+
+export function QuestionCard({ question, form, direction }: QuestionCardProps) {
   return (
-    <Card
-      className={`absolute w-11/12 max-w-md p-6 bg-transparent shadow-lg rounded-lg 
-          transform transition-transform duration-500 ${
-            position === "before"
-              ? "-translate-x-full opacity-0"
-              : position === "after"
-              ? "translate-x-full opacity-0"
-              : "translate-x-0 opacity-100"
-          }`}>
-      <CardHeader>
-        <h2 className="text-xl font-bold text-center">{question.question}</h2>
-      </CardHeader>
-      <CardContent>
-        <FormField
-          control={form.control}
-          name={question.id}
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <InputComponent
-                  field={field}
-                  question={question}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </CardContent>
-    </Card>
+    <motion.div
+      custom={direction}
+      variants={slideVariants as Variants}
+      initial="enter"
+      animate="center"
+      exit="exit"
+      transition={{
+        x: { type: "spring", stiffness: 300, damping: 30 },
+        opacity: { duration: 0.2 },
+      }}
+      className=" w-full max-w-md"
+    >
+      <Card
+        className={` max-w-md p-6 bg-transparent shadow-lg rounded-lg 
+          transform transition-transform duration-500`}
+      >
+        <CardHeader>
+          <h2 className="text-xl font-bold text-center">{question.question}</h2>
+        </CardHeader>
+        <CardContent>
+          <FormField
+            control={form.control}
+            name={question.id}
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <InputComponent field={field} question={question} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 }
 
@@ -83,17 +104,13 @@ const InputComponent = ({ field, question }: InputProps) => {
 
     case "select":
       return (
-        <Select
-          onValueChange={field.onChange}
-          value={field.value?.toString()}>
+        <Select onValueChange={field.onChange} value={field.value?.toString()}>
           <SelectTrigger>
             <SelectValue placeholder={question.placeholder} />
           </SelectTrigger>
           <SelectContent>
             {question.options?.map(({ value, label }) => (
-              <SelectItem
-                key={value}
-                value={value.toString()}>
+              <SelectItem key={value} value={value.toString()}>
                 {label}
               </SelectItem>
             ))}
@@ -102,7 +119,7 @@ const InputComponent = ({ field, question }: InputProps) => {
       );
     case "multiselect":
       const checkboxValues = (field.value || []) as string[];
-      const isNoneSelected = checkboxValues.includes("none");
+      const isNoneSelected = checkboxValues.includes("NONE");
 
       return (
         <div className="space-y-2">
@@ -114,9 +131,7 @@ const InputComponent = ({ field, question }: InputProps) => {
                 checkboxValues.length > 0);
 
             return (
-              <div
-                key={value}
-                className="flex items-center space-x-2">
+              <div key={value} className="flex items-center space-x-2">
                 <Checkbox
                   id={`${question.id}-${value}`}
                   checked={checkboxValues.includes(value)}
@@ -134,7 +149,8 @@ const InputComponent = ({ field, question }: InputProps) => {
                 />
                 <label
                   htmlFor={`${question.id}-${value}`}
-                  className={isDisabled ? "text-gray-400" : ""}>
+                  className={isDisabled ? "text-gray-400" : ""}
+                >
                   {label}
                 </label>
               </div>

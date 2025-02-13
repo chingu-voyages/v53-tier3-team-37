@@ -9,9 +9,11 @@ import { questions } from "./config";
 import { QuestionCard } from "./question-card";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
+import { AnimatePresence } from "framer-motion";
 
 const SurveyPage = () => {
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
+  const [direction, setDirection] = useState(1);
 
   const form = useForm<SurveyData>({
     resolver: zodResolver(surveySchema),
@@ -49,6 +51,7 @@ const SurveyPage = () => {
   };
 
   const onSubmit = async (data: SurveyData) => {
+    console.log("submitted");
     try {
       // API call here
       console.log(data);
@@ -59,14 +62,17 @@ const SurveyPage = () => {
 
   const nextQuestion = () => {
     if (currentQuestion < questions.length - 1) {
+      setDirection(1);
       setCurrentQuestion((prev) => prev + 1);
     } else {
-      form.handleSubmit(onSubmit)();
+      const data = form.getValues();
+      onSubmit(data);
     }
   };
 
   const prevQuestion = () => {
     if (currentQuestion > 0) {
+      setDirection(-1);
       setCurrentQuestion((prev) => prev - 1);
     }
   };
@@ -95,46 +101,39 @@ const SurveyPage = () => {
 
   return (
     <Form {...form}>
-      <form className="relative flex flex-col  items-center w-full justify-center h-[calc(100vh-17rem)] bg-transparent overflow-hidden">
-        <div className="absolute top-4 w-10/12 max-w-md">
-          <Progress
-            value={progress}
-            className="rounded-full"
-          />
+      <form className="relative flex flex-col items-center w-full bg-transparent space-y-4">
+        <div className=" top-4 w-10/12 max-w-md">
+          <Progress value={progress} className="rounded-full" />
         </div>
 
-        <div className="relative w-full h-[calc(100%-6rem)] flex justify-center overflow-hidden">
-          {questions.map((q, index) => (
+        <div className="relative w-full flex justify-center">
+          <AnimatePresence initial={false} mode="wait" custom={direction}>
             <QuestionCard
-              key={q.id}
-              question={q}
-              isActive={index === currentQuestion}
-              position={
-                index === currentQuestion
-                  ? "current"
-                  : index < currentQuestion
-                  ? "before"
-                  : "after"
-              }
+              key={currentQuestion}
+              question={questions[currentQuestion]}
+              isActive={true}
               form={form}
+              direction={direction}
             />
-          ))}
+          </AnimatePresence>
         </div>
 
-        <div className="absolute bottom-4 w-10/12 max-w-md flex justify-between">
+        <div className="  bottom-4 w-10/12 max-w-md flex justify-between">
           <Button
             type="button"
             variant="outline"
             onClick={prevQuestion}
-            className={`${currentQuestion > 0 ? "visible" : "invisible"}`}>
+            className={`${currentQuestion > 0 ? "visible" : "invisible"}`}
+          >
             Previous
           </Button>
 
           <Button
-            type="button"
+            type={"button"}
             onClick={nextQuestion}
             className={currentQuestion > 0 ? "ml-auto" : ""}
-            disabled={!isCurrentFieldValid || !hasValue()}>
+            disabled={!isCurrentFieldValid || !hasValue()}
+          >
             {currentQuestion === questions.length - 1 ? "Submit" : "Next"}
           </Button>
         </div>

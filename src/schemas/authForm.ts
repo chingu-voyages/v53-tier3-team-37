@@ -87,6 +87,7 @@ export const surveySchema = z.object({
       "ALCOHOL",
       "BEEF",
       "PORK",
+      "NONE",
     ])
   ),
   healthConditions: z.array(
@@ -98,6 +99,7 @@ export const surveySchema = z.object({
       "OBESITY",
       "KIDNEY_DISEASE",
       "HEART_DISEASE",
+      "NONE",
     ])
   ),
   activeDiet: z.enum([
@@ -107,6 +109,7 @@ export const surveySchema = z.object({
     "VEGAN",
     "CARNIVORE",
     "ATKINS",
+    "NONE",
   ]),
 });
 
