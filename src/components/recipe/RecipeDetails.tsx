@@ -89,7 +89,7 @@ const RecipeDetails:React.FC<RecipeDetailsProps> = ({ recipe, onClose }) => {
   {/* Steps Section */}
   <div className="flex-1 min-h-0 flex flex-col mt-6">
     <h3 className="text-xl font-semibold mb-4">Steps</h3>
-    <ol className="flex-1 min-h-0 overflow-y-auto bg-gray-100 pr-2 rounded-md pl-5 rounded-md list-decimal list-inside space-y-3">
+    <ol className="flex-1 min-h-0 overflow-y-auto bg-gray-100 pr-2 pl-5 rounded-md list-decimal list-inside space-y-3">
       {recipe.analyzedInstructions[0].steps.map((step) => (
         <li key={step.number} className="text-gray-700">{step.step}</li>
       ))}

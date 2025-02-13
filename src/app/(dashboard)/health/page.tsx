@@ -21,12 +21,47 @@ export default function HealthTracker() {
   console.log("dailyCalories: ", localStorage.getItem('dailyCalories'), " dailyProtein: ", localStorage.getItem('dailyProtein'))
   // Load existing data from localStorage (for persistence)
   useEffect(() => {
-    const storedCalories = localStorage.getItem("dailyCalories");
-    const storedProtein = localStorage.getItem("dailyProtein");
+    const storedCalories = Number(localStorage.getItem("dailyCalories"));
+    const storedProtein = Number(localStorage.getItem("dailyProtein"));
 
     if (storedCalories) setCalories(Number(storedCalories));
     if (storedProtein) setProtein(Number(storedProtein));
+    const checkAndSendData = () => {
+      const lastReset = localStorage.getItem("lastReset");
+      const today = new Date().toISOString().split("T")[0];
+
+      if (lastReset !== today) {
+        sendDailyData(storedCalories, storedProtein);
+        localStorage.setItem("lastReset", today);
+        resetTracker();
+      }
+    };
+
+    checkAndSendData();
   }, []);
+
+  const sendDailyData = async (calories: number, protein: number) => {
+    if (calories === 0 && protein === 0) return; // Don't send empty data
+
+    try {
+      await fetch("/api/health", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ calories, protein, date: new Date().toISOString() }),
+      });
+
+      console.log("Daily health data sent!");
+    } catch (error) {
+      console.error("Error sending data:", error);
+    }
+  };
+
+  const resetTracker = () => {
+    localStorage.setItem("dailyCalories", "0");
+    localStorage.setItem("dailyProtein", "0");
+    setCalories(0);
+    setProtein(0);
+  };
 
   // Save to localStorage when state updates
   useEffect(() => {
@@ -44,10 +79,7 @@ export default function HealthTracker() {
     setInputProtein(0);
   };
 
-  const addFromRecipe = (calories: number, protein: number) => {
-    setCalories((prev) => prev + calories);
-    setProtein((prev) => prev + protein);
-  };
+
 
   return (
     <div className="p-4 bg-white shadow-md rounded-lg h-full">
