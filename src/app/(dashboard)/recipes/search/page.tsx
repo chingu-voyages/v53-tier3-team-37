@@ -7,13 +7,14 @@
 // import { useForm } from "react-hook-form";
 // import { recipeSearchSchema, RecipeSearchValues } from "@/schemas/recipeSearch";
 import { useState } from "react";
-// import SearchSubmit from "./components/search-submit";
+import SearchSubmit from "./components/search-submit";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { Plus, X } from "lucide-react";
+import { Plus, SearchIcon, X } from "lucide-react";
 
 const SearchForm = () => {
-  // const [showDialog, setShowDialog] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
+  const [recipe, setRecipe] = useState<string>("");
   const [ingredient, setIngredient] = useState<string>("");
   const [list, setList] = useState<string[]>([]);
   const router = useRouter();
@@ -44,12 +45,22 @@ const SearchForm = () => {
   const addIngredient = (ingredient: string) => {
     if (ingredient === "") return;
     setList([...list, ingredient]);
+    setShowDialog(false);
     setIngredient("");
     console.log(list);
   };
 
   const handleSearch = (list: string[]) => {
     const params = new URLSearchParams();
+
+    if (list.length === 0 && recipe === "") {
+      setShowDialog(true);
+      return;
+    }
+
+    if (recipe !== "") {
+      params.set("q", recipe);
+    }
 
     if (list.length > 0) {
       params.set("includeIngredients", list.join(","));
@@ -66,8 +77,8 @@ const SearchForm = () => {
   };
 
   return (
-    <main className="flex-1 pt-8 space-y-4">
-      <header className="px-4">
+    <section className=" pt-8 space-y-4 h-full flex flex-col">
+      <header className="px-4 pb-2 border-b border-black/20 shadow-lg">
         <h1 className="text-4xl font-bold">Recipes</h1>
       </header>
 
@@ -76,34 +87,54 @@ const SearchForm = () => {
       {/* <SearchBar form={form} /> */}
 
       {/* <NutrientFilters form={form} /> */}
+      <div className=" flex flex-col pt-32 p-4 flex-1 ">
+        <div className="space-y-4">
+          <h2 className="text-2xl ">Search for a recipe by name</h2>
+          <div className="border-b border-black flex gap-2">
+            <SearchIcon className="w-6 h-6 text-black" />
+            <input
+              placeholder="Enter recipe name"
+              className="w-full ring-0 outline-none text-xl bg-transparent"
+              value={recipe}
+              onChange={(e) => setRecipe(e.target.value)}
+            />
+          </div>
+        </div>
 
-      <div className="flex items-center gap-2 border-b border-black h-10 mx-4 ">
-        <input
-          placeholder="Add an ingredient"
-          className="w-full h-full ring-0 outline-none bg-transparent"
-          value={ingredient}
-          onChange={(e) => setIngredient(e.target.value)}
-        />
-        <button onClick={() => addIngredient(ingredient)}>
-          <Plus className="w-5 h-5 text-black" />
-        </button>
+        <div className="space-y-4 mt-32">
+          <h2 className="text-2xl mt-8">Add ingredients to exclude</h2>
+          <div className=" flex  gap-2 border-b border-black">
+            <input
+              placeholder="Add an ingredient"
+              className="w-full ring-0 outline-none text-xl bg-transparent"
+              value={ingredient}
+              onChange={(e) => setIngredient(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  addIngredient(ingredient);
+                }
+              }}
+            />
+            <button onClick={() => addIngredient(ingredient)}>
+              <Plus className="w-6 h-6 text-black" />
+            </button>
+          </div>
+        </div>
       </div>
 
       <div className="flex flex-wrap gap-2 mx-4">
         {list.map((item, index) => (
-          <span
+          <button
             key={index}
-            className="bg-gray-200 pr-2  py-2 text-center rounded-md flex items-center gap-2 group text-sm pl-6"
+            onClick={() => {
+              const newList = list.filter((_, i) => i !== index);
+              setList(newList);
+            }}
+            className="bg-gray-200 pr-2 text-md py-2 text-center group rounded-md flex items-center gap-2 group pl-6 hover:bg-gray-300 transition-colors"
           >
             {item}
-            <X
-              className="w-4 h-4 text-red-500 cursor-pointer opacity-0 group-hover:opacity-100"
-              onClick={() => {
-                const newList = list.filter((_, i) => i !== index);
-                setList(newList);
-              }}
-            />
-          </span>
+            <X className="w-4 h-4 text-red-500 cursor-pointer opacity-0 group-hover:opacity-100" />
+          </button>
         ))}
       </div>
 
@@ -120,13 +151,14 @@ const SearchForm = () => {
       {/* </form>
       </Form> */}
 
-      {/* <SearchSubmit
+      <SearchSubmit
         showDialog={showDialog}
         setShowDialog={setShowDialog}
-        form={form}
-        handleSearch={handleSearch}
-      /> */}
-    </main>
+        // form={form}
+        // handleSearch={handleSearch}
+        router={router}
+      />
+    </section>
   );
 };
 
