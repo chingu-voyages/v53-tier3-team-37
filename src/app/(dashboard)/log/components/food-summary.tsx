@@ -1,27 +1,6 @@
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
 import { FoodItem } from "@/types/foodlogtypes";
-import {
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  CartesianGrid,
-} from "recharts";
 import { CurrCalories } from "./curr-calories";
-
-const mockMacroData = [
-  { name: "Protein", value: 90 },
-  { name: "Carbs", value: 150 },
-  { name: "Fat", value: 60 },
-];
+import { InfoCardChart } from "./info-card-chart";
 
 const FoodSummary = ({
   mealData,
@@ -36,10 +15,40 @@ const FoodSummary = ({
 
   // Example water intake in ml. You might later calculate this from tracked data.
   const totalWater = 2000;
+  const totalProtein = 100;
+  const totalCarbs = 200;
+  const totalFat = 30;
 
   return (
     <div className="space-y-4 p-4">
       <CurrCalories totalCalories={totalCalories} />
+
+      <h2 className="text-4xl font-bold">Today&apos;s Total Macros</h2>
+      <div className="grid grid-cols-2 gap-4">
+        <InfoCardChart
+          title="Calories"
+          data={totalCalories}
+          unit="cal"
+          color="red"
+        />
+        <InfoCardChart
+          title="Protein"
+          data={totalProtein}
+          unit="g"
+          color="green"
+        />
+
+        <InfoCardChart
+          title="Carbs"
+          data={totalCarbs}
+          unit="g"
+          color="purple"
+        />
+
+        <InfoCardChart title="Fat" data={totalFat} unit="g" color="yellow" />
+
+        <InfoCardChart title="Water" data={totalWater} unit="ml" color="blue" />
+      </div>
     </div>
   );
 };

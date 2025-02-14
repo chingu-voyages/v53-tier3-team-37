@@ -86,7 +86,7 @@ model DailyHealthLog {
   protein  Int      @default(0)
   water    Int      @default(0)
   User     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId   String   @db.ObjectId
+  userId   String   @map("user_id") @db.ObjectId
 }
 
 enum ActivityLevel {

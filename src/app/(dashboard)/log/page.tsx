@@ -1,6 +1,7 @@
 import FoodSummary from "./components/food-summary";
 import MealSection from "./components/meal-section";
 import { FoodItem } from "@/types/foodlogtypes";
+import AddToLogButton from "./components/add-to-log";
 
 const dummyMealData: Record<string, FoodItem[]> = {
   breakfast: [
@@ -55,11 +56,10 @@ const FoodLogPage = () => {
       <header className="p-4 bg-white shadow">
         <h1 className="text-2xl font-bold">Food Log</h1>
       </header>
-      <section className="space-y-4 overflow-y-auto flex-1">
-        {/* Summary section containing overall nutrition data */}
+      <section className="space-y-4 overflow-y-auto flex-1 relative">
         <FoodSummary mealData={dummyMealData} />
 
-        {/* Meal sections for the day */}
+        <h2 className="text-4xl font-bold pl-4">Meals</h2>
         <div className="space-y-4">
           <MealSection
             mealType="Breakfast"
@@ -68,6 +68,8 @@ const FoodLogPage = () => {
           <MealSection mealType="Lunch" items={dummyMealData.lunch || []} />
           <MealSection mealType="Dinner" items={dummyMealData.dinner || []} />
         </div>
+
+        <AddToLogButton />
       </section>
     </div>
   );
