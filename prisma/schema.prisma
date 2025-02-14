@@ -1,0 +1,217 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGO_URL")
+}
+
+model User {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  email String @unique @db.String
+  name  String @db.String
+
+  age Int?
+  sex Gender?
+
+  credentials Credential?
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  starting_weight Float? @map("starting_weight")
+  current_weight  Float? @map("current_weight")
+  target_weight   Float? @map("target_weight")
+  height          Int?
+
+  lifestyle ActivityLevel?
+
+  foodRestrictions Sensitivity[] @map("food_restrictions")
+  healthIssues     HealthIssue[] @map("health_issues")
+  activeDiet       Diet?         @map("active_diet")
+
+  surveyed Boolean @default(false)
+
+  favorites Favorite[]
+
+  healthLogs DailyHealthLog[]
+
+  goals GoalTracking?
+
+  roles           Roles[]
+  OneTimePassword OneTimePassword?
+}
+
+model GoalTracking {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @unique @db.ObjectId
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  foodSetId     String @unique @db.ObjectId
+  exerciseSetId String @unique @db.ObjectId
+  sleepSetId    String @unique @db.ObjectId
+
+  food     Tracking @relation("FoodTracking", fields: [foodSetId], references: [id])
+  exercise Tracking @relation("ExerciseTracking", fields: [exerciseSetId], references: [id])
+  sleep    Tracking @relation("SleepTracking", fields: [sleepSetId], references: [id])
+}
+
+model Tracking {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  type   TrackingType
+  amount Int[]
+
+  goalTrackingFood     GoalTracking? @relation("FoodTracking")
+  goalTrackingExercise GoalTracking? @relation("ExerciseTracking")
+  goalTrackingSleep    GoalTracking? @relation("SleepTracking")
+}
+
+enum TrackingType {
+  FOOD
+  EXERCISE
+  SLEEP
+}
+
+model DailyHealthLog {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  date     DateTime @default(now())
+  calories Int      @default(0)
+  protein  Int      @default(0)
+  water    Int      @default(0)
+  User     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String   @map("user_id") @db.ObjectId
+}
+
+enum ActivityLevel {
+  SEDENTARY
+  LIGHT
+  MODERATE
+  VERY
+  SUPER
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum Roles {
+  ADMIN
+  DATA
+}
+
+enum Sensitivity {
+  PEANUTS
+  TREENUTS
+  FISH
+  SHELLFISH
+  SOY
+  EGG
+  WHEAT
+  DAIRY
+  SESAME
+  MUSTARD
+  GLUTEN
+
+  ALCOHOL
+  BEEF
+  PORK
+  NONE
+
+  // histamines will be later, they are more complex
+}
+
+enum HealthIssue {
+  IBS
+  DIABETES
+  HBP
+  CANCER
+  OBESITY
+  KIDNEY_DISEASE
+  HEART_DISEASE
+  NONE
+}
+
+enum Diet {
+  MEDITERRANEAN
+  KETO
+  PALEO
+  VEGAN
+  CARNIVORE
+  ATKINS
+  NONE
+}
+
+model Recipe {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  recipeId    Int         @unique
+  ingredients Json[]
+  imageURL    String
+  nutrition   Nutrition[]
+
+  favorites Favorite[]
+
+  @@map("recipes")
+}
+
+model Nutrition {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  recipeId String @db.ObjectId
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  name     String
+  amount   Float
+  unit     String
+
+  @@map("nutrition")
+}
+
+enum CredentialType {
+  OAUTH
+  PASSWORDHASH
+}
+
+model Credential {
+  id       String         @id @default(auto()) @map("_id") @db.ObjectId
+  type     CredentialType
+  value    String         @db.String
+  provider Provider?
+
+  userId String @unique @db.ObjectId
+
+  user User @relation(fields: userId, references: id, onDelete: Cascade)
+}
+
+enum Provider {
+  GOOGLE
+  GITHUB
+}
+
+model Favorite {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  recipeId  String   @db.ObjectId
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, recipeId])
+}
+
+model OneTimePassword {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  otp       String
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  userId    String   @unique @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
