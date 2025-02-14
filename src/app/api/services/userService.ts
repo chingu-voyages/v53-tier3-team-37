@@ -2,6 +2,7 @@ import { encryptPassword } from "./authService";
 import prisma from "./prisma";
 import nodemailer from "nodemailer";
 import { validatePassword } from "./authService";
+import { HealthProfileData } from "../middlewares/schemas";
 
 export const updatePassword = async (userId: string, newPassword: string) => {
   const user = await prisma.user.findUnique({
@@ -78,15 +79,6 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL_USER, // Gmail address
     pass: process.env.EMAIL_PASS, // Gmail app-specific password
   },
-});
-
-transporter.verify((error, success) => {
-  if (error) {
-    console.log(error);
-  } else {
-    console.log("Ready for messages");
-    console.log(success);
-  }
 });
 
 const sendOTPEmail = async (userEmail: string, otp: string) => {
@@ -170,11 +162,21 @@ export const checkOtp = async (
   return false;
 };
 
-export const handleHealthData = async (id: string, data: object) => {
+export const handleHealthData = async (id: string, data: HealthProfileData) => {
+  console.log("handling data:", data);
+  // breaks here for some reason...
+  const payload = { ...data, surveyed: true };
+  console.log("Payload to update:", payload);
   const updated = await prisma.user.update({
     where: { id },
-    data: { ...data },
+    data: payload,
   });
+  console.log("Status:", updated);
+  if (!updated) {
+    console.log("broken");
+  } else {
+    console.log("Updated:", updated);
+  }
 
   if (updated) {
     return true;

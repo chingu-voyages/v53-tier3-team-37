@@ -1,13 +1,14 @@
 // import { isAuthenticated } from "../middleware/loginAuth";
 import { encryptPassword } from "../services/authService";
 import * as userService from "../services/userService";
-import {
-  ActivityLevel,
-  Diet,
-  Gender,
-  HealthIssue,
-  Sensitivity,
-} from "@prisma/client";
+// import {
+//   ActivityLevel,
+//   Diet,
+//   Gender,
+//   HealthIssue,
+//   Sensitivity,
+// } from "@prisma/client";
+import { HealthProfileData } from "../middlewares/schemas";
 
 export const changePassword = async (userId: string, password: string) => {
   try {
@@ -63,41 +64,11 @@ export const otpResponse = async (
 
 export const updateHealthProfile = async (
   id: string,
-  age: number,
-  sex: Gender,
-  weight?: number,
-  height?: number,
-  lifestyle?: ActivityLevel,
-  foodRestrictions?: Sensitivity[],
-  healthIssues?: HealthIssue[],
-  activeDiet?: Diet
+  dataObj: HealthProfileData
 ) => {
   try {
-    const user = await userService.getUserById(id);
-    if (!user) {
-      throw new Error("User not found!");
-    }
-
-    const updateData = Object.fromEntries(
-      Object.entries({
-        age,
-        sex,
-        height,
-        lifestyle,
-        foodRestrictions,
-        healthIssues,
-        activeDiet,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      }).filter(([_, value]) => value !== undefined)
-    );
-
-    if (weight !== undefined) {
-      if (user.starting_weight === null) {
-        updateData["starting_weight"] = weight;
-      }
-      updateData["current_weight"] = weight;
-    }
-    const returned = await userService.handleHealthData(id, updateData);
+    const returned = await userService.handleHealthData(id, dataObj);
+    console.log("Returned:", returned);
     if (returned === true) {
       return { message: "Health Profile Data Submitted Successfully" };
     } else {

@@ -13,7 +13,13 @@ export const registerUser = async (
     }
 
     const user = await authService.createUser(email, name, password);
+    if (!user) {
+      throw new Error("Error when creating user");
+    }
     const token = await authService.generateToken(user.id);
+    if (!token) {
+      throw new Error("Error issuing jwt token");
+    }
     return { token, message: "User Registered Successfully" };
   } catch (err) {
     console.error("Registration Failed:", err);
@@ -31,11 +37,10 @@ export const loginUser = async (email: string, password: string) => {
 
     if (
       user.credentials.type !== "PASSWORDHASH" ||
-      !authService.validatePassword(password, user.credentials.value)
+      !(await authService.validatePassword(password, user.credentials.value))
     ) {
       throw new Error("Invalid Credentials");
     }
-
     const token = authService.generateToken(user.id);
     return { token, user, message: "User Found and Authenticated" };
   } catch (err) {

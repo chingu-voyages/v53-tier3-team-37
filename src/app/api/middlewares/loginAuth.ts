@@ -8,36 +8,24 @@ interface AuthenticatedRequest extends NextRequest {
 export const isAuthenticated = (
   req: NextRequest
 ): AuthenticatedRequest | NextResponse => {
-  const authHeader = req.headers.get("authorization");
+  const token = req.cookies.get("jwt")?.value;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return NextResponse.json(
-      { error: "Unauthorized: Missing or Invalid Authorization Header" },
-      { status: 401 }
-    );
-  }
-
-  const token = authHeader.split(" ")[1];
   if (!token) {
-    return NextResponse.redirect(new URL("/login", req.url), { status: 302 });
+    return NextResponse.redirect(new URL("/login", req.url), { status: 303 });
   }
 
   try {
+    console.log("trying to authenticate...");
     const decoded = authService.verifyToken(token) as { id: string };
 
     const authenticatedRequest = req as AuthenticatedRequest;
     authenticatedRequest.user = { id: decoded.id };
 
-    const headers = new Headers(req.headers);
-    headers.set("x-user-id", decoded.id);
-
+    console.log("Authenticated!");
     return authenticatedRequest;
   } catch (err) {
     console.error("Authentication Error:", err);
 
-    return NextResponse.json(
-      { error: "Invalid or Expired Token" },
-      { status: 401 }
-    );
+    return NextResponse.redirect(new URL("/login", req.url), { status: 303 });
   }
 };

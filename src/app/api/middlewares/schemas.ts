@@ -14,6 +14,7 @@ const favoriteLazy: z.ZodLazy<z.ZodTypeAny> = z.lazy(() => Favorite);
 const recipeLazy: z.ZodLazy<z.ZodTypeAny> = z.lazy(() => Recipe);
 // const credentialLazy: z.ZodLazy<z.ZodTypeAny> = z.lazy(() => Credential);
 const otpLazy: z.ZodLazy<z.ZodTypeAny> = z.lazy(() => OneTimePassword);
+const logLazy: z.ZodLazy<z.ZodTypeAny> = z.lazy(() => DailyHealthLog);
 
 export const User = z.object({
   id: z.string().optional(),
@@ -25,6 +26,8 @@ export const User = z.object({
   password: z.string().optional(),
   createdAt: z.date().optional(),
   starting_weight: z.number().optional(),
+  target_weight: z.number().optional(),
+  current_weight: z.number().optional(),
   weight: z.number().optional(),
   height: z.number().int().optional(),
   lifestyle: z.nativeEnum(ActivityLevel).optional(),
@@ -34,6 +37,17 @@ export const User = z.object({
   favorites: z.array(favoriteLazy).optional(),
   roles: z.nativeEnum(Roles).array().optional(),
   oneTimePassword: otpLazy.optional(),
+  healthLogs: logLazy.optional(),
+});
+
+export const DailyHealthLog = z.object({
+  id: z.string().optional(),
+  data: z.date().optional(),
+  calories: z.number().int().optional(),
+  protein: z.number().int().optional(),
+  water: z.number().int().optional(),
+  userId: z.string().optional(),
+  user: userLazy.optional(),
 });
 
 export const OneTimePassword = z.object({
@@ -108,6 +122,7 @@ export const PasswordUpdate = Account.pick({ password: true }).strict();
 
 export const HealthProfile = UserUpdate.partial()
   .omit({
+    id: true,
     email: true,
     username: true,
     name: true,
@@ -115,8 +130,11 @@ export const HealthProfile = UserUpdate.partial()
     createdAt: true,
     favorites: true,
     oneTimePassword: true,
+    healthLogs: true,
   })
   .strict();
+
+export type HealthProfileData = z.infer<typeof HealthProfile>;
 
 export const Login = User.pick({
   password: true,

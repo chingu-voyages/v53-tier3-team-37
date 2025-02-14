@@ -27,6 +27,7 @@ model User {
 
   starting_weight Float? @map("starting_weight")
   current_weight  Float? @map("current_weight")
+  target_weight   Float? @map("target_weight")
   height          Int?
 
   lifestyle ActivityLevel?
@@ -39,8 +40,53 @@ model User {
 
   favorites Favorite[]
 
+  healthLogs DailyHealthLog[]
+
+  goals GoalTracking?
+
   roles           Roles[]
   OneTimePassword OneTimePassword?
+}
+
+model GoalTracking {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @unique @db.ObjectId
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  foodSetId     String @unique @db.ObjectId
+  exerciseSetId String @unique @db.ObjectId
+  sleepSetId    String @unique @db.ObjectId
+
+  food     Tracking @relation("FoodTracking", fields: [foodSetId], references: [id])
+  exercise Tracking @relation("ExerciseTracking", fields: [exerciseSetId], references: [id])
+  sleep    Tracking @relation("SleepTracking", fields: [sleepSetId], references: [id])
+}
+
+model Tracking {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  type   TrackingType
+  amount Int[]
+
+  goalTrackingFood     GoalTracking? @relation("FoodTracking")
+  goalTrackingExercise GoalTracking? @relation("ExerciseTracking")
+  goalTrackingSleep    GoalTracking? @relation("SleepTracking")
+}
+
+enum TrackingType {
+  FOOD
+  EXERCISE
+  SLEEP
+}
+
+model DailyHealthLog {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  date     DateTime @default(now())
+  calories Int      @default(0)
+  protein  Int      @default(0)
+  water    Int      @default(0)
+  User     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String   @db.ObjectId
 }
 
 enum ActivityLevel {
@@ -77,6 +123,7 @@ enum Sensitivity {
   ALCOHOL
   BEEF
   PORK
+  NONE
 
   // histamines will be later, they are more complex
 }
@@ -89,6 +136,7 @@ enum HealthIssue {
   OBESITY
   KIDNEY_DISEASE
   HEART_DISEASE
+  NONE
 }
 
 enum Diet {
@@ -98,6 +146,7 @@ enum Diet {
   VEGAN
   CARNIVORE
   ATKINS
+  NONE
 }
 
 model Recipe {

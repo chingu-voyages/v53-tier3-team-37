@@ -3,6 +3,7 @@ import { isAuthenticated } from "../../middlewares/loginAuth";
 import parseBody from "../../utils/parseBody";
 import { HealthProfile } from "../../middlewares/schemas";
 import { updateHealthProfile } from "../../controllers/userController";
+import { HealthProfileData } from "../../middlewares/schemas";
 
 export async function PATCH(req: NextRequest) {
   const authResponse = isAuthenticated(req);
@@ -17,18 +18,12 @@ export async function PATCH(req: NextRequest) {
       );
     }
     const body = await parseBody(req);
-    const validationResult = HealthProfile.safeParse(body);
 
-    if (!validationResult.success) {
-      return NextResponse.json(
-        { error: "Validation Failed", details: validationResult.error.issues },
-        { status: 400 }
-      );
-    }
     const {
       age,
       sex,
-      weight,
+      starting_weight,
+      target_weight,
       height,
       lifestyle,
       foodRestrictions,
@@ -36,19 +31,37 @@ export async function PATCH(req: NextRequest) {
       activeDiet,
     } = body;
 
-    const response = await updateHealthProfile(
-      userId,
-      age,
-      sex,
-      weight,
-      height,
-      lifestyle,
-      foodRestrictions,
-      healthIssues,
-      activeDiet
+    const updateData: HealthProfileData = Object.fromEntries(
+      Object.entries({
+        age,
+        sex,
+        starting_weight,
+        target_weight,
+        current_weight: starting_weight,
+        height,
+        lifestyle,
+        foodRestrictions,
+        healthIssues,
+        activeDiet,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      }).filter(([_, value]) => value !== undefined && value !== "NONE")
     );
+    const validationResult = HealthProfile.safeParse(updateData);
 
-    return NextResponse.json({ message: response }, { status: 200 });
+    if (!validationResult.success) {
+      return NextResponse.json(
+        {
+          error: `Validation Failed: ${await validationResult.error}`,
+        },
+        { status: 400 }
+      );
+    }
+
+    const message = await updateHealthProfile(userId, updateData);
+
+    console.log(message);
+
+    return NextResponse.json({ message }, { status: 200 });
   } catch (err) {
     console.error("Error in the Update Health Profile Route", err);
     return NextResponse.json(
