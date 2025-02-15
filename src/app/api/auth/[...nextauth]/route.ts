@@ -29,11 +29,14 @@ export const authOptions: NextAuthOptions = {
   ],
   debug: true,
   callbacks: {
-    async session({ session, user }) {
+    async session({ session, user, token }) {
       console.log("session is: ", session);
       if (user) {
         session.user.id = user.id;
         session.user.email = user.email;
+      }
+      if (token?.surveyed !== undefined) {
+        session.user.surveyed = token.surveyed;
       }
       return session;
     },
@@ -56,6 +59,15 @@ export const authOptions: NextAuthOptions = {
       });
       return true;
     },
+    async jwt({ token }) {
+      const dbUser = await prisma.user.findUnique({
+        where: { email: token.email! },
+        select: { surveyed: true },
+      });
+    
+      token.surveyed = dbUser?.surveyed || false;
+      return token;
+    }
   },
 };
 
