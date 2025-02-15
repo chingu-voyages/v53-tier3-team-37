@@ -7,39 +7,42 @@ import {
   DialogTitle,
   DialogContent,
 } from "@/components/ui/dialog";
-import { RecipeSearchValues } from "@/schemas/recipeSearch";
-import React from "react";
-import { UseFormReturn } from "react-hook-form";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+// import { RecipeSearchValues } from "@/schemas/recipeSearch";
+// import { UseFormReturn } from "react-hook-form";
 
 type SearchSubmitProps = {
   showDialog: boolean;
   setShowDialog: (showDialog: boolean) => void;
-  form: UseFormReturn<RecipeSearchValues>;
-  handleSearch: (values: RecipeSearchValues) => void;
+  // handleSearch: (list: string[]) => void;
+  router: AppRouterInstance;
 };
 
 const SearchSubmit = ({
   showDialog,
   setShowDialog,
-  form,
-  handleSearch,
+  router,
 }: SearchSubmitProps) => {
   return (
     <Dialog open={showDialog} onOpenChange={setShowDialog}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Search without query?</DialogTitle>
+          <DialogTitle>Get random results?</DialogTitle>
           <DialogDescription>
             Would you like to search for recipes using only your nutritional
-            filters?
+            preset settings?
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <Button variant="outline" onClick={() => setShowDialog(false)}>
             Cancel
           </Button>
-          <Button onClick={() => handleSearch(form.getValues())}>
-            Search with Filters
+          <Button
+            onClick={() => {
+              router.push(`/recipes/results`);
+            }}
+          >
+            Continue
           </Button>
         </DialogFooter>
       </DialogContent>
