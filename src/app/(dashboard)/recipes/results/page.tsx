@@ -6,6 +6,7 @@ import { RecipeResult } from '../definitions/definitions';
 import RecipeCard from '@/components/recipe/RecipeCard';
 import { recipeSearchSchema } from '@/schemas/recipeSearch';
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 const data = sampleFullReturn
 
@@ -15,6 +16,10 @@ export default function ResultsPage() {
   const recipe:RecipeResult = data.results[recipeIndex];
 
   const searchParams = useSearchParams();
+
+  const session = useSession();
+  console.log("session looks like: ", session);
+ 
 
   const parseSearchParams = () => {
     const params: Record<string, string | number> = {};

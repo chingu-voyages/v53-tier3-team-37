@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import xss from "xss";
 
-// recursive sanitization function with generic typing
+// Recursive sanitization function with generic typing
 const sanitize = <T>(obj: T): T => {
   const options = {
     whiteList: {},
@@ -41,39 +41,43 @@ const sanitize = <T>(obj: T): T => {
 };
 
 export async function xssMiddleware(req: NextRequest) {
-  const sanitizedHeaders = new Headers();
-  req.headers.forEach((value, key) => {
-    sanitizedHeaders.set(key, xss(value));
-  });
+  try {
+    // Sanitize headers
+    const sanitizedHeaders = new Headers();
+    req.headers.forEach((value, key) => {
+      sanitizedHeaders.set(key, xss(value));
+    });
 
-  const sanitizedUrl = new URL(req.url);
-  sanitizedUrl.searchParams.forEach((value, key) => {
-    sanitizedUrl.searchParams.set(key, xss(value));
-  });
+    // Sanitize URL params
+    const sanitizedUrl = new URL(req.url);
+    sanitizedUrl.searchParams.forEach((value, key) => {
+      sanitizedUrl.searchParams.set(key, xss(value));
+    });
 
-  let body;
-  // Safely handle non-existent or invalid body
-  if (req.method !== "GET" && req.method !== "DELETE") {
-    try {
-      body = await req.json();
-      body = sanitize(body);
-    } catch (err) {
-      if (err instanceof SyntaxError) {
-        return NextResponse.json(
-          { error: "Invalid JSON Body" },
-          { status: 400 }
-        );
+    let body;
+    // Only sanitize body for non-GET and non-DELETE requests
+    if (req.method !== "GET" && req.method !== "DELETE") {
+      try {
+        body = await req.json();
+        body = sanitize(body);
+      } catch (err) {
+        if (err instanceof SyntaxError) {
+          return NextResponse.json(
+            { error: "Invalid JSON Body" },
+            { status: 400 }
+          );
+        }
       }
     }
+
+    // Pass sanitized request data to the next middleware
+    req.headers.set("x-sanitized", "true"); // Optional: Flag for debugging or logging
+
+    return NextResponse.next();
+  } catch (error) {
+    return NextResponse.json(
+      { error: "An unexpected error occurred in XSS Middleware" },
+      { status: 500 }
+    );
   }
-
-  const sanitizedRequest = new Request(sanitizedUrl, {
-    headers: sanitizedHeaders,
-    method: req.method,
-    body: body ? JSON.stringify(body) : undefined,
-  });
-
-  return NextResponse.next({
-    request: sanitizedRequest,
-  });
 }
