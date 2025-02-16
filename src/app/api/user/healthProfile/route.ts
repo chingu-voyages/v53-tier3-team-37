@@ -4,6 +4,7 @@ import parseBody from "../../utils/parseBody";
 import { HealthProfile } from "../../middlewares/schemas";
 import { updateHealthProfile } from "../../controllers/userController";
 import { HealthProfileData } from "../../middlewares/schemas";
+import prisma from "../../services/prisma";
 
 export async function PATCH(req: NextRequest) {
   const authResponse = isAuthenticated(req);
@@ -64,6 +65,38 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ message }, { status: 200 });
   } catch (err) {
     console.error("Error in the Update Health Profile Route", err);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET(req: NextRequest) {
+  const authResponse = isAuthenticated(req);
+  if (authResponse instanceof NextResponse) return authResponse;
+
+  try {
+    const userId = (authResponse as { user: { id: string } }).user.id;
+    const userData = await prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        healthLogs: true, // dietary logs
+        goals: true, // health goals
+        favorites: true, // favorite recipes
+      },
+    });
+
+    if (!userData) {
+      return NextResponse.json(
+        { error: "Failed to retrieve the user data" },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({ userData }, { status: 200 });
+  } catch (err) {
+    console.error("Error fetching the User Profile Information", err);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

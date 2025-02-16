@@ -24,7 +24,8 @@ export async function GET(req: NextRequest) {
   }
 
   const { searchParams } = new URL(req.url);
-  const mealsPerDay = searchParams.get("mealsPerDay") || "3";
+  const query = searchParams.get("search") || " ";
+  const mealsPerDay = "3";
   const weight = `${user.current_weight}`;
   const height = `${user.height}`;
   const age = `${user.age}`;
@@ -33,15 +34,6 @@ export async function GET(req: NextRequest) {
   const includeIngredients = searchParams.get("includeIngredients") || "";
   const excludeIngredients = user.foodRestrictions;
 
-  // const minCalories = searchParams.get("caloriesMin");
-  // const maxCalories = searchParams.get("caloriesMax");
-  // const minProtein = searchParams.get("proteinMin");
-  // const maxProtein = searchParams.get("proteinMax");
-  // const minFat = searchParams.get("fatMin");
-  // const maxFat = searchParams.get("fatMax");
-  // const minCarbs = searchParams.get("carbohydratesMin");
-  // const maxCarbs = searchParams.get("carbohydratesMax");
-
   if (
     !weight ||
     !height ||
@@ -49,31 +41,38 @@ export async function GET(req: NextRequest) {
     !activityLevel ||
     !gender ||
     !mealsPerDay ||
-    typeof weight !== "string" ||
-    typeof height !== "string" ||
-    typeof age !== "string" ||
-    typeof activityLevel !== "string" ||
-    typeof gender !== "string" ||
-    typeof mealsPerDay !== "string"
+    !query
   ) {
     return NextResponse.json(
-      { message: "All fields are required" },
+      {
+        message: `All fields are required:
+        weight: ${weight}
+        height: ${height}
+        age: ${age}
+        activityLevel: ${activityLevel}
+        gender: ${gender}
+        mealCount: ${mealsPerDay}
+        SearchQuery: ${query}
+        `,
+      },
       { status: 400 }
     );
   }
 
   try {
     const recipes = await getRecipes(
+      query,
       weight,
       height,
       age,
-      activityLevel,
-      gender,
+      activityLevel!,
+      gender!,
       mealsPerDay,
-      includeIngredients,
+      includeIngredients || "",
       excludeIngredients
     );
 
+    console.log("Recipes:", recipes);
     if (!recipes || recipes === null) {
       return NextResponse.json(
         { message: "Failed to fetch recipes" },
@@ -84,5 +83,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(recipes, { status: 200 });
   } catch (err) {
     console.error("Calculation of nutrients Failed:", err);
+    return NextResponse.json(
+      { message: `Failed to fetch recipes: ${err}` },
+      { status: 400 }
+    );
   }
 }

@@ -9,6 +9,8 @@ import * as userService from "../services/userService";
 //   Sensitivity,
 // } from "@prisma/client";
 import { HealthProfileData } from "../middlewares/schemas";
+import prisma from "../services/prisma";
+import { TrackingType } from "@prisma/client";
 
 export const changePassword = async (userId: string, password: string) => {
   try {
@@ -76,6 +78,108 @@ export const updateHealthProfile = async (
     }
   } catch (err) {
     console.error("Error Submitting Health Profile Updates", err);
+    throw err;
+  }
+};
+
+export const addHealthGoal = async (
+  userId: string,
+  type: TrackingType,
+  threshold: number
+) => {
+  try {
+    const submitted = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        goals: {
+          create: {
+            type,
+            threshold,
+          },
+        },
+      },
+    });
+    return submitted;
+  } catch (err) {
+    console.error("There was an error submitting the new health goal", err);
+    throw err;
+  }
+};
+
+export const storeTrackingData = async (
+  userId: string,
+  type: TrackingType,
+  amount: number
+) => {
+  try {
+    let tracking;
+    switch (type) {
+      case TrackingType.EXERCISE:
+        tracking = await prisma.goalTracking.update({
+          where: { userId },
+          data: {
+            exercise: {
+              upsert: {
+                update: {
+                  amount: {
+                    push: { amount, date: new Date() },
+                  },
+                },
+                create: {
+                  type,
+                  amount: [{ amount, date: new Date() }],
+                },
+              },
+            },
+          },
+        });
+        break;
+      case TrackingType.FOOD:
+        tracking = await prisma.goalTracking.update({
+          where: { userId },
+          data: {
+            food: {
+              upsert: {
+                update: {
+                  amount: {
+                    push: { amount, date: new Date() },
+                  },
+                },
+                create: {
+                  type,
+                  amount: [{ amount, date: new Date() }],
+                },
+              },
+            },
+          },
+        });
+        break;
+      case TrackingType.SLEEP:
+        tracking = await prisma.goalTracking.update({
+          where: { userId },
+          data: {
+            sleep: {
+              upsert: {
+                update: {
+                  amount: {
+                    push: { amount, date: new Date() },
+                  },
+                },
+                create: {
+                  type,
+                  amount: [{ amount, date: new Date() }],
+                },
+              },
+            },
+          },
+        });
+        break;
+      default:
+        throw new Error("Unknown tracking type:", tracking);
+    }
+    return tracking;
+  } catch (err) {
+    console.error("There was an error storing the tracking data", err);
     throw err;
   }
 };

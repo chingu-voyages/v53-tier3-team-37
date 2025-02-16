@@ -50,7 +50,7 @@ const SearchForm = () => {
     console.log(list);
   };
 
-  const handleSearch = (list: string[]) => {
+  const handleSearch = async (list: string[]) => {
     const params = new URLSearchParams();
 
     if (list.length === 0 && recipe === "") {
@@ -59,7 +59,7 @@ const SearchForm = () => {
     }
 
     if (recipe !== "") {
-      params.set("q", recipe);
+      params.set("query", recipe);
     }
 
     if (list.length > 0) {
@@ -130,8 +130,7 @@ const SearchForm = () => {
               const newList = list.filter((_, i) => i !== index);
               setList(newList);
             }}
-            className="bg-gray-200 pr-2 text-md py-2 text-center group rounded-md flex items-center gap-2 group pl-6 hover:bg-gray-300 transition-colors"
-          >
+            className="bg-gray-200 pr-2 text-md py-2 text-center group rounded-md flex items-center gap-2 group pl-6 hover:bg-gray-300 transition-colors">
             {item}
             <X className="w-4 h-4 text-red-500 cursor-pointer opacity-0 group-hover:opacity-100" />
           </button>
@@ -143,8 +142,7 @@ const SearchForm = () => {
           onClick={() => handleSearch(list)}
           className="w-full text-lg py-3 h-auto"
           size="lg"
-          type="submit"
-        >
+          type="submit">
           Search For Recipes
         </Button>
       </div>

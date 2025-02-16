@@ -21,7 +21,7 @@ model User {
   age Int?
   sex Gender?
 
-  credentials Credential?
+  credentials Credential[]
 
   createdAt DateTime @default(now()) @map("created_at")
 
@@ -42,10 +42,20 @@ model User {
 
   healthLogs DailyHealthLog[]
 
-  goals GoalTracking?
+  goalTracking GoalTracking?
+  goals        Goal[]
 
   roles           Roles[]
   OneTimePassword OneTimePassword?
+}
+
+model Goal {
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String? @db.ObjectId
+
+  type      TrackingType
+  threshold Int
 }
 
 model GoalTracking {
@@ -66,11 +76,16 @@ model Tracking {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
   type   TrackingType
-  amount Int[]
+  amount TrackingData[]
 
   goalTrackingFood     GoalTracking? @relation("FoodTracking")
   goalTrackingExercise GoalTracking? @relation("ExerciseTracking")
   goalTrackingSleep    GoalTracking? @relation("SleepTracking")
+}
+
+type TrackingData {
+  date   DateTime @default(now())
+  amount Int
 }
 
 enum TrackingType {

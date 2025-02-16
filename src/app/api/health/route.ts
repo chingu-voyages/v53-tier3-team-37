@@ -10,18 +10,25 @@ export async function POST(req: Request) {
   }
 
   try {
-    const { calories, protein, date } = await req.json();
+    const { calories, protein, water, date } = await req.json();
 
-    if (calories === 0 && protein === 0) {
+    if (calories === 0 && protein === 0 && water === 0) {
       return NextResponse.json({ message: "No data to save" }, { status: 200 });
     }
 
-    const entry = await prisma.dailyHealthLog.create({
+    // minor correction, so that the healthLog is created THROUGH the user on the database instead of just independently
+    // may not be necessary, since we are using a NoSQL database --
+    const entry = await prisma.user.update({
+      where: { id: session.user.id },
       data: {
-        userId: session.user.id,
-        calories,
-        protein,
-        date: new Date(date),
+        healthLogs: {
+          create: {
+            calories,
+            protein,
+            water,
+            date: new Date(date),
+          },
+        },
       },
     });
 

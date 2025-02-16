@@ -10,6 +10,7 @@ import { Sensitivity } from "@prisma/client";
 // Mifflin-St Jeor method to calculate BMR
 
 export const getRecipes = async (
+  query: string,
   weight: string,
   height: string,
   age: string,
@@ -79,12 +80,11 @@ export const getRecipes = async (
   // const minCarbs = Math.round(carbs * 0.9);
 
   let exclude = "";
-  excludeIngredients.forEach((ing) => (exclude += ing));
+  excludeIngredients.forEach((ing) => (exclude += ing.toLowerCase()));
 
   try {
-    // all parameters -> 0 recipes
     const res = await fetch(
-      `https://api.spoonacular.com/recipes/complexSearch?maxCalories=${maxCalories}&minCalories=${minCalories}&maxProtein=${maxProtein}&minProtein=${minProtein}&maxFat=${maxFat}&minFat=${minFat}&maxCarbs=${maxCarbs}&minCarbs=${minCarbs}&includeIngredients=${includeIngredients}&excludeIngredients=${exclude}&apiKey=${process.env.SPOONACULAR_API_KEY}`
+      `https://api.spoonacular.com/recipes/complexSearch?query=${query}&maxCalories=${maxCalories}&minCalories=${minCalories}&maxProtein=${maxProtein}&minProtein=${minProtein}&maxFat=${maxFat}&minFat=${minFat}&maxCarbs=${maxCarbs}&minCarbs=${minCarbs}&includeIngredients=${includeIngredients}&excludeIngredients=${exclude}&apiKey=${process.env.SPOONACULAR_API_KEY}`
     );
 
     if (!res.ok) {

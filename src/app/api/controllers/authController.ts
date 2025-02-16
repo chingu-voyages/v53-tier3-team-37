@@ -36,11 +36,14 @@ export const loginUser = async (email: string, password: string) => {
     }
 
     if (
-      user.credentials.type !== "PASSWORDHASH" ||
-      !(await authService.validatePassword(password, user.credentials.value))
+      !user.credentials.some((cred) => cred.type === "PASSWORDHASH") ||
+      !user.credentials.some(
+        async (cred) => await authService.validatePassword(password, cred.value)
+      )
     ) {
       throw new Error("Invalid Credentials");
     }
+
     const token = authService.generateToken(user.id);
     return { token, user, message: "User Found and Authenticated" };
   } catch (err) {

@@ -7,6 +7,7 @@ import {
   CredentialType,
   ActivityLevel,
   Diet,
+  TrackingType,
 } from "@prisma/client";
 
 const userLazy: z.ZodLazy<z.ZodTypeAny> = z.lazy(() => User);
@@ -15,11 +16,12 @@ const recipeLazy: z.ZodLazy<z.ZodTypeAny> = z.lazy(() => Recipe);
 // const credentialLazy: z.ZodLazy<z.ZodTypeAny> = z.lazy(() => Credential);
 const otpLazy: z.ZodLazy<z.ZodTypeAny> = z.lazy(() => OneTimePassword);
 const logLazy: z.ZodLazy<z.ZodTypeAny> = z.lazy(() => DailyHealthLog);
+const goalLazy: z.ZodLazy<z.ZodTypeAny> = z.lazy(() => Goal);
+const trackingLazy: z.ZodLazy<z.ZodTypeAny> = z.lazy(() => Tracking);
 
 export const User = z.object({
   id: z.string().optional(),
   email: z.string().email(),
-  username: z.string().min(5, "at least 5 chars").max(50, "at most 50 chars"),
   name: z.string().min(2, "at least 2 chars").max(60, "at most 60 chars"),
   age: z.number().int().min(13),
   sex: z.nativeEnum(Gender),
@@ -34,20 +36,61 @@ export const User = z.object({
   foodRestrictions: z.nativeEnum(Sensitivity).array().optional(),
   healthIssues: z.nativeEnum(HealthIssue).array().optional(),
   activeDiet: z.nativeEnum(Diet).optional(),
+  goals: z.array(goalLazy).optional(),
   favorites: z.array(favoriteLazy).optional(),
   roles: z.nativeEnum(Roles).array().optional(),
   oneTimePassword: otpLazy.optional(),
   healthLogs: logLazy.optional(),
 });
 
+export const Goal = z.object({
+  id: z.string().optional(),
+  user: userLazy.optional(),
+  userId: z.string().optional(),
+  type: z.nativeEnum(TrackingType),
+  threshold: z.number().int(),
+});
+
 export const DailyHealthLog = z.object({
   id: z.string().optional(),
-  data: z.date().optional(),
+  date: z.date().optional(),
   calories: z.number().int().optional(),
   protein: z.number().int().optional(),
   water: z.number().int().optional(),
   userId: z.string().optional(),
   user: userLazy.optional(),
+});
+
+export const GoalTracking = z.object({
+  id: z.string().optional(),
+  userId: z.string().optional(),
+  user: userLazy.optional(),
+  foodSetId: z.string().optional(),
+  exerciseSetId: z.string().optional(),
+  sleepSetId: z.string().optional(),
+  food: trackingLazy.optional(),
+});
+
+export const Tracking = z.object({
+  id: z.string().optional(),
+  type: z.nativeEnum(TrackingType),
+  amount: z.array(
+    z.object({
+      amount: z.number().int(),
+      date: z.date().optional(),
+    })
+  ),
+  goalSet: GoalTracking.optional(),
+});
+
+export const TrackingData = z.object({
+  date: z.date(),
+  amount: z.number().int(),
+});
+
+export const TrackingUpdate = z.object({
+  type: z.nativeEnum(TrackingType),
+  amount: z.number().int(),
 });
 
 export const OneTimePassword = z.object({
@@ -124,7 +167,6 @@ export const HealthProfile = UserUpdate.partial()
   .omit({
     id: true,
     email: true,
-    username: true,
     name: true,
     password: true,
     createdAt: true,
