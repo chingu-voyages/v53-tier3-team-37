@@ -15,8 +15,11 @@ export default withAuth(
   async function middleware(req: NextRequest) {
     console.log("middleware running");
     // Run XSS protection first
-    const xssResponse = xssMiddleware(req);
-    if (xssResponse) return xssResponse; // If XSS middleware blocks, return early
+    const xssResponse = await xssMiddleware(req);
+    if (xssResponse.status !== 200) {
+      console.log("xss response")
+      return xssResponse;
+    } 
 
     const user = (req as AuthenticatedRequest).nextauth?.token || null;
     console.log("Requested URL: ", req.url);
@@ -35,6 +38,12 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: "/:path*", // Adjust paths as needed
+  matcher: [
+    "/health/:path*",
+    "/log/:path*",
+    "/pantry/:path*",
+    "/profile/:path*",
+    "/recipes/:path*",
+  ],
 };
 
