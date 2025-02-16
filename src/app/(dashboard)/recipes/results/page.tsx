@@ -1,27 +1,25 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { RecipeResult } from "../definitions/definitions";
-import RecipeCard from "@/components/recipe/RecipeCard";
-import { recipeSearchSchema } from "@/schemas/recipeSearch";
-import { useEffect, useState, useMemo, useCallback } from "react";
-import { z } from "zod";
+import { useSearchParams } from 'next/navigation';
+import sampleFullReturn from '../../../../data/sampleFullReturn.json';
+import { RecipeResult } from '../definitions/definitions';
+import RecipeCard from '@/components/recipe/RecipeCard';
+import { recipeSearchSchema } from '@/schemas/recipeSearch';
+import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 
-// Define the shape of the API response.
-type RecipeData = {
-  results: RecipeResult[];
-};
-
-// Infer the type for our validated search parameters from the Zod schema.
-type RecipeSearchParams = z.infer<typeof recipeSearchSchema>;
+const data = sampleFullReturn
 
 export default function ResultsPage() {
   const [data, setData] = useState<RecipeData | null>(null);
   const [recipeIndex, setRecipeIndex] = useState<number>(0);
   const searchParams = useSearchParams();
 
-  // Wrap parseSearchParams in useCallback so that its reference remains stable.
-  const parseSearchParams = useCallback((): RecipeSearchParams | null => {
+  const session = useSession();
+  console.log("session looks like: ", session);
+ 
+
+  const parseSearchParams = () => {
     const params: Record<string, string | number> = {};
 
     searchParams.forEach((value, key) => {

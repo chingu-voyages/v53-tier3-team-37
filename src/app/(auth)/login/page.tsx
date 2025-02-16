@@ -9,6 +9,7 @@ import FormInput from "../formInput";
 import ThirdPartyButtons from "../thirdPartyButtons";
 import { loginSchema as formSchema, LoginFormValues } from "@/schemas/authForm";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 const Login = () => {
   const form = useForm<LoginFormValues>({
@@ -20,6 +21,11 @@ const Login = () => {
   });
 
   const router = useRouter();
+
+    const handleThirdParty = async (provider: "google" | "github") => {
+      console.log(`Signing in with ${provider}`);
+      await signIn(provider);
+    };
 
   const onSubmit = async (values: LoginFormValues) => {
     const response = await fetch("/api/auth/login", {
@@ -96,11 +102,11 @@ const Login = () => {
 
       <div className="flex items-center justify-center gap-4 mt-6">
         <ThirdPartyButtons
-          onClick={() => {}}
+          onClick={() => handleThirdParty("github")}
           icon="github"
         />
         <ThirdPartyButtons
-          onClick={() => {}}
+          onClick={() => handleThirdParty("google")}
           icon="google"
         />
       </div>

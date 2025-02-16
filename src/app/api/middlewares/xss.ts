@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import xss from "xss";
 
+<<<<<<< HEAD
 const options = {
   whiteList: {},
   stripIgnoreTag: true,
@@ -8,6 +9,9 @@ const options = {
 };
 
 // recursive sanitization function with generic typing
+=======
+// Recursive sanitization function with generic typing
+>>>>>>> main
 const sanitize = <T>(obj: T): T => {
   if (Array.isArray(obj)) {
     return obj.map((item) =>
@@ -41,6 +45,7 @@ const sanitize = <T>(obj: T): T => {
 };
 
 export async function xssMiddleware(req: NextRequest) {
+<<<<<<< HEAD
   console.log("Sanitizing request...");
 
   // Sanitize headers
@@ -70,6 +75,27 @@ export async function xssMiddleware(req: NextRequest) {
         const jsonBody = await req.json();
         body = sanitize(jsonBody);
         requestInit.body = JSON.stringify(body);
+=======
+  try {
+    // Sanitize headers
+    const sanitizedHeaders = new Headers();
+    req.headers.forEach((value, key) => {
+      sanitizedHeaders.set(key, xss(value));
+    });
+
+    // Sanitize URL params
+    const sanitizedUrl = new URL(req.url);
+    sanitizedUrl.searchParams.forEach((value, key) => {
+      sanitizedUrl.searchParams.set(key, xss(value));
+    });
+
+    let body;
+    // Only sanitize body for non-GET and non-DELETE requests
+    if (req.method !== "GET" && req.method !== "DELETE") {
+      try {
+        body = await req.json();
+        body = sanitize(body);
+>>>>>>> main
       } catch (err) {
         if (err instanceof SyntaxError) {
           return NextResponse.json(
@@ -77,6 +103,7 @@ export async function xssMiddleware(req: NextRequest) {
             { status: 400 }
           );
         }
+<<<<<<< HEAD
       }
     } else if (
       contentType.includes("multipart/form-data") ||
@@ -97,9 +124,22 @@ export async function xssMiddleware(req: NextRequest) {
         requestInit.body = body;
       } catch (err) {
         console.error("Error parsing form data:", err);
+=======
+>>>>>>> main
       }
     }
+
+    // Pass sanitized request data to the next middleware
+    req.headers.set("x-sanitized", "true"); // Optional: Flag for debugging or logging
+
+    return NextResponse.next();
+  } catch (error) {
+    return NextResponse.json(
+      { error: "An unexpected error occurred in XSS Middleware" },
+      { status: 500 }
+    );
   }
+<<<<<<< HEAD
 
   const sanitizedRequest = new Request(sanitizedUrl, requestInit);
 
@@ -107,3 +147,6 @@ export async function xssMiddleware(req: NextRequest) {
     request: sanitizedRequest,
   });
 }
+=======
+}
+>>>>>>> main

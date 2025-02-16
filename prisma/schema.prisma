@@ -45,6 +45,8 @@ model User {
   goalTracking GoalTracking?
   goals        Goal[]
 
+  // goals GoalTracking?
+
   roles           Roles[]
   OneTimePassword OneTimePassword?
 }

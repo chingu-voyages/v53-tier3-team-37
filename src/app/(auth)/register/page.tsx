@@ -9,6 +9,7 @@ import FormInput from "../formInput";
 import ThirdPartyButtons from "../thirdPartyButtons";
 import { registerSchema, RegisterFormValues } from "@/schemas/authForm";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 const Register = () => {
   const router = useRouter();
@@ -21,6 +22,11 @@ const Register = () => {
       confirmPassword: "",
     },
   });
+
+  const handleThirdParty = async (provider: "google" | "github") => {
+    console.log(`Signing in with ${provider}`);
+    await signIn(provider);
+  };
 
   // TODO: Add third party auth this function is only tied to the form submit right now.
   const onSubmit = async (data: RegisterFormValues) => {
@@ -60,11 +66,11 @@ const Register = () => {
       <div className="flex items-center justify-center gap-4 mb-2">
         {/* <ThirdPartyButtons onClick={() => {}} icon="apple" /> */}
         <ThirdPartyButtons
-          onClick={() => {}}
+          onClick={() => handleThirdParty("github")}
           icon="github"
         />
         <ThirdPartyButtons
-          onClick={() => {}}
+          onClick={() => handleThirdParty("google")}
           icon="google"
         />
       </div>

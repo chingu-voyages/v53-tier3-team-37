@@ -1,8 +1,11 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import GithubProvider from "next-auth/providers/github";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "../../services/prisma";
 
 export const authOptions: NextAuthOptions = {
+  // adapter: PrismaAdapter(prisma),
   jwt: {
     secret: process.env.NEXTAUTH_SECRET,
   },
@@ -17,14 +20,23 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
+    GithubProvider({
+      id: "github",
+      name: "GitHub",
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+    })
   ],
   debug: true,
   callbacks: {
-    async session({ session, user }) {
+    async session({ session, user, token }) {
       console.log("session is: ", session);
       if (user) {
         session.user.id = user.id;
         session.user.email = user.email;
+      }
+      if (token?.surveyed !== undefined) {
+        session.user.surveyed = token.surveyed;
       }
       return session;
     },
@@ -47,6 +59,15 @@ export const authOptions: NextAuthOptions = {
       });
       return true;
     },
+    async jwt({ token }) {
+      const dbUser = await prisma.user.findUnique({
+        where: { email: token.email! },
+        select: { surveyed: true },
+      });
+    
+      token.surveyed = dbUser?.surveyed || false;
+      return token;
+    }
   },
 };
 

@@ -2,15 +2,12 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { FaBars } from "react-icons/fa";
-import { signIn } from "next-auth/react";
+
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const handleSignIn = async () => {
-    console.log("handlesignin triggered");
-    await signIn("google");
-  };
+
 
   return (
     <nav className="bg-white shadow-md fixed top-0 left-0 w-full z-50">
@@ -18,12 +15,6 @@ const Navbar = () => {
         <div className="text-xl font-bold text-gray-800">
           <Link href="/">ReciPlease</Link>
         </div>
-        <button
-          className="bg-green-500 text-white px-4 py-2 rounded mt-4"
-          onClick={handleSignIn}
-        >
-          GOOGLE SIGN IN
-        </button>
 
         <button
           onClick={() => setMenuOpen(!menuOpen)}
