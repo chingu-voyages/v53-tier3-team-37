@@ -1,7 +1,7 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
+// import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "../../services/prisma";
 
 export const authOptions: NextAuthOptions = {
@@ -25,7 +25,7 @@ export const authOptions: NextAuthOptions = {
       name: "GitHub",
       clientId: process.env.GITHUB_CLIENT_ID!,
       clientSecret: process.env.GITHUB_CLIENT_SECRET!,
-    })
+    }),
   ],
   debug: true,
   callbacks: {
@@ -40,7 +40,7 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-    async signIn({ account, profile }) {
+    async signIn({ profile }) {
       if (!profile?.email) {
         throw new Error("No profile");
       }
@@ -64,10 +64,10 @@ export const authOptions: NextAuthOptions = {
         where: { email: token.email! },
         select: { surveyed: true },
       });
-    
+
       token.surveyed = dbUser?.surveyed || false;
       return token;
-    }
+    },
   },
 };
 

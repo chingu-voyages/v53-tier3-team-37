@@ -1,15 +1,24 @@
-import { Nutrition } from "@prisma/client";
-import prisma from "../services/prisma";
+// import { Nutrition } from "@prisma/client";
+// import prisma from "../services/prisma";
+
+import { Sensitivity } from "@prisma/client";
+
+// export const getRecipesByIngredients = async (includeIngredients: string) => {
+//   // &includeIngredients=${includeIngredients}
+// };
 
 // Mifflin-St Jeor method to calculate BMR
 
 export const getRecipes = async (
+  query: string,
   weight: string,
   height: string,
   age: string,
   activityLevel: string,
   gender: string,
-  mealsPerDay: string = "3"
+  mealsPerDay: string = "3",
+  includeIngredients: string,
+  excludeIngredients: Sensitivity[]
 ) => {
   const addBMR = gender === "man" ? 5 : -161;
   const BMR =
@@ -20,15 +29,15 @@ export const getRecipes = async (
 
   const activityLevelNum = () => {
     switch (activityLevel) {
-      case "sedentary":
+      case "SEDENTARY":
         return 1.2;
-      case "lightly active":
+      case "LIGHT":
         return 1.375;
-      case "moderately active":
+      case "MODERATE":
         return 1.55;
-      case "very active":
+      case "VERY":
         return 1.725;
-      case "super active":
+      case "SUPER":
         return 1.9;
       default:
         throw new Error("Invalid activity level");
@@ -70,49 +79,13 @@ export const getRecipes = async (
   // const maxCarbs = Math.round(carbs * 1.1);
   // const minCarbs = Math.round(carbs * 0.9);
 
+  let exclude = "";
+  excludeIngredients.forEach((ing) => (exclude += ing.toLowerCase()));
+
   try {
-    // all parameters -> 0 recipes
     const res = await fetch(
-      `https://api.spoonacular.com/recipes/findByNutrients?maxCalories=${maxCalories}&minCalories=${minCalories}&maxProtein=${maxProtein}&minProtein=${minProtein}&maxFat=${maxFat}&minFat=${minFat}&maxCarbs=${maxCarbs}&minCarbs=${minCarbs}&apiKey=${process.env.SPOONACULAR_API_KEY}`
+      `https://api.spoonacular.com/recipes/complexSearch?query=${query}&maxCalories=${maxCalories}&minCalories=${minCalories}&maxProtein=${maxProtein}&minProtein=${minProtein}&maxFat=${maxFat}&minFat=${minFat}&maxCarbs=${maxCarbs}&minCarbs=${minCarbs}&includeIngredients=${includeIngredients}&excludeIngredients=${exclude}&apiKey=${process.env.SPOONACULAR_API_KEY}`
     );
-
-    // only calories -> 10 recipes
-    // const res = await fetch(
-    //   `https://api.spoonacular.com/recipes/findByNutrients?maxCalories=${maxCalories}&minCalories=${minCalories}&apiKey=${process.env.SPOONACULAR_API_KEY}`
-    // );
-
-    // calories and protein -> 10 recipes
-    // const res = await fetch(
-    //   `https://api.spoonacular.com/recipes/findByNutrients?maxCalories=${maxCalories}&minCalories=${minCalories}&maxProtein=${maxProtein}&minProtein=${minProtein}&apiKey=${process.env.SPOONACULAR_API_KEY}`
-    // );
-
-    // calories, protein, fat -> 5 recipes
-    // const res = await fetch(
-    //   `https://api.spoonacular.com/recipes/findByNutrients?maxCalories=${maxCalories}&minCalories=${minCalories}&maxProtein=${maxProtein}&minProtein=${minProtein}&maxFat=${maxFat}&minFat=${minFat}&apiKey=${process.env.SPOONACULAR_API_KEY}`
-    // );
-
-    // calories, protein, carbs -> 3 recipes
-    // const res = await fetch(
-    //   `https://api.spoonacular.com/recipes/findByNutrients?maxCalories=${maxCalories}&minCalories=${minCalories}&maxProtein=${maxProtein}&minProtein=${minProtein}&maxCarbs=${maxCarbs}&minCarbs=${minCarbs}&apiKey=${process.env.SPOONACULAR_API_KEY}`
-    // );
-
-    // only max -> 10 recipes
-    // const res = await fetch(
-    //   `https://api.spoonacular.com/recipes/findByNutrients?maxCalories=${maxCalories}&maxProtein=${maxProtein}&maxFat=${maxFat}&maxCarbs=${maxCarbs}&apiKey=${process.env.SPOONACULAR_API_KEY}`
-    // );
-
-    // only min -> 10 recipes
-    // const res = await fetch(
-    //   `https://api.spoonacular.com/recipes/findByNutrients?&minCalories=${minCalories}&minProtein=${minProtein}&minFat=${minFat}&minCarbs=${minCarbs}&apiKey=${process.env.SPOONACULAR_API_KEY}`
-    // );
-
-    // const res = await fetch(
-    //   `https://api.spoonacular.com/recipes/findByNutrients?maxCalories=${maxCalories}&minCalories=${minCalories}&maxProtein=${maxProtein}&minProtein=${minProtein}&maxFat=${maxFat}&minFat=${minFat}&maxCarbs=${maxCarbs}&minCarbs=${minCarbs}&apiKey=${process.env.SPOONACULAR_API_KEY}`
-    // );
-
-    // const res = await fetch(
-    //   `https://api.spoonacular.com/recipes/findByNutrients?maxCalories=${maxCalories}&minCalories=${minCalories}&maxProtein=${maxProtein}&minProtein=${minProtein}&maxFat=${maxFat}&minFat=${minFat}&maxCarbs=${maxCarbs}&minCarbs=${minCarbs}&apiKey=${process.env.SPOONACULAR_API_KEY}`
-    // );
 
     if (!res.ok) {
       return null;
@@ -120,35 +93,35 @@ export const getRecipes = async (
 
     const recipes = await res.json();
 
-    const newDataArray = [];
-
-    for (const recipe of recipes.results) {
-      const recipeObj = {
-        name: recipe?.title ?? "Unknown Recipe",
-        recipeId: recipe.id,
-        ingredients: recipe?.nutrition.ingredients ?? [],
-        imageURL: recipe?.image ?? "No image available",
-      };
-      const nutritionData = recipe.nutrition.nutrients.map(
-        (nutrient: Nutrition) => ({
-          recipeId: recipe.id,
-          name: nutrient.name,
-          amount: nutrient.amount,
-          unit: nutrient.unit,
-        })
-      );
-      newDataArray.push({ recipe: recipeObj, nutrition: nutritionData });
-    }
-
-    await prisma.recipe.createMany({
-      data: newDataArray.map(({ recipe }) => recipe),
-    });
-    for (const { nutrition } of newDataArray) {
-      await prisma.nutrition.createMany({ data: nutrition });
-    }
-
     return recipes;
   } catch (err) {
     console.error("Calculation of nutrients Failed:", err);
   }
 };
+
+// const newDataArray = [];
+
+// for (const recipe of recipes.results) {
+//   const recipeObj = {
+//     name: recipe?.title ?? "Unknown Recipe",
+//     recipeId: recipe.id,
+//     ingredients: recipe?.nutrition.ingredients ?? [],
+//     imageURL: recipe?.image ?? "No image available",
+//   };
+//   const nutritionData = recipe.nutrition.nutrients.map(
+//     (nutrient: Nutrition) => ({
+//       recipeId: recipe.id,
+//       name: nutrient.name,
+//       amount: nutrient.amount,
+//       unit: nutrient.unit,
+//     })
+//   );
+//   newDataArray.push({ recipe: recipeObj, nutrition: nutritionData });
+// }
+
+// await prisma.recipe.createMany({
+//   data: newDataArray.map(({ recipe }) => recipe),
+// });
+// for (const { nutrition } of newDataArray) {
+//   await prisma.nutrition.createMany({ data: nutrition });
+// }

@@ -30,11 +30,13 @@ const Register = () => {
 
   // TODO: Add third party auth this function is only tied to the form submit right now.
   const onSubmit = async (data: RegisterFormValues) => {
+    console.log(data);
     const registrationBody = {
       name: data.name,
       email: data.email,
       password: data.password,
     };
+    console.log(registrationBody);
     try {
       const response = await fetch("/api/auth/register", {
         method: "POST",

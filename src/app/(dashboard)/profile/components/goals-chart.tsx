@@ -1,5 +1,3 @@
-"use client";
-
 import {
   CartesianGrid,
   Line,
@@ -22,18 +20,29 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { useMemo, useState } from "react";
-import { chartConfig, chartData } from "./weight-data";
+import { chartConfig } from "./weight-data";
+import { GoalsProps } from "./goals";
 
-export function GoalsChart() {
+export function GoalsChart({ data }: GoalsProps) {
   const [activeChart, setActiveChart] =
     useState<keyof typeof chartConfig>("weight");
 
-  const totalWeightLost = useMemo(
-    () => ({
-      weight: chartData[0].weight - chartData[chartData.length - 1].weight,
-    }),
-    []
-  );
+  const totalCalories = useMemo(() => {
+    if (
+      !data.goalTracking.food.amount ||
+      data.goalTracking.food.amount.length === 0
+    )
+      return 0;
+    return data.goalTracking.food.amount.reduce(
+      (acc, entry) => acc + entry.amount,
+      0
+    );
+  }, [data.goalTracking.food.amount]);
+
+  const poundsLost = totalCalories / 3500;
+
+  console.log("Total Calories from Food Tracking:", totalCalories);
+  console.log("Estimated Pounds Lost:", poundsLost);
 
   return (
     <Card>
@@ -41,7 +50,8 @@ export function GoalsChart() {
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
           <CardTitle>Weight Loss Progress</CardTitle>
           <CardDescription>
-            Showing total weight for the last 3 months
+            Showing total weight for the last 3 months--{" "}
+            <i>Estimated: {poundsLost.toFixed(2)}</i>
           </CardDescription>
         </div>
         <div className="flex">
@@ -52,13 +62,12 @@ export function GoalsChart() {
                 key={chart}
                 data-active={activeChart === chart}
                 className="flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
-                onClick={() => setActiveChart(chart)}
-              >
+                onClick={() => setActiveChart(chart)}>
                 <span className="text-xs text-muted-foreground">
                   {chartConfig[chart].label}
                 </span>
                 <span className="text-lg font-bold leading-none sm:text-3xl">
-                  {totalWeightLost.weight.toLocaleString()}
+                  {poundsLost.toFixed(2)}
                 </span>
               </button>
             );
@@ -68,21 +77,19 @@ export function GoalsChart() {
       <CardContent className="px-2 sm:p-6">
         <ChartContainer
           config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
-        >
+          className="aspect-auto h-[250px] w-full">
           <LineChart
             accessibilityLayer
-            data={chartData}
+            data={data.goalTracking.food.amount} //replace this with saved user weight data
             margin={{
-              top: 20, // Add top margin for padding above reference line
-              right: 30, // Increased for Y-axis labels
+              top: 20,
+              right: 30,
               left: 0,
               bottom: 0,
-            }}
-          >
+            }}>
             <CartesianGrid vertical={false} />
             <YAxis
-              domain={[170, 210]} // Set domain to create padding above/below data
+              domain={[170, 210]} //get the user's starting weight and set the first value to be the starting weight -50 and the second value +50
               tickLine={false}
               axisLine={false}
               tickMargin={8}
@@ -109,7 +116,7 @@ export function GoalsChart() {
               }}
             />
             <ReferenceLine
-              y={200} // Replace this with your starting weight value
+              y={Math.ceil(data.starting_weight!)} // Replace this with user's starting weight value
               stroke="hsl(var(--chart-3))"
               strokeDasharray="3 3"
               label={{

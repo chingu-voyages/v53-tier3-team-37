@@ -1,7 +1,9 @@
-import { encryptPassword } from "./authService";
+import { encryptPassword, verifyToken } from "./authService";
 import prisma from "./prisma";
 import nodemailer from "nodemailer";
 import { validatePassword } from "./authService";
+import { HealthProfileData } from "../middlewares/schemas";
+import { NextRequest } from "next/server";
 
 export const updatePassword = async (userId: string, newPassword: string) => {
   const user = await prisma.user.findUnique({
@@ -78,15 +80,6 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL_USER, // Gmail address
     pass: process.env.EMAIL_PASS, // Gmail app-specific password
   },
-});
-
-transporter.verify((error, success) => {
-  if (error) {
-    console.log(error);
-  } else {
-    console.log("Ready for messages");
-    console.log(success);
-  }
 });
 
 const sendOTPEmail = async (userEmail: string, otp: string) => {
@@ -170,11 +163,19 @@ export const checkOtp = async (
   return false;
 };
 
-export const handleHealthData = async (id: string, data: object) => {
+export const handleHealthData = async (id: string, data: HealthProfileData) => {
+  console.log("handling data:", data);
+  // breaks here for some reason...
   const updated = await prisma.user.update({
     where: { id },
-    data: { ...data },
+    data: { ...data, surveyed: true },
   });
+  console.log("Status:", updated);
+  if (!updated) {
+    console.log("broken");
+  } else {
+    console.log("Updated:", updated);
+  }
 
   if (updated) {
     return true;
@@ -189,4 +190,19 @@ export const getUserById = async (id: string) => {
   });
 
   return user;
+};
+
+export const getIdFromRequest = async (req: NextRequest) => {
+  const headerUserId = req.headers.get("X-User-Id"); // check for oauth
+  let userId: string | null = null;
+  if (headerUserId) {
+    userId = headerUserId;
+  } else {
+    const jwtCookie = req.cookies.get("jwt")?.value;
+    if (jwtCookie) {
+      const payload = await verifyToken(jwtCookie);
+      userId = payload?.id as string;
+    }
+  }
+  return userId;
 };

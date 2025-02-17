@@ -12,4 +12,12 @@ export const recipeSearchSchema = z.object({
   carbohydratesMax: z.number().optional(),
 });
 
+export const tempRecipeSearchSchema = recipeSearchSchema
+  .pick({
+    search: true,
+  })
+  .extend({ includeIngredients: z.string().array().optional() });
+
 export type RecipeSearchValues = z.infer<typeof recipeSearchSchema>;
+
+export type RecipeSearchParams = z.infer<typeof tempRecipeSearchSchema>;

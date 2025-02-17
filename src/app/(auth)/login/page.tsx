@@ -45,7 +45,7 @@ const Login = () => {
     if (body.userSurveyed === false) {
       router.push("/register/survey");
     } else {
-      router.push("/dashboard/profile");
+      router.push("/profile");
     }
   };
 

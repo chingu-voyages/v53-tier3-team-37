@@ -9,7 +9,10 @@ export async function POST(req: NextRequest) {
 
     if (!validationResult.success) {
       console.log(validationResult.error);
-      return NextResponse.json({ error: "Validation failed" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Validation failed:", validationResult },
+        { status: 400 }
+      );
     }
 
     // Call the controller logic to register the user
@@ -26,7 +29,7 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     console.error("Error during registration:", err);
     return NextResponse.json(
-      { error: "Internal Server Error", details: err },
+      { error: "Internal Server Error:", err },
       { status: 500 }
     );
   }
