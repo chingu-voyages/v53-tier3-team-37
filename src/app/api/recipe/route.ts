@@ -1,13 +1,12 @@
 import { getRecipes } from "@/app/api/_services/recipeService";
 import { NextRequest, NextResponse } from "next/server";
-import { isAuthenticated } from "../middlewares/loginAuth";
+// import { isAuthenticated } from "../middlewares/loginAuth";
 import prisma from "../services/prisma";
+import { getIdFromRequest } from "../services/userService";
 
 export async function GET(req: NextRequest) {
-  const authResponse = isAuthenticated(req);
-  if (authResponse instanceof NextResponse) return authResponse;
-
-  const userId = (authResponse as { user: { id: string } }).user.id;
+  console.log("Request to...", req.url);
+  const userId = await getIdFromRequest(req);
   if (!userId) {
     return NextResponse.json(
       { error: "Can't get the user id from the auth cookie" },

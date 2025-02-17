@@ -1,101 +1,59 @@
 import { NextRequest, NextResponse } from "next/server";
 import xss from "xss";
 
-<<<<<<< HEAD
-const options = {
-  whiteList: {},
-  stripIgnoreTag: true,
-  stripIgnoreTagBody: ["script"],
-};
+/**
+ * Recursively sanitizes an object (or array) by applying XSS filtering to string values.
+ *
+ * @param obj - The object or array to sanitize.
+ * @returns The sanitized object or array.
+ */
+export function sanitize<T>(obj: T): T {
+  const options = {
+    whiteList: {},
+    stripIgnoreTag: true,
+    stripIgnoreTagBody: ["script"],
+  };
 
-// recursive sanitization function with generic typing
-=======
-// Recursive sanitization function with generic typing
->>>>>>> main
-const sanitize = <T>(obj: T): T => {
   if (Array.isArray(obj)) {
     return obj.map((item) =>
-      typeof item === "object"
+      typeof item === "object" && item !== null
         ? sanitize(item)
         : typeof item === "string"
         ? xss(item, options)
         : item
-    ) as T;
+    ) as unknown as T;
   }
 
-  if (typeof obj === "object" && obj !== null) {
-    const sanitizedObj = { ...obj };
-    for (const key in sanitizedObj) {
-      const value = sanitizedObj[key as keyof typeof sanitizedObj];
+  if (obj !== null && typeof obj === "object") {
+    const sanitizedObj: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(obj as Record<string, unknown>)) {
       if (typeof value === "string") {
-        sanitizedObj[key] = xss(
-          value,
-          options
-        ) as unknown as (typeof sanitizedObj)[typeof key];
-      } else if (value && typeof value === "object") {
-        sanitizedObj[key] = sanitize(
-          value
-        ) as unknown as (typeof sanitizedObj)[typeof key];
+        sanitizedObj[key] = xss(value, options);
+      } else if (typeof value === "object" && value !== null) {
+        sanitizedObj[key] = sanitize(value);
+      } else {
+        sanitizedObj[key] = value;
       }
     }
-    return sanitizedObj;
+    return sanitizedObj as T;
   }
 
   return obj;
-};
+}
 
+/**
+ * Middleware that validates JSON body (if present) and sanitizes headers and URL parameters.
+ *
+ * @param req - The NextRequest object.
+ * @returns A NextResponse either continuing to the next middleware or with an error.
+ */
 export async function xssMiddleware(req: NextRequest) {
-<<<<<<< HEAD
-  console.log("Sanitizing request...");
-
-  // Sanitize headers
-  const sanitizedHeaders = new Headers();
-  req.headers.forEach((value, key) => {
-    sanitizedHeaders.set(key, xss(value, options));
-  });
-
-  // Sanitize URL search parameters
-  const sanitizedUrl = new URL(req.url);
-  sanitizedUrl.searchParams.forEach((value, key) => {
-    sanitizedUrl.searchParams.set(key, xss(value, options));
-  });
-
-  let body;
-  const requestInit: RequestInit = {
-    headers: sanitizedHeaders,
-    method: req.method,
-  };
-
-  // Only process body if method supports a body
-  if (req.method !== "GET" && req.method !== "DELETE") {
-    const contentType = req.headers.get("content-type") || "";
-
-    if (contentType.includes("application/json")) {
-      try {
-        const jsonBody = await req.json();
-        body = sanitize(jsonBody);
-        requestInit.body = JSON.stringify(body);
-=======
   try {
-    // Sanitize headers
-    const sanitizedHeaders = new Headers();
-    req.headers.forEach((value, key) => {
-      sanitizedHeaders.set(key, xss(value));
-    });
-
-    // Sanitize URL params
-    const sanitizedUrl = new URL(req.url);
-    sanitizedUrl.searchParams.forEach((value, key) => {
-      sanitizedUrl.searchParams.set(key, xss(value));
-    });
-
-    let body;
-    // Only sanitize body for non-GET and non-DELETE requests
+    // For non-GET/DELETE methods, validate that the JSON body is parseable.
+    // We use req.clone() so as not to consume the original body.
     if (req.method !== "GET" && req.method !== "DELETE") {
       try {
-        body = await req.json();
-        body = sanitize(body);
->>>>>>> main
+        await req.clone().json();
       } catch (err) {
         if (err instanceof SyntaxError) {
           return NextResponse.json(
@@ -103,50 +61,30 @@ export async function xssMiddleware(req: NextRequest) {
             { status: 400 }
           );
         }
-<<<<<<< HEAD
-      }
-    } else if (
-      contentType.includes("multipart/form-data") ||
-      contentType.includes("application/x-www-form-urlencoded")
-    ) {
-      try {
-        const formData = await req.formData();
-        // Create a new FormData instance and sanitize string entries
-        const newFormData = new FormData();
-        for (const [key, value] of formData.entries()) {
-          if (typeof value === "string") {
-            newFormData.set(key, xss(value, options));
-          } else {
-            newFormData.set(key, value);
-          }
-        }
-        body = newFormData;
-        requestInit.body = body;
-      } catch (err) {
-        console.error("Error parsing form data:", err);
-=======
->>>>>>> main
       }
     }
 
-    // Pass sanitized request data to the next middleware
-    req.headers.set("x-sanitized", "true"); // Optional: Flag for debugging or logging
+    // Sanitize headers.
+    const sanitizedHeaders = new Headers();
+    req.headers.forEach((value, key) => {
+      sanitizedHeaders.set(key, xss(value));
+    });
+
+    // Sanitize URL search parameters.
+    const sanitizedUrl = new URL(req.url);
+    sanitizedUrl.searchParams.forEach((value, key) => {
+      sanitizedUrl.searchParams.set(key, xss(value));
+    });
+
+    // Optionally, mark the request as sanitized.
+    req.headers.set("x-sanitized", "true");
 
     return NextResponse.next();
   } catch (error) {
+    console.error("Something went wrong in xss middleware:", error);
     return NextResponse.json(
       { error: "An unexpected error occurred in XSS Middleware" },
       { status: 500 }
     );
   }
-<<<<<<< HEAD
-
-  const sanitizedRequest = new Request(sanitizedUrl, requestInit);
-
-  return NextResponse.next({
-    request: sanitizedRequest,
-  });
 }
-=======
-}
->>>>>>> main

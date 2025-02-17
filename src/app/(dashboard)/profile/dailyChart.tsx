@@ -1,5 +1,3 @@
-"use client";
-
 import { TrendingUp } from "lucide-react";
 import {
   Label,
@@ -18,9 +16,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
-const chartData = [
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-];
 
 const chartConfig = {
   visitors: {
@@ -36,11 +31,16 @@ export function DailyChart({
   title,
   description,
   unit,
+  info,
 }: {
   title: string;
   description: string;
   unit: string;
+  info: number;
 }) {
+  const chartData = [
+    { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
+  ];
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
@@ -50,15 +50,13 @@ export function DailyChart({
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
-        >
+          className="mx-auto aspect-square max-h-[250px]">
           <RadialBarChart
             data={chartData}
             startAngle={0}
             endAngle={250}
             innerRadius={80}
-            outerRadius={110}
-          >
+            outerRadius={110}>
             <PolarGrid
               gridType="circle"
               radialLines={false}
@@ -66,8 +64,15 @@ export function DailyChart({
               className="first:fill-muted last:fill-background"
               polarRadius={[86, 74]}
             />
-            <RadialBar dataKey="visitors" background cornerRadius={10} />
-            <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
+            <RadialBar
+              dataKey="visitors"
+              background
+              cornerRadius={10}
+            />
+            <PolarRadiusAxis
+              tick={false}
+              tickLine={false}
+              axisLine={false}>
               <Label
                 content={({ viewBox }) => {
                   if (viewBox && "cx" in viewBox && "cy" in viewBox) {
@@ -76,20 +81,17 @@ export function DailyChart({
                         x={viewBox.cx}
                         y={viewBox.cy}
                         textAnchor="middle"
-                        dominantBaseline="middle"
-                      >
+                        dominantBaseline="middle">
                         <tspan
                           x={viewBox.cx}
                           y={viewBox.cy}
-                          className="fill-foreground text-4xl font-bold"
-                        >
-                          {chartData[0].visitors.toLocaleString()}
+                          className="fill-foreground text-4xl font-bold">
+                          {info}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 24}
-                          className="fill-muted-foreground"
-                        >
+                          className="fill-muted-foreground">
                           {unit}
                         </tspan>
                       </text>

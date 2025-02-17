@@ -44,7 +44,7 @@ export const loginUser = async (email: string, password: string) => {
       throw new Error("Invalid Credentials");
     }
 
-    const token = authService.generateToken(user.id);
+    const token = await authService.generateToken(user.id);
     return { token, user, message: "User Found and Authenticated" };
   } catch (err) {
     console.error("Login Failed:", err);

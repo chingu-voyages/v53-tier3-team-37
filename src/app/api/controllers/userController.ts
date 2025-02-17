@@ -69,6 +69,7 @@ export const updateHealthProfile = async (
   dataObj: HealthProfileData
 ) => {
   try {
+    console.log(id);
     const returned = await userService.handleHealthData(id, dataObj);
     console.log("Returned:", returned);
     if (returned === true) {

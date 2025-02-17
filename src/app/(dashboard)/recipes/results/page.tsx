@@ -1,36 +1,28 @@
 "use client";
-
-import { useSearchParams } from 'next/navigation';
-import sampleFullReturn from '../../../../data/sampleFullReturn.json';
-import { RecipeResult } from '../definitions/definitions';
-import RecipeCard from '@/components/recipe/RecipeCard';
-import { recipeSearchSchema } from '@/schemas/recipeSearch';
-import { useState } from 'react';
-import { useSession } from 'next-auth/react';
-
-const data = sampleFullReturn
+import { useCallback, useMemo, useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+// import { useSession } from "next-auth/react";
+// import sampleFullReturn from "../../../../data/sampleFullReturn.json";
+import { RecipeResult } from "../definitions/definitions";
+import RecipeCard from "@/components/recipe/RecipeCard";
+import { RecipeSearchParams, recipeSearchSchema } from "@/schemas/recipeSearch";
 
 export default function ResultsPage() {
-  const [data, setData] = useState<RecipeData | null>(null);
+  const [data, setData] = useState<null>(null);
   const [recipeIndex, setRecipeIndex] = useState<number>(0);
+
+  // Use the hook to get the search params from the URL.
   const searchParams = useSearchParams();
+  // const session = useSession();
+  // console.log("session looks like: ", session);
 
-  const session = useSession();
-  console.log("session looks like: ", session);
- 
-
-  const parseSearchParams = () => {
+  // Wrap the function in useCallback so that it uses the dependency array correctly.
+  const parseSearchParams = useCallback(() => {
     const params: Record<string, string | number> = {};
 
+    // Iterate over the URLSearchParams
     searchParams.forEach((value, key) => {
-      if (key.endsWith("Min") || key.endsWith("Max")) {
-        const numValue = Number(value);
-        if (!isNaN(numValue)) {
-          params[key] = numValue;
-        }
-      } else {
-        params[key] = value;
-      }
+      params[key] = value;
     });
 
     const result = recipeSearchSchema.safeParse(params);
@@ -49,47 +41,52 @@ export default function ResultsPage() {
 
   useEffect(() => {
     const fetchRecipes = async (params: RecipeSearchParams | null) => {
-      if (!params) return;
-
       try {
-        // Filter out empty search fields for "search" and "includeIngredients".
-        const filteredParams = Object.entries(params).reduce<
-          Record<string, string>
-        >((acc, [key, value]) => {
-          const stringValue = String(value).trim();
-          if (
-            (key === "search" || key === "includeIngredients") &&
-            stringValue === ""
-          ) {
-            return acc;
-          }
-          acc[key] = stringValue;
-          return acc;
-        }, {});
+        const searchParamsObj = new URLSearchParams();
 
-        // Build the query string from the filtered parameters.
-        const queryString = new URLSearchParams(filteredParams).toString();
-        // If no query parameters, just use the base URL.
+        if (params) {
+          if (params.search && params.search.trim() !== "") {
+            searchParamsObj.set("search", params.search.trim());
+          }
+
+          // handle include ingredients array
+          if (
+            params.includeIngredients &&
+            Array.isArray(params.includeIngredients) &&
+            params.includeIngredients.length > 0
+          ) {
+            params.includeIngredients.forEach((ingredient) => {
+              const trimmed = ingredient.trim();
+              if (trimmed !== "") {
+                searchParamsObj.append("includeIngredients", trimmed);
+              }
+            });
+          }
+        }
+        const queryString = searchParamsObj.toString();
+        console.log("String:", queryString);
         const apiUrl = queryString
           ? `/api/recipe/?${queryString}`
           : `/api/recipe/`;
         console.log("Fetching recipes from:", apiUrl);
-
         const response = await fetch(apiUrl, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         });
 
         if (response.ok) {
-          const jsonData: RecipeData = await response.json();
-          setData(jsonData);
-          // Reset the recipe index when new data is loaded.
+          const jsonData = await response.json();
+          console.log(jsonData);
+          setData(jsonData.results);
           setRecipeIndex(0);
         } else {
-          console.error("Failed to fetch recipes, status:", response.status);
+          console.error(
+            "Failed to fetch the recipes, status:",
+            response.status
+          );
         }
       } catch (err) {
-        alert(`Error fetching recipe data: ${err}`);
+        alert(`Error fetching Recipes: ${err}`);
       }
     };
 
@@ -100,7 +97,7 @@ export default function ResultsPage() {
     return <p>Loading recipes...</p>;
   }
 
-  const recipes: RecipeResult[] = data.results || [];
+  const recipes: RecipeResult[] = data || [];
   if (recipes.length === 0) {
     return <p>No recipes found.</p>;
   }
@@ -118,7 +115,7 @@ export default function ResultsPage() {
 
   return (
     <>
-      {recipeIndex > 0 && (
+      {data !== null && (
         <button
           onClick={goToPrevious}
           className="absolute left-0 top-0 h-[calc(100%-90px)] mt-2 w-16 flex items-center justify-center bg-black bg-opacity-20 hover:bg-opacity-40 transition-opacity rounded-r-lg">

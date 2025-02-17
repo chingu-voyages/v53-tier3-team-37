@@ -19,29 +19,6 @@ const SearchForm = () => {
   const [list, setList] = useState<string[]>([]);
   const router = useRouter();
 
-  // const form = useForm<RecipeSearchValues>({
-  //   resolver: zodResolver(recipeSearchSchema),
-  //   defaultValues: {
-  //     search: "",
-  //     caloriesMin: 0,
-  //     caloriesMax: 0,
-  //     proteinMin: 0,
-  //     proteinMax: 0,
-  //     fatMin: 0,
-  //     fatMax: 0,
-  //     carbohydratesMin: 0,
-  //     carbohydratesMax: 0,
-  //   },
-  // });
-
-  // const onSubmit = (values: RecipeSearchValues) => {
-  //   if (values.search === "") {
-  //     // setShowDialog(true);
-  //     return;
-  //   }
-  //   handleSearch(values);
-  // };
-
   const addIngredient = (ingredient: string) => {
     if (ingredient === "") return;
     setList([...list, ingredient]);
@@ -65,15 +42,7 @@ const SearchForm = () => {
     if (list.length > 0) {
       params.set("includeIngredients", list.join(","));
     }
-
-    // Object.entries(values).forEach(([key, value]) => {
-    //   if (value !== undefined && value !== "" && value !== 0) {
-    //     params.set(key, value.toString());
-    //   }
-    // });
-
     router.push(`/recipes/results?${params.toString()}`);
-    // setShowDialog(false);
   };
 
   return (
@@ -81,12 +50,6 @@ const SearchForm = () => {
       <header className="px-4 pb-2 border-b border-black/20 shadow-lg">
         <h1 className="text-4xl font-bold">Recipes</h1>
       </header>
-
-      {/* <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-4"> */}
-      {/* <SearchBar form={form} /> */}
-
-      {/* <NutrientFilters form={form} /> */}
       <div className=" flex flex-col pt-32 p-4 flex-1 ">
         <div className="space-y-4">
           <h2 className="text-2xl ">Search for a recipe by name</h2>

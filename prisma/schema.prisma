@@ -97,13 +97,15 @@ enum TrackingType {
 }
 
 model DailyHealthLog {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  date     DateTime @default(now())
-  calories Int      @default(0)
-  protein  Int      @default(0)
-  water    Int      @default(0)
-  User     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId   String   @map("user_id") @db.ObjectId
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  date        DateTime @default(now())
+  caloriesIn  Int      @default(0)
+  caloriesOut Int      @default(0)
+  protein     Int      @default(0)
+  water       Int      @default(0)
+  sleep       Int      @default(0)
+  User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String   @map("user_id") @db.ObjectId
 }
 
 enum ActivityLevel {

@@ -1,8 +1,9 @@
-import { encryptPassword } from "./authService";
+import { encryptPassword, verifyToken } from "./authService";
 import prisma from "./prisma";
 import nodemailer from "nodemailer";
 import { validatePassword } from "./authService";
 import { HealthProfileData } from "../middlewares/schemas";
+import { NextRequest } from "next/server";
 
 export const updatePassword = async (userId: string, newPassword: string) => {
   const user = await prisma.user.findUnique({
@@ -165,11 +166,9 @@ export const checkOtp = async (
 export const handleHealthData = async (id: string, data: HealthProfileData) => {
   console.log("handling data:", data);
   // breaks here for some reason...
-  const payload = { ...data, surveyed: true };
-  console.log("Payload to update:", payload);
   const updated = await prisma.user.update({
     where: { id },
-    data: payload,
+    data: { ...data, surveyed: true },
   });
   console.log("Status:", updated);
   if (!updated) {
@@ -191,4 +190,19 @@ export const getUserById = async (id: string) => {
   });
 
   return user;
+};
+
+export const getIdFromRequest = async (req: NextRequest) => {
+  const headerUserId = req.headers.get("X-User-Id"); // check for oauth
+  let userId: string | null = null;
+  if (headerUserId) {
+    userId = headerUserId;
+  } else {
+    const jwtCookie = req.cookies.get("jwt")?.value;
+    if (jwtCookie) {
+      const payload = await verifyToken(jwtCookie);
+      userId = payload?.id as string;
+    }
+  }
+  return userId;
 };

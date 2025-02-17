@@ -1,12 +1,15 @@
-"use client";
-
 import { GoalsChart } from "./goals-chart";
+import { ExtendedUser } from "../page";
 
-const Goals = () => {
+export interface GoalsProps {
+  data: ExtendedUser;
+}
+
+const Goals: React.FC<GoalsProps> = ({ data }) => {
   return (
     <section className="p-4 ">
       <h2 className="text-2xl font-bold">Goals</h2>
-      <GoalsChart />
+      <GoalsChart data={data} />
     </section>
   );
 };

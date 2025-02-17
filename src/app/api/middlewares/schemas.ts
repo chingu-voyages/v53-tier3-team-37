@@ -173,6 +173,7 @@ export const HealthProfile = UserUpdate.partial()
     favorites: true,
     oneTimePassword: true,
     healthLogs: true,
+    goals: true,
   })
   .strict();
 
