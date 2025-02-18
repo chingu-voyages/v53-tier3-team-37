@@ -193,6 +193,7 @@ export const getUserById = async (id: string) => {
 };
 
 export const getIdFromRequest = async (req: NextRequest) => {
+  console.log("headers: ", req.headers);
   const headerUserId = req.headers.get("X-User-Id"); // check for oauth
   let userId: string | null = null;
   if (headerUserId) {

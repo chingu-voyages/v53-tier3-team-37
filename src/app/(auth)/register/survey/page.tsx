@@ -11,11 +11,13 @@ import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const SurveyPage = () => {
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
   const [direction, setDirection] = useState(1);
   const router = useRouter();
+  const { data: session } = useSession();
 
   const form = useForm<SurveyData>({
     resolver: zodResolver(surveySchema),
@@ -68,7 +70,9 @@ const SurveyPage = () => {
     try {
       const response = await fetch("/api/user/healthProfile", {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "X-User-Id": session?.user?.id || "" },
         body: JSON.stringify(healthProfile),
       });
 
